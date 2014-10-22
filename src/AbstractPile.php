@@ -55,8 +55,8 @@ abstract class AbstractPile implements PileInterface
         if( $this->matcher( $request ) ) {
             $response = $this->handler( $request );
         }
-        if( !$response && $this->pile ) {
-            $response =  $this->pile->handle( $request );
+        if( !$response && $pile = $this->next() ) {
+            $response =  $pile->handle( $request );
         }
         return $this->handled( $response );
     }
@@ -104,8 +104,19 @@ abstract class AbstractPile implements PileInterface
      */
     public function pile( $pile )
     {
+        if( $this->pile ) {
+            return $this->pile->pile( $pile );
+        }
         $this->pile = $pile;
         return $this;
+    }
+
+    /**
+     * @return PileInterface
+     */
+    protected function next()
+    {
+        return $this->pile;
     }
 
     /**
@@ -114,7 +125,7 @@ abstract class AbstractPile implements PileInterface
      */
     public function match( $url )
     {
-        if( $url ) {
+        if( $url && is_string( $url ) ) {
             $this->url = $this->addSlashAtRight($url);
         }
         return $this;
