@@ -7,15 +7,14 @@
  */
 namespace WScore\Pile;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 interface PileInterface extends HttpKernelInterface
 {
     /**
-     * @param PileInterface $pile
-     * @return $this
+     * @param Response $response
+     * @return Response
      */
-    public function pile( $pile );
+    public function handled( $response );
 }
