@@ -4,9 +4,17 @@ namespace WScore\Pile\Block;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use WScore\Pile\Pile;
 use WScore\Pile\Tools\Tools;
 
-class Branch implements HttpKernelInterface
+/**
+ * Class Branch
+ * @package WScore\Pile\Block
+ *
+ * for a branching a pile list. this class itself is a pile object.
+ *
+ */
+class Branch extends Pile
 {
     /**
      * @var HttpKernelInterface[]
@@ -14,7 +22,14 @@ class Branch implements HttpKernelInterface
     protected $branches = [];
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * implement the handler for the request.
+     *
+     * invoke the next pile based on the branches' url and request.
      *
      * @param Request $request
      * @param int     $type
@@ -24,20 +39,14 @@ class Branch implements HttpKernelInterface
     public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true )
     {
         foreach ( $this->branches as $url => $handler ) {
-            if( Tools::matcher( $url, $request ) ) {
-                return $handler->handle( $request, $type, $catch );
+            if( Tools::matcher( $url, $this->request ) ) {
+                $this->setPile( $handler );
             }
         }
+        if( $pile = $this->next() ) {
+            return $pile->handle( $request );
+        }
         return null;
-    }
-
-    /**
-     * @param callable|string $url
-     * @param Request         $request
-     * @return bool|void
-     */
-    protected function matcher( $url, Request $request )
-    {
     }
 
     /**

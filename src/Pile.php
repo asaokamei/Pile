@@ -68,7 +68,7 @@ class Pile implements HttpKernelInterface
     }
 
     /**
-     * a dumb and simple one-way linked list.
+     * make a dumb and simple one-way linked list.
      *
      * @param HttpKernelInterface|PileInterface $handler
      * @return $this
@@ -78,8 +78,22 @@ class Pile implements HttpKernelInterface
         if( $this->pile ) {
             return $this->pile->push( $handler );
         }
-        $this->pile = new self( $handler );
+        $this->setPile( $handler );
         return $this;
+    }
+
+    /**
+     * set a next pile, forcefully.
+     *
+     * @param HttpKernelInterface|PileInterface $handler
+     * @return Pile
+     */
+    protected function setPile( $handler )
+    {
+        if( !$handler instanceof Pile ) {
+            $handler = new self( $handler );
+        }
+        return $this->pile = $handler;
     }
 
     /**
