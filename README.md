@@ -6,7 +6,7 @@ A simple pile of ```HttpKernel```s to construct a http application.
 This repository was developed to understand [StackPHP](http://stackphp.com/).
 Compared to StackPHP, Pile offers the ability to:
 
-*   process the response,
+*   process the response in an explicit way,
 *   branch the pile list,
 *   does not have to be __middle__ware
 
