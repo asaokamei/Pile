@@ -1,10 +1,11 @@
 <?php
-namespace WScore\Pile\Block;
+namespace WScore\Pile\Handler;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Route;
+use WScore\Pile\Tools\Dispatch;
 use WScore\Pile\Tools\Routing;
 use WScore\Pile\Tools\Tools;
 

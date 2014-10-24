@@ -1,6 +1,9 @@
 <?php
 namespace WScore\Pile;
 
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use WScore\Pile\Pile\Pile;
+
 /**
  * Class App
  * @package WScore\Pile
@@ -11,9 +14,13 @@ class App extends Pile
 {
     /**
      * empty constructor...
+     *
+     * @param HttpKernelInterface $handler
+     * @return Pile
      */
-    public function __construct()
+    public static function build( $handler )
     {
+        return new self( $handler );
     }
 
 }

@@ -1,9 +1,10 @@
 <?php
-namespace WScore\Pile;
+namespace WScore\Pile\Pile;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use WScore\Pile\Handler\ResponseHandleInterface;
 
 /**
  * Class Pile
@@ -12,10 +13,10 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * creates a pile of handlers for http request.
  * continues processing the request until one of the pile returns a response.
  */
-class Pile implements HttpKernelInterface
+class Pile implements HttpKernelInterface, PileInterface
 {
     /**
-     * @var HttpKernelInterface|PileInterface
+     * @var HttpKernelInterface
      */
     protected $handler;
 
@@ -29,7 +30,7 @@ class Pile implements HttpKernelInterface
      * handles the request by invoking the handler's handle method,
      * and may process the response if the handler is a PileInterface object.
      *
-     * @param HttpKernelInterface|PileInterface $handler
+     * @param HttpKernelInterface $handler
      */
     public function __construct( $handler )
     {
@@ -61,7 +62,7 @@ class Pile implements HttpKernelInterface
             $response = $pile->handle( $request );
         }
         // process the response if PileInterface is implemented.
-        if( $this->handler instanceof PileInterface ) {
+        if( $this->handler instanceof ResponseHandleInterface ) {
             $response = $this->handler->handled( $response );
         }
         return $response;
@@ -70,13 +71,13 @@ class Pile implements HttpKernelInterface
     /**
      * make a dumb and simple one-way linked list.
      *
-     * @param HttpKernelInterface|PileInterface $handler
+     * @param HttpKernelInterface $handler
      * @return $this
      */
-    public function push( $handler )
+    public function pile( $handler )
     {
         if( $this->pile ) {
-            return $this->pile->push( $handler );
+            return $this->pile->pile( $handler );
         }
         $this->setPile( $handler );
         return $this;
@@ -85,12 +86,12 @@ class Pile implements HttpKernelInterface
     /**
      * set a next pile, forcefully.
      *
-     * @param HttpKernelInterface|PileInterface $handler
+     * @param HttpKernelInterface $handler
      * @return Pile
      */
     protected function setPile( $handler )
     {
-        if( !$handler instanceof Pile ) {
+        if( !$handler instanceof PileInterface ) {
             $handler = new self( $handler );
         }
         return $this->pile = $handler;

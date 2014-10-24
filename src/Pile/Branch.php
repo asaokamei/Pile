@@ -1,10 +1,9 @@
 <?php
-namespace WScore\Pile\Block;
+namespace WScore\Pile\Pile;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use WScore\Pile\Pile;
 use WScore\Pile\Tools\Tools;
 
 /**

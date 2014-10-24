@@ -32,7 +32,7 @@ Basic Usage
 create a handler, which implements Symfony's HttpKernelInterface.
 
 ```php
-class MyHandler implements HttpKernelInterface
+class MiddleWare implements HttpKernelInterface
 {
     public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true ) {
         if( $request->getPathInfo() === '/handled' ) {
@@ -43,11 +43,7 @@ class MyHandler implements HttpKernelInterface
 }
 ```
 
-you can push as many piles as you want.
- they are just a simple one-way linked list.
-
-
-handler can implement PileInterface with handled method
+a handler can implement PileInterface with handled method
  which can be used to process the $response.
 
 ```php
@@ -67,38 +63,47 @@ class MyLogger implements PileInterface
 then, push it to the pile.
 
 ```php
-$app = new App;
-$app->push( new MyLogger );
-$app->push( new MyHandler );
+$app = new App::build(new MyLogger)
+    ->push( new MiddleWare );
 $response = $app->handle( Request::createFromGlobals() );
+$response->send();
 ```
 
+you can push as many piles as you want.
+ they are just a simple one-way linked list.
 
 
-Pile Blocks
+
+Handlers
 -----------
 
-There are several predefined piles to start.
+There are several predefined handlers as examples.
+
+### Backstage and UrlMap
+
+they are taken from the StackPHP middleware with respect, 
+and removed the $app part. 
 
 ### Router
 
-a simple resource-style dispatcher based on a given path.
+A simple router handler. 
 
-to-be-written.
 
-### Match
+Piles
+-----
 
-to-be-coded.
+piles are the basic building blocks for the web application. 
 
-### Branch
+### Branch 
 
-to-be-written.
-
+experimental implementation to branch the pile based on the 
+request pathinfo. 
 
 
 To Do
 -----
 
+*   make it work. 
 *   laze-load handlers.
 *   documentation.
 *   tests.

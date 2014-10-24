@@ -5,12 +5,12 @@
  * Date: 2014/10/22
  * Time: 17:57
  */
-namespace WScore\Pile;
+namespace WScore\Pile\Handler;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-interface PileInterface extends HttpKernelInterface
+interface ResponseHandleInterface extends HttpKernelInterface
 {
     /**
      * @param Response $response
