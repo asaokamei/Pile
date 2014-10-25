@@ -25,9 +25,9 @@ class Stackable implements HttpKernelInterface, StackableInterface
     /**
      * pile of Stackable Http Kernels. 
      * 
-     * @var \SplStack
+     * @var Stackable
      */
-    protected $pile;
+    protected $next;
 
     /**
      * wraps the Http Kernel that does the job with Stackable Http Kernel. 
@@ -37,7 +37,6 @@ class Stackable implements HttpKernelInterface, StackableInterface
     public function __construct( HttpKernelInterface $handler )
     {
         $this->handler = $handler;
-        $this->pile    = new \SplStack;
     }
 
     /**
@@ -61,8 +60,8 @@ class Stackable implements HttpKernelInterface, StackableInterface
         $response = $this->handler->handle( $request, $type );
 
         // if no response, invoke the next pile of handler.
-        if( !$response && $stack = $this->pile->pop() ) {
-            $response = $stack->handle( $request );
+        if( !$response && $this->next ) {
+            $response = $this->next->handle( $request );
         }
         // process the response if PileInterface is implemented.
         if( $this->handler instanceof ReleaseInterface ) {
@@ -80,10 +79,14 @@ class Stackable implements HttpKernelInterface, StackableInterface
      */
     public function push( HttpKernelInterface $handler )
     {
-        if( !$handler instanceof StackableInterface ) {
-            $handler = new static( $handler );
+        if( $this->next ) {
+            $this->next->push( $handler );
+        } else {
+            if( !$handler instanceof StackableInterface ) {
+                $handler = new static( $handler );
+            }
+            $this->next = $handler;
         }
-        $this->pile->push( $handler );
         return $this;
     }
 }
