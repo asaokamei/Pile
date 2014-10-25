@@ -30,5 +30,6 @@ class StackBackstage implements HttpKernelInterface
         if (false !== $path) {
             return new Response(file_get_contents($path), 503);
         }
+        return null;
     }
 }

@@ -1,10 +1,10 @@
 <?php
-namespace WScore\Pile\Pile;
+namespace WScore\Pile\Stack;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use WScore\Pile\Handler\ResponseHandleInterface;
+use WScore\Pile\Handler\ReleaseInterface;
 
 /**
  * Class Pile
@@ -13,28 +13,31 @@ use WScore\Pile\Handler\ResponseHandleInterface;
  * creates a pile of handlers for http request.
  * continues processing the request until one of the pile returns a response.
  */
-class Pile implements HttpKernelInterface, PileInterface
+class Stackable implements HttpKernelInterface, StackableInterface
 {
     /**
+     * the middleware. the Http Kernel that does the job. 
+     * 
      * @var HttpKernelInterface
      */
     protected $handler;
 
     /**
-     * @var Pile
+     * pile of Stackable Http Kernels. 
+     * 
+     * @var \SplStack
      */
     protected $pile;
 
     /**
-     * constructs a pile, which contains a http handler object.
-     * handles the request by invoking the handler's handle method,
-     * and may process the response if the handler is a PileInterface object.
+     * wraps the Http Kernel that does the job with Stackable Http Kernel. 
      *
      * @param HttpKernelInterface $handler
      */
-    public function __construct( $handler )
+    public function __construct( HttpKernelInterface $handler )
     {
         $this->handler = $handler;
+        $this->pile    = new \SplStack;
     }
 
     /**
@@ -58,52 +61,29 @@ class Pile implements HttpKernelInterface, PileInterface
         $response = $this->handler->handle( $request, $type );
 
         // if no response, invoke the next pile of handler.
-        if( !$response && $pile = $this->next() ) {
-            $response = $pile->handle( $request );
+        if( !$response && $stack = $this->pile->pop() ) {
+            $response = $stack->handle( $request );
         }
         // process the response if PileInterface is implemented.
-        if( $this->handler instanceof ResponseHandleInterface ) {
-            $response = $this->handler->handled( $response );
+        if( $this->handler instanceof ReleaseInterface ) {
+            $response = $this->handler->release( $response );
         }
         return $response;
     }
 
     /**
-     * make a dumb and simple one-way linked list.
+     * stack up the SplStack.
+     * converts normal HttpKernel into Stackable.
      *
      * @param HttpKernelInterface $handler
      * @return $this
      */
-    public function pile( $handler )
+    public function push( HttpKernelInterface $handler )
     {
-        if( $this->pile ) {
-            return $this->pile->pile( $handler );
+        if( !$handler instanceof StackableInterface ) {
+            $handler = new static( $handler );
         }
-        $this->setPile( $handler );
+        $this->pile->push( $handler );
         return $this;
-    }
-
-    /**
-     * set a next pile, forcefully.
-     *
-     * @param HttpKernelInterface $handler
-     * @return Pile
-     */
-    protected function setPile( $handler )
-    {
-        if( !$handler instanceof PileInterface ) {
-            $handler = new self( $handler );
-        }
-        return $this->pile = $handler;
-    }
-
-    /**
-     * get the next pile of handler.
-     *
-     * @return Pile
-     */
-    protected function next()
-    {
-        return $this->pile;
     }
 }

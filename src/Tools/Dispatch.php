@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Pile\Block;
+namespace WScore\Pile\Tools;
 
 use Symfony\Component\HttpFoundation\Request;
 

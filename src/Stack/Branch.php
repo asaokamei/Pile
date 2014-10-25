@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Pile\Pile;
+namespace WScore\Pile\Stack;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ use WScore\Pile\Tools\Tools;
  * for a branching a pile list. this class itself is a pile object.
  *
  */
-class Branch extends Pile
+class Branch extends Stackable
 {
     /**
      * @var HttpKernelInterface[]
