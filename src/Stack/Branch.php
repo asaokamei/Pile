@@ -39,10 +39,10 @@ class Branch extends Stackable
     {
         foreach ( $this->branches as $url => $handler ) {
             if( Tools::matcher( $url, $this->request ) ) {
-                $this->setPile( $handler );
+                $this->push( $handler );
             }
         }
-        if( $pile = $this->next() ) {
+        if( $pile = $this->next ) {
             return $pile->handle( $request );
         }
         return null;
