@@ -40,6 +40,18 @@ class Stackable implements HttpKernelInterface, StackableInterface
     }
 
     /**
+     * @param HttpKernelInterface $handler
+     * @return HttpKernelInterface|static
+     */
+    public static function makeStack( HttpKernelInterface $handler )
+    {
+        if( !$handler instanceof StackableInterface ) {
+            $handler = new static( $handler );
+        }
+        return $handler;
+    }
+
+    /**
      * Handles a Request to convert it to a Response.
      *
      * if own handler does not return a response, it handles down to the next pile.
@@ -80,13 +92,9 @@ class Stackable implements HttpKernelInterface, StackableInterface
     public function push( HttpKernelInterface $handler )
     {
         if( $this->next ) {
-            $this->next->push( $handler );
-        } else {
-            if( !$handler instanceof StackableInterface ) {
-                $handler = new static( $handler );
-            }
-            $this->next = $handler;
+            return $this->next->push( $handler );
         }
+        $this->next = static::makeStack( $handler );
         return $this;
     }
 }
