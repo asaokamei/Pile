@@ -95,6 +95,6 @@ class Stackable implements HttpKernelInterface, StackableInterface
             return $this->next->push( $handler );
         }
         $this->next = static::makeStack( $handler );
-        return $this;
+        return $this->next;
     }
 }

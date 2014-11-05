@@ -88,7 +88,7 @@ class App
             return $this->stack->push( $stack );
         }
         $this->stack = stackable::makeStack( $stack );
-        return $stack;
+        return $this->stack;
     }
 
     /**
@@ -97,8 +97,9 @@ class App
      * @param bool    $catch
      * @return Response
      */
-    public function handle( $request, $type, $catch )
+    public function handle( $request=null, $type=HttpKernelInterface::MASTER_REQUEST, $catch=false )
     {
+        if( !$request ) $request = Request::createFromGlobals();
         $request->attributes->set( 'app', $this );
         return $this->stack->handle( $request, $type, $catch );
     }
