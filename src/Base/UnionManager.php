@@ -2,8 +2,10 @@
 namespace WScore\Pile\Base;
 
 use League\Flysystem\Adapter\Local as Adapter;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
+use SebastianBergmann\Exporter\Exception;
 
 class UnionManager
 {
@@ -20,14 +22,14 @@ class UnionManager
         $this->filesystems = new \SplStack();
         $roots = func_get_args();
         foreach( $roots as $root ) {
-            $this->add($root);
+            $this->addRoot($root);
         }
     }
 
     /**
      * @param string $root
      */
-    public function add($root)
+    public function addRoot($root)
     {
         if( is_string($root) ) {
             $this->filesystems->push( new Filesystem( new Adapter($root) ) );
@@ -42,13 +44,18 @@ class UnionManager
 
     /**
      * @param string $file
+     * @throws \Exception
      * @return mixed
      */
     public function read($file)
     {
         foreach( $this->filesystems as $system ) {
-            if( $contents = $system->read($file) ) {
-                return $contents;
+            try {
+                return $system->read($file);
+            } catch( FileNotFoundException $e ) {
+                // continue. do nothing.
+            } catch( \Exception $e ) {
+                throw $e;
             }
         }
         return null;
@@ -63,32 +70,6 @@ class UnionManager
         foreach( $this->filesystems as $system ) {
             if( $system->has($file) ) {
                 return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @param string $file
-     * @param string $content
-     * @return array|false
-     */
-    public function write($file, $content)
-    {
-        $system = $this->filesystems[0];
-        return $system->write( $file, $content );
-    }
-
-    /**
-     * @param $file
-     * @param $content
-     * @return array|bool|false
-     */
-    public function update($file, $content)
-    {
-        foreach( $this->filesystems as $system ) {
-            if( $system->has($file) ) {
-                return $system->update($file, $content);
             }
         }
         return false;

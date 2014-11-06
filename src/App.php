@@ -153,7 +153,7 @@ class App
      */
     public function config( $root )
     {
-        $this->config->add( $root );
+        $this->config->addRoot( $root );
         return $this;
     }
 

@@ -44,13 +44,14 @@ class Bag
     }
 
     /**
-     * @param array $values
+     * @param array|string $values
      * @param bool  $cleanup
      */
-    public function fill( array $values, $cleanup=false )
+    public function fill( $values, $cleanup=false )
     {
-        if( $cleanup ) {
-            $this->data = [];
+        if( $cleanup || !is_array($values) ) {
+            $this->data = $values;
+            return;
         }
         $this->data = array_merge( $this->data, $values );
     }
