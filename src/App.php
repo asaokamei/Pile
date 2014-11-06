@@ -18,6 +18,8 @@ use WScore\Pile\Stack\StackableInterface;
  */
 class App
 {
+    const KEY = 'app';
+
     /**
      * @var App
      */
@@ -34,20 +36,35 @@ class App
     protected $config;
 
     /**
-     * @var HttpKernelInterface|Stackable|StackableInterface
+     * @var Stackable
      */
     protected $stack;
+
+    /**
+     * @var Responder
+     */
+    protected $responder;
 
     // +----------------------------------------------------------------------+
     //  static methods
     // +----------------------------------------------------------------------+
+    /**
+     * @param UnionManager $file
+     */
+    public function __construct( $file, $responder )
+    {
+        $this->config = $file;
+        $this->responder = $responder;
+    }
+
     /**
      * @return App
      */
     public static function start()
     {
         $file = new UnionManager();
-        static::$app = new static( $file );
+        $res  = new Responder();
+        static::$app = new static( $file, $res );
         return static::$app;
     }
 
@@ -72,15 +89,7 @@ class App
     //  managing instance and stacks
     // +----------------------------------------------------------------------+
     /**
-     * @param UnionManager $file
-     */
-    public function __construct( $file )
-    {
-        $this->config = $file;
-    }
-
-    /**
-     * @param HttpKernelInterface|StackableInterface $stack
+     * @param HttpKernelInterface $stack
      * @return Stackable
      */
     public function push( $stack )
@@ -115,8 +124,9 @@ class App
      */
     protected function setupRequest( $request )
     {
-        $request->attributes->set( 'app', $this );
-        $request->attributes->set( 'responder', new Responder($request) );
+        $this->responder->setRequest($request);
+        $request->attributes->set( App::KEY, $this );
+        $request->attributes->set( 'responder', $this->responder );
     }
 
     // +----------------------------------------------------------------------+
