@@ -6,6 +6,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Handler\ReleaseInterface;
 
+/**
+ * Class Loop
+ * @package WScore\Pile\Stack
+ *
+ * an experimental class to loop through the stack,
+ * instead of nesting the call like Stackable.
+ *
+ * NOT TESTED!
+ */
 class Loop implements HttpKernelInterface
 {
     /**

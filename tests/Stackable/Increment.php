@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Handler\ReleaseInterface;
 
-class AddOne implements HttpKernelInterface, ReleaseInterface
+class Increment implements HttpKernelInterface, ReleaseInterface
 {
     /**
      * Handles a Request to convert it to a Response.
@@ -35,6 +35,10 @@ class AddOne implements HttpKernelInterface, ReleaseInterface
      */
     public function release( $response )
     {
-        return $response + 1;
+        if( $response ) {
+            $value = (int) $response->getContent() + 1;
+            $response->setContent( $value );
+        }
+        return $response;
     }
 }

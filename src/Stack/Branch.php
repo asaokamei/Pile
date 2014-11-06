@@ -10,7 +10,10 @@ use WScore\Pile\Tools\Tools;
  * Class Branch
  * @package WScore\Pile\Block
  *
- * for a branching a pile list. this class itself is a pile object.
+ * an experimental class for a branching a pile list.
+ * this class itself is a Stackable object.
+ *
+ * NOT TESTED!
  *
  */
 class Branch extends Stackable
