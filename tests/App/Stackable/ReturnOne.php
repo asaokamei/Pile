@@ -1,5 +1,5 @@
 <?php
-namespace tests\Stackable;
+namespace tests\App\Stackable;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

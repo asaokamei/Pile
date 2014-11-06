@@ -12,7 +12,7 @@
         >
     <testsuites>
         <testsuite name="WScore/Pile Test Suite">
-            <directory>Stackable</directory>
+            <directory>App</directory>
         </testsuite>
     </testsuites>
 </phpunit>

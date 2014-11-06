@@ -1,9 +1,9 @@
 <?php
-namespace tests\Stackable;
+namespace tests\App\Stackable;
 
 use WScore\Pile\App;
 
-require_once( __DIR__.'/../autoloader.php' );
+require_once( __DIR__.'/../../autoloader.php' );
 
 class StackTest extends \PHPUnit_Framework_TestCase
 {
