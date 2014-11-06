@@ -15,6 +15,11 @@ class UnionManager
     protected $filesystems = [];
 
     /**
+     * @var array
+     */
+    protected $directories = [];
+
+    /**
      * @param string $root
      */
     public function __construct( $root=null )
@@ -32,14 +37,44 @@ class UnionManager
     public function addRoot($root)
     {
         if( is_string($root) ) {
-            $this->filesystems->push( new Filesystem( new Adapter($root) ) );
+            $this->addFileSystem( new Filesystem( new Adapter($root) ), $root );
             return;
         }
         if( $root instanceof FilesystemInterface ) {
-            $this->filesystems->push( $root );
+            $this->addFileSystem( $root );
             return;
         }
         throw new \InvalidArgumentException;
+    }
+
+    /**
+     * @param FilesystemInterface     $system
+     * @param null $root
+     */
+    protected function addFileSystem( $system, $root=null )
+    {
+        $this->filesystems->push( $system );
+        if( $root ) {
+            $root .= substr($root,-1)=='/'?'':'/';
+            $this->directories[spl_object_hash($system)] = $root;
+        }
+    }
+
+    /**
+     * @param string $file
+     * @return bool|string
+     */
+    public function locate($file)
+    {
+        foreach( $this->filesystems as $system ) {
+            if( $system->has($file) ) {
+                $meta = $system->getMetadata($file);
+                $hash = spl_object_hash($system);
+                $root = isset($this->directories[$hash])? $this->directories[$hash]:null;
+                return $root . $meta['path'];
+            }
+        }
+        return false;
     }
 
     /**

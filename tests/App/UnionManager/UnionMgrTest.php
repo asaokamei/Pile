@@ -77,4 +77,18 @@ class UnionMgrTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'more',          $mgr->read( 'more.txt' ) );
         $this->assertEquals( null,            $mgr->read( 'none.txt' ) );
     }
+
+    /**
+     * @test
+     */
+    function locate_files()
+    {
+        $mgr  = $this->mgr;
+        $root_app = __DIR__ . '/app/';
+        $root_test = __DIR__ . '/app/tested/';
+        $mgr->addRoot( $root_test );
+
+        $this->assertEquals( $root_test.'test.txt',  $mgr->locate( 'test.txt' ) );
+        $this->assertEquals( $root_app.'more.txt',   $mgr->locate( 'more.txt' ) );
+    }
 }
