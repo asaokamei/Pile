@@ -37,7 +37,7 @@ class UrlMapTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    function urlMap_request_()
+    function urlMap_request_dispatch()
     {
         $map = $this->map;
         $map->setMap( [
@@ -50,23 +50,40 @@ class UrlMapTest extends \PHPUnit_Framework_TestCase
         $request = Request::create( '/test/more' );
         /** @var Request $request */
         $request = $map->handle( $request );
-        $this->assertEquals('/more', $request->getPathInfo() );
-        $this->assertEquals('/test', $request->getBaseUrl() );
+        $this->assertEquals( '/more', $request->getPathInfo() );
+        $this->assertEquals( '/test', $request->getBaseUrl() );
         /*
          * test on /some
          */
         $request = Request::create( '/some' );
         /** @var Request $request */
         $request = $map->handle( $request );
-        $this->assertEquals('/', $request->getPathInfo() );
-        $this->assertEquals('/some', $request->getBaseUrl() );
+        $this->assertEquals( '/', $request->getPathInfo() );
+        $this->assertEquals( '/some', $request->getBaseUrl() );
         /*
          * test on missing
          */
         $request = Request::create( '/none' );
         /** @var Request $request */
-        $this->assertEquals(null, $map->handle( $request ) );
+        $this->assertEquals( null, $map->handle( $request ) );
+    }
 
+    /**
+     * @test
+     */
+    function dispatch_by_class_closure_and_as_is()
+    {
+        $map = $this->map;
+        $map->setMap( [
+            '/class'   => '\tests\Frames\UrlMap\ReturnRequest',
+            '/call'    => '\tests\Frames\UrlMap\CallBack',
+            '/closure' => function () { return 'closure'; },
+            '/text'    => 'a text',
+        ] );
+        $this->assertEquals( true,       is_object( $map->handle( Request::create( '/class' ) ) ) );
+        $this->assertEquals( 'callback', $map->handle( Request::create( '/call' ) ) );
+        $this->assertEquals( 'closure',  $map->handle( Request::create( '/closure' ) ) );
+        $this->assertEquals( 'a text',   $map->handle( Request::create( '/text' ) ) );
     }
 }
 

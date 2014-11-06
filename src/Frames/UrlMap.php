@@ -4,7 +4,7 @@ namespace WScore\Pile\Frames;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Tuum\Web\Controller\ControllerInterface;
+use WScore\Pile\Controller\ControllerInterface;
 
 /**
  * Class Map
@@ -91,7 +91,7 @@ class UrlMap implements HttpKernelInterface
     protected function invoke( Request $request, $type, $catch, $app )
     {
         if( is_string( $app ) && class_exists( $app ) ) {
-            if( $app instanceof ControllerInterface ) {
+            if( method_exists( $app, 'call' ) ) {
                 return $app::call( $request, $type, $catch );
             }
             $app = new $app;
