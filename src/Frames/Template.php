@@ -1,11 +1,11 @@
 <?php
-namespace WScore\Pile\Frame;
+namespace WScore\Pile\Frames;
 
-use League\Plates\Engine;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\View;
+use WScore\Pile\Piles\UnionManager;
 use WScore\Pile\Stack\ReleaseInterface;
 
 class Template implements HttpKernelInterface, ReleaseInterface
@@ -16,16 +16,18 @@ class Template implements HttpKernelInterface, ReleaseInterface
     protected $request;
 
     /**
-     * @var Engine
+     * @var TemplateInterface
      */
-    protected $plates;
+    protected $engine;
 
     /**
-     * @param string $view
+     * @param UnionManager      $view
+     * @param TemplateInterface $engine
      */
-    public function __construct( $view, $layout=null )
+    public function __construct( $view, $engine=null )
     {
-        $this->plates = new Engine( $view );
+        $this->view   = $view;
+        $this->engine = $engine;
     }
 
     /**
@@ -54,7 +56,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
     public function release( $response )
     {
         if ( $response && $response instanceof View ) {
-            return $this->render( $response );
+            return $this->setContents( $response );
         }
         return $response;
     }
@@ -63,19 +65,56 @@ class Template implements HttpKernelInterface, ReleaseInterface
      * @param View $response
      * @return SymfonyResponse
      */
-    protected function render( $response )
+    protected function setContents( $response )
     {
         $app   = $this->request->attributes->get( 'app' );
-        $file  = $response->getFile();
-        $plate = $this->plates->make( $file );
+        $file  = $response->getFile() . '.php';
+        $file  = $this->view->locate($file);
         $data  = $response->getData() +
             [
                 'message' => $app->sub( 'message' ),
                 'errors'  => $app->sub( 'errors' ),
                 '_token'  => $app->sub( 'token' ),
             ];
-        $plate->data( $data );
-        $response->setContent( $plate->render() );
+        $response->setContent( $this->render( $file, $data ) );
         return $response;
+    }
+
+    /**
+     * renders raw file using the given template engine.
+     *
+     * @param string $file
+     * @param array  $data
+     * @return string
+     */
+    protected function render( $file, $data )
+    {
+        if( $this->engine ) {
+            return $this->engine->render( $file, $data );
+        }
+        return $this->renderPhp( $file, $data );
+    }
+
+    /**
+     * renders as raw php file. no template just raw.
+     *
+     * @param string $file
+     * @param array  $data
+     * @return string
+     * @throws \Exception
+     */
+    protected function renderPhp( $file, $data )
+    {
+        extract($data);
+        try {
+
+            ob_start();
+            include($file);
+            return ob_get_clean();
+
+        } catch( \Exception $e ) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 }

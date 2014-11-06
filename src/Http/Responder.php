@@ -3,8 +3,6 @@ namespace WScore\Pile\Http;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tuum\Web\Http\Redirect;
-use Tuum\Web\Http\PhpFile;
 
 class Responder
 {
@@ -59,11 +57,11 @@ class Responder
 
     /**
      * @param string $file
-     * @return PhpFile
+     * @return View
      */
     public function view( $file )
     {
-        $response = new PhpFile();
+        $response = new View();
         $response->setFile($file);
         return $response;
     }

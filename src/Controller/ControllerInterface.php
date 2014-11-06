@@ -7,11 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 interface ControllerInterface
 {
     /**
-     * @return static|$this
-     */
-    public static function forge();
-
-    /**
      * @param Request $request
      * @param         $type
      * @param         $catch

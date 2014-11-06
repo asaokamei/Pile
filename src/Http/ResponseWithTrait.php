@@ -11,7 +11,7 @@ trait ResponseWithTrait
      * @param bool   $error
      * @return $this
      */
-    public function setMessage( $message, $error = true )
+    public function withMessage( $message, $error = true )
     {
         App::getBag( 'message' )->fill( [
             'error'   => $error,
@@ -24,7 +24,7 @@ trait ResponseWithTrait
      * @param array $input
      * @return $this
      */
-    public function setInput( $input )
+    public function withInput( $input )
     {
         App::getBag( 'input' )->fill( $input );
         return $this;
@@ -34,7 +34,7 @@ trait ResponseWithTrait
      * @param array $errors
      * @return $this
      */
-    public function setErrors( $errors )
+    public function withErrors( $errors )
     {
         App::getBag( 'errors' )->fill( $errors );
         return $this;

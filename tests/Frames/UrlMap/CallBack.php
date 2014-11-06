@@ -7,14 +7,6 @@ use WScore\Pile\Controller\ControllerInterface;
 
 class CallBack implements ControllerInterface
 {
-
-    /**
-     * @return static|$this
-     */
-    public static function forge()
-    {
-    }
-
     /**
      * @param Request $request
      * @param         $type

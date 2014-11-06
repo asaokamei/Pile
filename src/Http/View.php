@@ -66,7 +66,7 @@ class View extends Response
      * @param mixed  $value
      * @return $this
      */
-    public function set( $key, $value )
+    public function with( $key, $value )
     {
         $this->data[ $key ] = $value;
         return $this;
