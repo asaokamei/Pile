@@ -1,8 +1,10 @@
 <?php
 namespace WScore\Pile\Handler;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request;
+use WScore\Pile\Controller\ControllerInterface;
 
 /**
  * URL Map Middleware, which maps kernels to paths
@@ -52,6 +54,12 @@ class UrlMap implements HttpKernelInterface
         $this->map = $map;
     }
 
+    /**
+     * @param Request $request
+     * @param int     $type
+     * @param bool    $catch
+     * @return null|Response
+     */
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
         $pathInfo = rawurldecode($request->getPathInfo());
@@ -69,5 +77,26 @@ class UrlMap implements HttpKernelInterface
             }
         }
         return null;
+    }
+
+    /**
+     * @param Request $request
+     * @param int     $type
+     * @param bool    $catch
+     * @param mixed   $app
+     * @return Response
+     */
+    protected function invoke( Request $request, $type, $catch, $app )
+    {
+        if( is_string( $app ) && class_exists( $app ) ) {
+            if( $app instanceof ControllerInterface ) {
+                return $app::call( $request, $type, $catch );
+            }
+            $app = new $app;
+        }
+        if( $app instanceof HttpKernelInterface ) {
+            return $app->handle( $request, $type, $catch );
+        }
+        throw new \RuntimeException("no map found");
     }
 }
