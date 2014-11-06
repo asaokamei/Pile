@@ -101,8 +101,22 @@ class App
     public function handle( $request=null, $type=HttpKernelInterface::MASTER_REQUEST, $catch=false )
     {
         if( !$request ) $request = Request::createFromGlobals();
-        $request->attributes->set( 'app', $this );
+        $this->setupRequest($request);
         return $this->stack->handle( $request, $type, $catch );
+    }
+
+    /**
+     * a hidden/protected method that sets up request's attribute.
+     * default is to set
+     *  - app: the app itself, and
+     *  - responder: factory for response object.
+     *
+     * @param $request
+     */
+    protected function setupRequest( $request )
+    {
+        $request->attributes->set( 'app', $this );
+        $request->attributes->set( 'responder', new Responder($request) );
     }
 
     // +----------------------------------------------------------------------+
