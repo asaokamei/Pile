@@ -9,7 +9,7 @@ class ReturnOne implements HttpKernelInterface
 {
     public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true )
     {
-        $responder = new \WScore\Pile\Http\Responder( $request );
+        $responder = $request->attributes->get('responder');
         return $responder->text(1);
     }
 

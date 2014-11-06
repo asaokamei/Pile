@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Pile\Base;
+namespace WScore\Pile\Piles;
 
 class Bag
 {

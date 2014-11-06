@@ -1,44 +1,43 @@
 <?php
-namespace tests\App\Stackable;
+namespace WScore\Pile\Frame;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use WScore\Pile\Http\Responder;
 use WScore\Pile\Stack\ReleaseInterface;
 
-class Increment implements HttpKernelInterface, ReleaseInterface
+class Response implements HttpKernelInterface, ReleaseInterface
 {
+    const RESPONDER = 'responder';
+
     /**
      * Handles a Request to convert it to a Response.
-     *
-     * When $catch is true, the implementation must catch all exceptions
-     * and do its best to convert them to a Response instance.
      *
      * @param Request $request A Request instance
      * @param int     $type The type of the request
      *                          (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
      * @param bool    $catch Whether to catch exceptions or not
      *
-     * @return Response A Response instance
+     * @return SymfonyResponse A Response instance
      *
      * @throws \Exception When an Exception occurs during processing
      *
      * @api
      */
-    public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true )
+    public function handle( Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true )
     {
+        if( $request->attributes->has( self::RESPONDER ) ) {
+            $request->attributes->set( self::RESPONDER, new Responder($request) );
+        }
     }
 
     /**
-     * @param Response $response
-     * @return Response
+     * @param SymfonyResponse $response
+     * @return SymfonyResponse
      */
     public function release( $response )
     {
-        if( $response ) {
-            $value = (int) $response->getContent() + 1;
-            $response->setContent( $value );
-        }
         return $response;
     }
 }

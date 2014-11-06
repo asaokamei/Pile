@@ -21,7 +21,7 @@ class BagTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->app;
         $bag = $app->getBag( 'test' );
-        $this->assertEquals( 'WScore\Pile\Base\Bag', get_class( $bag ) );
+        $this->assertEquals( 'WScore\Pile\Piles\Bag', get_class( $bag ) );
     }
 
     /**

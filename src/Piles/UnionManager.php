@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Pile\Base;
+namespace WScore\Pile\Piles;
 
 use League\Flysystem\Adapter\Local as Adapter;
 use League\Flysystem\FileNotFoundException;

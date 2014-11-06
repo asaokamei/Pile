@@ -4,8 +4,9 @@ namespace WScore\Pile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use WScore\Pile\Base\Bag;
-use WScore\Pile\Base\UnionManager;
+use WScore\Pile\Http\Responder;
+use WScore\Pile\Piles\Bag;
+use WScore\Pile\Piles\UnionManager;
 use WScore\Pile\Stack\Stackable;
 use WScore\Pile\Stack\StackableInterface;
 
