@@ -8,7 +8,16 @@ use WScore\Pile\Http\Responder;
 use WScore\Pile\Piles\Bag;
 use WScore\Pile\Piles\UnionManager;
 use WScore\Pile\Stack\Stackable;
-use WScore\Pile\Stack\StackableInterface;
+
+/**
+ * @param Request $request
+ * @return App
+ */
+function App( $request )
+{
+    $request->attributes->get( App::KEY );
+}
+
 
 /**
  * Class App

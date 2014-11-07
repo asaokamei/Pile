@@ -27,7 +27,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
     public function __construct( $view, $engine=null )
     {
         $this->view   = $view;
-        $this->engine = $engine;
+        $this->engine = $engine ?: new PhpEngine();
     }
 
     /**
@@ -68,7 +68,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
     protected function setContents( $response )
     {
         $app   = $this->request->attributes->get( 'app' );
-        $file  = $response->getFile() . '.php';
+        $file  = 'view/'.$response->getFile() . '.php';
         $file  = $this->view->locate($file);
         $data  = $response->getData() +
             [
@@ -76,45 +76,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
                 'errors'  => $app->sub( 'errors' ),
                 '_token'  => $app->sub( 'token' ),
             ];
-        $response->setContent( $this->render( $file, $data ) );
+        $response->setContent( $this->$this->engine->render( $file, $data ) );
         return $response;
-    }
-
-    /**
-     * renders raw file using the given template engine.
-     *
-     * @param string $file
-     * @param array  $data
-     * @return string
-     */
-    protected function render( $file, $data )
-    {
-        if( $this->engine ) {
-            return $this->engine->render( $file, $data );
-        }
-        return $this->renderPhp( $file, $data );
-    }
-
-    /**
-     * renders as raw php file. no template just raw.
-     *
-     * @param string $file
-     * @param array  $data
-     * @return string
-     * @throws \Exception
-     */
-    protected function renderPhp( $file, $data )
-    {
-        extract($data);
-        try {
-
-            ob_start();
-            include($file);
-            return ob_get_clean();
-
-        } catch( \Exception $e ) {
-            ob_end_clean();
-            throw $e;
-        }
     }
 }
