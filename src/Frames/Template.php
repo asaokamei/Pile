@@ -5,7 +5,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\View;
-use WScore\Pile\Piles\UnionManager;
 use WScore\Pile\Stack\ReleaseInterface;
 
 class Template implements HttpKernelInterface, ReleaseInterface
@@ -21,13 +20,11 @@ class Template implements HttpKernelInterface, ReleaseInterface
     protected $engine;
 
     /**
-     * @param UnionManager      $view
      * @param TemplateInterface $engine
      */
-    public function __construct( $view, $engine=null )
+    public function __construct( $engine )
     {
-        $this->view   = $view;
-        $this->engine = $engine ?: new PhpEngine();
+        $this->engine = $engine;
     }
 
     /**
@@ -68,15 +65,14 @@ class Template implements HttpKernelInterface, ReleaseInterface
     protected function setContents( $response )
     {
         $app   = $this->request->attributes->get( 'app' );
-        $file  = 'view/'.$response->getFile() . '.php';
-        $file  = $this->view->locate($file);
+        $file  = $response->getFile();
         $data  = $response->getData() +
             [
                 'message' => $app->sub( 'message' ),
                 'errors'  => $app->sub( 'errors' ),
                 '_token'  => $app->sub( 'token' ),
             ];
-        $response->setContent( $this->$this->engine->render( $file, $data ) );
+        $response->setContent( $this->engine->render( $file, $data ) );
         return $response;
     }
 }

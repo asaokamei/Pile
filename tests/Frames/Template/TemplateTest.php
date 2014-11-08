@@ -4,6 +4,7 @@ namespace tests\Frames\UrlMap;
 use Symfony\Component\HttpFoundation\Request;
 use tests\Frames\Template\ResponseRaw;
 use WScore\Pile\App;
+use WScore\Pile\Piles\PhpEngine;
 use WScore\Pile\Frames\Template;
 use WScore\Pile\Piles\UnionManager;
 
@@ -27,7 +28,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         class_exists( 'Symfony\Component\HttpFoundation\Response' );
         $this->app = App::start();
         $this->tmp = new Template(
-            new UnionManager( __DIR__ )
+            new PhpEngine( __DIR__ )
         );
     }
 

@@ -7,7 +7,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use SebastianBergmann\Exporter\Exception;
 
-class UnionManager
+class UnionManager implements LocatorInterface
 {
     /**
      * @var \SplStack|FilesystemInterface[]

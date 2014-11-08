@@ -85,15 +85,6 @@ class App
         static::$app = $app;
     }
 
-    /**
-     * @param $name
-     * @return Bag
-     */
-    public static function getBag($name)
-    {
-        return static::$app->bag($name);
-    }
-
     // +----------------------------------------------------------------------+
     //  managing instance and stacks
     // +----------------------------------------------------------------------+
@@ -151,6 +142,15 @@ class App
             $this->bags[$name] = new Bag();
         }
         return $this->bags[$name];
+    }
+
+    /**
+     * @param $name
+     * @return Bag
+     */
+    public static function getBag($name)
+    {
+        return static::$app->bag($name);
     }
 
     /**
