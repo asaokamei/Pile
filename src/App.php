@@ -156,14 +156,14 @@ class App
     /**
      * @param string $name
      * @param array  $content
+     * @param bool   $overwrite
      */
-    public function pub( $name, $content )
+    public function pub( $name, $content, $overwrite=false )
     {
-        if( isset( $this->bags[$name] ) ) {
-            throw new \BadMethodCallException("bag \"{$name}\" already published.");
+        if( !isset( $this->bags[$name] ) || $overwrite ) {
+            $this->bags[$name] = new Bag();
+            $this->bags[$name] = $content;
         }
-        $this->bags[$name] = new Bag();
-        $this->bags[$name]->fill($content);
     }
 
     /**

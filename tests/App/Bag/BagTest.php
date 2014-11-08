@@ -20,7 +20,7 @@ class BagTest extends \PHPUnit_Framework_TestCase
     function test0()
     {
         $app = $this->app;
-        $bag = $app->getBag( 'test' );
+        $bag = $app->bag( 'test' );
         $this->assertEquals( 'WScore\Pile\Piles\Bag', get_class( $bag ) );
     }
 
@@ -55,7 +55,7 @@ class BagTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->app;
         $app->pub( 'test', [ 'test' => 'tested' ] );
-        $bag = $app->getBag( 'test' );
+        $bag = $app->bag( 'test' );
         $bag->set( 'more', 'more test' );
         // test all()
         $this->assertEquals( [ 'test' => 'tested', 'more' => 'more test' ], $bag->all() );
