@@ -16,7 +16,7 @@ class View extends Response
     /**
      * @var array   data for template
      */
-    protected $data = [];
+    protected $data = [ ];
 
     /**
      * @var string   specify parent layout if not from the global one
@@ -45,9 +45,9 @@ class View extends Response
      */
     public function fill( $data )
     {
-        if( is_array($data) || $data instanceof Traversable ) {
-            foreach( $data as $name => $value ) {
-                $this->data[$name] = $value;
+        if ( is_array( $data ) || $data instanceof Traversable ) {
+            foreach ( $data as $name => $value ) {
+                $this->data[ $name ] = $value;
             }
         }
         return $this;

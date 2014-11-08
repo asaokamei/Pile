@@ -17,7 +17,7 @@ class ResponseRaw implements HttpKernelInterface
     public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true )
     {
         /** @var Responder $res */
-        $res = $request->attributes->get('responder');
+        $res = $request->attributes->get( 'responder' );
         return $res->view( 'raw_file' )
             ->with( 'test', 'tested' );
     }

@@ -11,7 +11,7 @@ class Responder
     /**
      * @param Request $request
      */
-    public function __construct( $request=null )
+    public function __construct( $request = null )
     {
         $this->request = $request;
     }
@@ -39,8 +39,8 @@ class Responder
      */
     public function redirect( $url )
     {
-        $url = $this->request->getUriForPath($url);
-        $response = new Redirect($url);
+        $url      = $this->request->getUriForPath( $url );
+        $response = new Redirect( $url );
         return $response;
     }
 
@@ -48,10 +48,10 @@ class Responder
      * @param string $url
      * @return Redirect
      */
-    public function reload( $url=null )
+    public function reload( $url = null )
     {
-        $url = $this->request->getSchemeAndHttpHost() . $this->request->getBaseUrl() . $url;
-        $response = new Redirect($url);
+        $url      = $this->request->getSchemeAndHttpHost() . $this->request->getBaseUrl() . $url;
+        $response = new Redirect( $url );
         return $response;
     }
 
@@ -62,7 +62,7 @@ class Responder
     public function view( $file )
     {
         $response = new View();
-        $response->setFile($file);
+        $response->setFile( $file );
         return $response;
     }
 }

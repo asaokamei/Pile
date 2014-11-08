@@ -30,10 +30,10 @@ class Template implements HttpKernelInterface, ReleaseInterface
     /**
      * Handles a Request to convert it to a Response.
      *
-     * @param Request $request A Request instance
-     * @param int     $type The type of the request
+     * @param Request $request  A Request instance
+     * @param int     $type     The type of the request
      *                          (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool    $catch Whether to catch exceptions or not
+     * @param bool    $catch    Whether to catch exceptions or not
      *
      * @return SymfonyResponse A Response instance
      *
@@ -64,9 +64,9 @@ class Template implements HttpKernelInterface, ReleaseInterface
      */
     protected function setContents( $response )
     {
-        $app   = $this->request->attributes->get( 'app' );
-        $file  = $response->getFile();
-        $data  = $response->getData() +
+        $app  = $this->request->attributes->get( 'app' );
+        $file = $response->getFile();
+        $data = $response->getData() +
             [
                 'message' => $app->sub( 'message' ),
                 'errors'  => $app->sub( 'errors' ),

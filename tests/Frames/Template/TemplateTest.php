@@ -44,7 +44,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->app;
         $app->push( $this->tmp )->push( new ResponseRaw() );
-        $req = Request::create('/');
+        $req      = Request::create( '/' );
         $response = $app->handle( $req );
         $this->assertEquals( 'raw file: tested', $response->getContent() );
     }

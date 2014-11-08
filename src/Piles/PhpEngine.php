@@ -14,13 +14,13 @@ class PhpEngine implements TemplateInterface
      * @var string
      */
     public $extension = '.php';
-    
+
     /**
      * @param $dir
      */
     public function __construct( $dir )
     {
-        $dir .= substr($dir,-1)===DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR;
+        $dir .= substr( $dir, -1 ) === DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR;
         $this->dir = $dir;
     }
 
@@ -30,19 +30,19 @@ class PhpEngine implements TemplateInterface
      */
     protected function locate( $file )
     {
-        $file .= substr($file, strlen($this->extension) )===$this->extension ? null: $this->extension;
-        if( is_string( $this->dir ) ) {
+        $file .= substr( $file, strlen( $this->extension ) ) === $this->extension ? null : $this->extension;
+        if ( is_string( $this->dir ) ) {
             $file = $this->dir . $file;
         }
-        if( $this->dir instanceof LocatorInterface ) {
+        if ( $this->dir instanceof LocatorInterface ) {
             $file = $this->dir->locate( $file );
         }
-        if( !file_exists($file) ) {
-            throw new \RuntimeException( 'cannot locate a template file: '.$file );
+        if ( !file_exists( $file ) ) {
+            throw new \RuntimeException( 'cannot locate a template file: ' . $file );
         }
         return $file;
     }
-    
+
     /**
      * renders a $file with $data as input
      *
@@ -53,18 +53,18 @@ class PhpEngine implements TemplateInterface
      */
     public function render( $file, $data )
     {
-        extract($data);
+        extract( $data );
         try {
 
             ob_start();
             /** @noinspection PhpIncludeInspection */
-            include( $this->locate($file) );
+            include( $this->locate( $file ) );
             return ob_get_clean();
 
-        } catch( \Exception $e ) {
+        } catch ( \Exception $e ) {
             ob_end_clean();
             throw $e;
         }
     }
-    
+
 }
