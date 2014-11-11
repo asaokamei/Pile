@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Pile\Handler;
+namespace WScore\Pile\Frames;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,7 +9,7 @@ trait ApplyFilterTrait
     /**
      * @var string|\Closure
      */
-    protected $filters;
+    protected $filters = [];
 
     /**
      * @param string|\Closure $filter

@@ -4,7 +4,6 @@ namespace WScore\Pile\Frames;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use WScore\Pile\Controller\ControllerInterface;
 
 /**
  * Class Map
@@ -16,6 +15,8 @@ use WScore\Pile\Controller\ControllerInterface;
  */
 class UrlMap implements HttpKernelInterface
 {
+    use ApplyFilterTrait;
+
     /**
      * @var array
      */
@@ -102,6 +103,15 @@ class UrlMap implements HttpKernelInterface
      */
     protected function invoke( Request $request, $type, $catch, $app )
     {
+        /*
+         * apply filters before invoking apps.
+         */
+        if( $response = $this->applyFilters( $request ) ) {
+            return $response;
+        }
+        /*
+         * invoke an app.
+         */
         if( is_string( $app ) && class_exists( $app ) ) {
             if( method_exists( $app, 'call' ) ) {
                 return $app::call( $request, $type, $catch );
