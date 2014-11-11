@@ -39,32 +39,12 @@ class BagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \BadMethodCallException
      */
     function cannot_publish_twice()
     {
         $app = $this->app;
         $app->pub( 'test', 'tested' );
         $app->pub( 'test', 'more tested' );
-    }
-
-    /**
-     * @test
-     */
-    function do_bag_features()
-    {
-        $app = $this->app;
-        $app->pub( 'test', [ 'test' => 'tested' ] );
-        $bag = $app->bag( 'test' );
-        $bag->set( 'more', 'more test' );
-        // test all()
-        $this->assertEquals( [ 'test' => 'tested', 'more' => 'more test' ], $bag->all() );
-        // test get()
-        $this->assertEquals( 'tested', $bag->get( 'test', 'ignore this' ) );
-        $this->assertEquals( null, $bag->get( 'none' ) );
-        $this->assertEquals( 'no such data', $bag->get( 'none', 'no such data' ) );
-        // test exists()
-        $this->assertEquals( true, $bag->exists( 'test' ) );
-        $this->assertEquals( false, $bag->exists( 'none' ) );
+        $this->assertEquals( 'tested', $app->sub('test') );
     }
 }

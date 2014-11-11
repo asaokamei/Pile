@@ -158,7 +158,6 @@ class App
     public function pub( $name, $content, $overwrite=false )
     {
         if( !isset( $this->bags[$name] ) || $overwrite ) {
-            $this->bags[$name] = new Bag();
             $this->bags[$name] = $content;
         }
     }
@@ -170,7 +169,7 @@ class App
     public function sub($name)
     {
         if( isset( $this->bags[$name] ) ) {
-            return $this->bags[$name]->all();
+            return $this->bags[$name];
         }
         return [];
     }
