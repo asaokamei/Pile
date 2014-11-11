@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\Responder;
 use WScore\Pile\Piles\Bag;
-use WScore\Pile\Piles\UnionManager;
 use WScore\Pile\Stack\Stackable;
 
 /**
@@ -40,11 +39,6 @@ class App
     protected $bags = [];
 
     /**
-     * @var UnionManager
-     */
-    protected $config;
-
-    /**
      * @var Stackable
      */
     protected $stack;
@@ -63,12 +57,10 @@ class App
     //  static methods
     // +----------------------------------------------------------------------+
     /**
-     * @param UnionManager $file
      * @param Responder    $responder
      */
-    public function __construct( $file, $responder )
+    public function __construct( $responder )
     {
-        $this->config = $file;
         $this->responder = $responder;
     }
 
@@ -77,9 +69,8 @@ class App
      */
     public static function start()
     {
-        $file = new UnionManager();
         $res  = new Responder();
-        static::$app = new static( $file, $res );
+        static::$app = new static( $res );
         return static::$app;
     }
 
@@ -182,37 +173,6 @@ class App
             return $this->bags[$name]->all();
         }
         return [];
-    }
-
-    // +----------------------------------------------------------------------+
-    //  configurations
-    // +----------------------------------------------------------------------+
-    /**
-     * @param string $root
-     * @return $this
-     */
-    public function config( $root )
-    {
-        $this->config->addRoot( $root );
-        return $this;
-    }
-
-    /**
-     * @param string $file
-     * @return mixed
-     */
-    public function read( $file )
-    {
-        return $this->config->read($file);
-    }
-
-    /**
-     * @param string $file
-     * @return bool|string
-     */
-    public function locate( $file )
-    {
-        return $this->config->locate( $file );
     }
 
     // +----------------------------------------------------------------------+

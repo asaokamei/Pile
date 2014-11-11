@@ -6,6 +6,7 @@ use WScore\Pile\Frames\HtmlBuilder;
 use WScore\Pile\Frames\Session;
 use WScore\Pile\Frames\Template;
 use WScore\Pile\Frames\UrlMap;
+use WScore\Pile\Locator;
 
 require_once( dirname( __DIR__ ) . '/vendor/autoload.php' );
 
@@ -15,30 +16,32 @@ $response = $app->handle( $request )->send();
 
 
 /**
- * @param string $route_init
+ * @param string $routes
  * @return App
  */
-function boot_pile( $route_init = null )
+function boot_pile( $routes = null )
 {
+    $routes = $routes ?: 'routes.php';
+    $config = Locator::dir(__DIR__ );
+    $views  = Locator::dir( __DIR__ .'/views' );
+    /*
+     * set up config based on environment
+     */
     $environment = null;
     $env_file    = __DIR__ . '/.env.php';
     if ( file_exists( $env_file ) ) {
         $environment = include $env_file;
+        $config->addRoot( $env_file );
     }
-    $route_init  = $route_init ?: 'routes.php';
-    $view_folder = __DIR__ . 'views';
-    $db_init     = 'database.php';
-
+    /*
+     * build application
+     */
     $app = App::start();
-    $app->config( __DIR__ );
-    if( $environment ) {
-        $app->config( __DIR__ . '/' . $environment );
-    }
     $app
         ->push( Session::forge() )
-        ->push( Template::forge( $view_folder ) )
+        ->push( Template::forge( $views ) )
         ->push( HtmlBuilder::forge() )
-        ->push( UrlMap::forge( $app->locate( $route_init ) ) )
+        ->push( UrlMap::forge( $config->locate( $routes ) ) )
     ;
     return $app;
 
