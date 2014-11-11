@@ -20,9 +20,20 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
      */
     protected $builder;
 
+    /**
+     * @param Builder $builder
+     */
     public function __construct( $builder )
     {
         $this->builder = $builder;
+    }
+
+    /**
+     * @return HtmlBuilder
+     */
+    public static function forge()
+    {
+        return new self( Builder::forge() );
     }
 
     /**
@@ -59,13 +70,23 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
         return $response;
     }
 
+    /**
+     *
+     */
     protected function setContents()
     {
         $app = \WScore\Pile\App( $this->request );
-        $input = $app->sub( 'input' );
-        $token = $app->sub( 'token' );
+
+        // generate CSRF token
+        $token = hash( 'sha512', uniqid('',true).time() );
+        $app->pub( 'token', $token );
         $this->builder->setToken( $token );
+
+        // get old input from bag.
+        $input = $app->sub( 'input' );
         $this->builder->setInput( $input );
-        $app->pub( 'FormBuilder', $this->builder );
+        $app->pub( 'FormBuilders', [
+            'form' => $this->builder,
+        ]);
     }
 }

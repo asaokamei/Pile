@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\View;
+use WScore\Pile\Piles\PhpEngine;
 use WScore\Pile\Stack\ReleaseInterface;
 
 class Template implements HttpKernelInterface, ReleaseInterface
@@ -27,6 +28,14 @@ class Template implements HttpKernelInterface, ReleaseInterface
         $this->engine = $engine;
     }
 
+    /**
+     * @param string $dir
+     * @return Template
+     */
+    public static function forge( $dir )
+    {
+        return new self( new PhpEngine( $dir ) );
+    }
     /**
      * Handles a Request to convert it to a Response.
      *
@@ -70,7 +79,6 @@ class Template implements HttpKernelInterface, ReleaseInterface
             [
                 'message' => $app->sub( 'message' ),
                 'errors'  => $app->sub( 'errors' ),
-                '_token'  => $app->sub( 'token' ),
             ];
         $response->setContent( $this->engine->render( $file, $data ) );
         return $response;
