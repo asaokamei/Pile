@@ -15,7 +15,7 @@ use WScore\Pile\Stack\Stackable;
  */
 function App( $request )
 {
-    $request->attributes->get( App::KEY );
+    return $request->attributes->get( App::KEY );
 }
 
 
@@ -204,6 +204,15 @@ class App
     public function read( $file )
     {
         return $this->config->read($file);
+    }
+
+    /**
+     * @param string $file
+     * @return bool|string
+     */
+    public function locate( $file )
+    {
+        return $this->config->locate( $file );
     }
 
     // +----------------------------------------------------------------------+

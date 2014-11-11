@@ -30,6 +30,18 @@ class UrlMap implements HttpKernelInterface
     }
 
     /**
+     * @param array|string $map
+     * @return UrlMap
+     */
+    public static function forge( $map )
+    {
+        if( is_string( $map ) ) {
+            $map = include( $map );
+        }
+        return new self( $map );
+    }
+
+    /**
      * Sets a map of prefixes to objects implementing HttpKernelInterface
      *
      * @param array $map

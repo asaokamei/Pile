@@ -4,6 +4,7 @@ namespace WScore\Pile\Frames;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use WScore\Pile\Http\Responder;
 use WScore\Pile\Http\View;
 use WScore\Pile\Piles\PhpEngine;
 use WScore\Pile\Stack\ReleaseInterface;
@@ -61,8 +62,18 @@ class Template implements HttpKernelInterface, ReleaseInterface
      */
     public function release( $response )
     {
-        if ( $response && $response instanceof View ) {
+        if( !$response ) {
+            /** @var Responder $res */
+            $res = $this->request->attributes->get('responder');
+            $response = $res->notFound();
+        }
+        if ( $response instanceof View ) {
             return $this->setContents( $response );
+        }
+        if( is_string( $response ) ) {
+            /** @var Responder $res */
+            $res = $this->request->attributes->get('responder');
+            return $response = $res->text( $response );
         }
         return $response;
     }

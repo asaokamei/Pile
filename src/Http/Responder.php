@@ -65,4 +65,27 @@ class Responder
         $response->setFile( $file );
         return $response;
     }
+
+    /**
+     * @param null $file
+     * @return View
+     */
+    public function error( $status=Response::HTTP_INTERNAL_SERVER_ERROR, $file=null )
+    {
+        if( !$file ) {
+            $file = 'error';
+        }
+        $response = new View();
+        $response->setFile( $file );
+        return $response;
+    }
+
+    /**
+     * @param null $file
+     * @return View
+     */
+    public function notFound( $file=null )
+    {
+        return $this->error( Response::HTTP_NOT_FOUND, $file );
+    }
 }

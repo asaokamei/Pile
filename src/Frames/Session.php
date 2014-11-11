@@ -22,6 +22,14 @@ class Session implements HttpKernelInterface, ReleaseInterface
     protected $app;
 
     /**
+     * @return Session
+     */
+    public static function forge()
+    {
+        return new self();
+    }
+
+    /**
      * Handles a Request to convert it to a Response.
      *
      * @param Request $request  A Request instance
