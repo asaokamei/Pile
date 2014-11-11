@@ -164,14 +164,14 @@ class App
 
     /**
      * @param string $name
-     * @return array
+     * @return null|mixed
      */
     public function sub($name)
     {
         if( isset( $this->bags[$name] ) ) {
             return $this->bags[$name];
         }
-        return [];
+        return null;
     }
 
     // +----------------------------------------------------------------------+

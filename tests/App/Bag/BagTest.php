@@ -47,4 +47,25 @@ class BagTest extends \PHPUnit_Framework_TestCase
         $app->pub( 'test', 'more tested' );
         $this->assertEquals( 'tested', $app->sub('test') );
     }
+    
+    /**
+     * @test
+     */
+    function do_bag_features()
+    {
+        $app = $this->app;
+        $app->bag( 'test' )->fill( [ 'test' => 'tested' ] );
+        $bag = $app->sub('test');
+        $bag->set( 'more', 'more test' );
+        // test all()
+        $this->assertEquals( [ 'test' => 'tested', 'more' => 'more test' ], $bag->all() );
+        // test get()
+        $this->assertEquals( 'tested', $bag->get( 'test', 'ignore this' ) );
+        $this->assertEquals( null, $bag->get( 'none' ) );
+        $this->assertEquals( 'no such data', $bag->get( 'none', 'no such data' ) );
+        // test exists()
+        $this->assertEquals( true, $bag->exists( 'test' ) );
+        $this->assertEquals( false, $bag->exists( 'none' ) );
+        $this->assertSame( $bag, $app->sub('test') );
+    }
 }

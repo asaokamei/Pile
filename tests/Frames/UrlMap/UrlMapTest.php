@@ -15,7 +15,7 @@ class UrlMapTest extends \PHPUnit_Framework_TestCase
 
     function setup()
     {
-        $this->map = new UrlMap();
+        $this->map = UrlMap::forge([]);
     }
 
     function test0()
