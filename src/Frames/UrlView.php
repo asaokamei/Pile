@@ -5,14 +5,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-/**
- * Class Map
- * @package Tuum\Web\Ware
- *
- * copied code with respect!
- * https://github.com/stackphp/url-map/blob/master/src/Stack/UrlMap.php
- *
- */
 class UrlView implements HttpKernelInterface
 {
     use UrlMapperTrait;
