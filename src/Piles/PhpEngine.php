@@ -16,11 +16,13 @@ class PhpEngine implements TemplateInterface
     public $extension = '.php';
 
     /**
-     * @param $dir
+     * @param string|LocatorInterface $dir
      */
     public function __construct( $dir )
     {
-        $dir .= substr( $dir, -1 ) === DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR;
+        if ( is_string( $dir ) && substr( $dir, -1 ) === DIRECTORY_SEPARATOR ) {
+            $dir .= DIRECTORY_SEPARATOR;
+        }
         $this->dir = $dir;
     }
 
@@ -30,7 +32,7 @@ class PhpEngine implements TemplateInterface
      */
     protected function locate( $file )
     {
-        $file .= substr( $file, strlen( $this->extension ) ) === $this->extension ? null : $this->extension;
+        $file .= $this->extension;
         if ( is_string( $this->dir ) ) {
             $file = $this->dir . $file;
         }
