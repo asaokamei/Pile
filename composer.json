@@ -17,8 +17,19 @@
         "stack/builder":"1.*",
         "league/flysystem": "0.5.*",
         "league/plates": "3.*",
-        "aura/view":"2.*"
+        "aura/view":"2.*",
+        "wscore/form":"dev-master"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/asaokamei/WScore.Form"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/asaokamei/WScore.Enum"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "WScore\\Pile\\": "src/"
