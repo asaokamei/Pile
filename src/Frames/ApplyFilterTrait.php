@@ -9,14 +9,14 @@ trait ApplyFilterTrait
     /**
      * @var string|\Closure
      */
-    protected $filters = [];
+    protected $_filters = [];
 
     /**
      * @param string|\Closure $filter
      */
     public function setFilter( $filter )
     {
-        $this->filters[] = $filter;
+        $this->_filters[] = $filter;
     }
 
     /**
@@ -27,7 +27,7 @@ trait ApplyFilterTrait
     {
         $app = \WScore\Pile\App( $request );
         $response = null;
-        foreach( $this->filters as $filter ) {
+        foreach( $this->_filters as $filter ) {
             if( is_string( $filter ) ) {
                 $response = $app->filter( $filter, $request );
             }
