@@ -20,7 +20,7 @@ class PhpEngine implements TemplateInterface
      */
     public function __construct( $dir )
     {
-        if ( is_string( $dir ) && substr( $dir, -1 ) === DIRECTORY_SEPARATOR ) {
+        if ( is_string( $dir ) && substr( $dir, -1 ) !== DIRECTORY_SEPARATOR ) {
             $dir .= DIRECTORY_SEPARATOR;
         }
         $this->dir = $dir;

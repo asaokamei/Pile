@@ -27,9 +27,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         class_exists( 'Symfony\Component\HttpFoundation\Request' );
         class_exists( 'Symfony\Component\HttpFoundation\Response' );
         $this->app = App::start();
-        $this->tmp = new Template(
-            new PhpEngine( __DIR__ )
-        );
+        $this->tmp = Template::forge(__DIR__ );
     }
 
     function test0()
