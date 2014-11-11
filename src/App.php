@@ -54,11 +54,17 @@ class App
      */
     protected $responder;
 
+    /**
+     * @var array
+     */
+    protected $filter = [];
+
     // +----------------------------------------------------------------------+
     //  static methods
     // +----------------------------------------------------------------------+
     /**
      * @param UnionManager $file
+     * @param Responder    $responder
      */
     public function __construct( $file, $responder )
     {
@@ -198,6 +204,33 @@ class App
     public function read( $file )
     {
         return $this->config->read($file);
+    }
+
+    // +----------------------------------------------------------------------+
+    //  filters
+    // +----------------------------------------------------------------------+
+    /**
+     * @param string                       $name
+     * @param \Closure|HttpKernelInterface $filter
+     * @return $this
+     */
+    public function setFilter( $name, $filter )
+    {
+        $this->filter[$name] = $filter;
+        return $this;
+    }
+
+    /**
+     * @param string  $name
+     * @param Request $request
+     * @return null|Request
+     */
+    public function filter( $name, $request )
+    {
+        if( !isset( $this->filter[$name] ) ) return null;
+        if( $name instanceof HttpKernelInterface ) return $name->handle( $request );
+        if( $name instanceof \Closure ) return $name( $request );
+        return null;
     }
 
 }

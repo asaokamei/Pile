@@ -22,6 +22,8 @@ use WScore\Pile\Controller\ControllerInterface;
  */
 class UrlMap implements HttpKernelInterface
 {
+    use ApplyFilterTrait;
+
     const ATTR_PREFIX = "pile.url_map.prefix";
 
     /**
@@ -39,6 +41,15 @@ class UrlMap implements HttpKernelInterface
         if ($map) {
             $this->setMap($map);
         }
+    }
+
+    /**
+     * @param array $map
+     * @return UrlMap
+     */
+    public static function forge( $map )
+    {
+        return new self( $map );
     }
 
     /**
@@ -105,6 +116,15 @@ class UrlMap implements HttpKernelInterface
      */
     protected function invoke( Request $request, $type, $catch, $app )
     {
+        /*
+         * apply filters before invoking subsequent apps.
+         */
+        if( $response = $this->applyFilters( $request ) ) {
+            return $response;
+        }
+        /*
+         * run the application.
+         */
         if( is_string( $app ) && class_exists( $app ) ) {
             if( $app instanceof ControllerInterface ) {
                 return $app::call( $request, $type, $catch );
