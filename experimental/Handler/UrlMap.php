@@ -22,18 +22,31 @@ use WScore\Pile\Controller\ControllerInterface;
  */
 class UrlMap implements HttpKernelInterface
 {
-    const ATTR_PREFIX = "stack.url_map.prefix";
+    const ATTR_PREFIX = "pile.url_map.prefix";
 
     /**
      * @var HttpKernelInterface[]
      */
     protected $map = array();
 
+    /**
+     * @var string
+     */
+    protected $root;
+
     public function __construct( array $map = array())
     {
         if ($map) {
             $this->setMap($map);
         }
+    }
+
+    /**
+     * @param string $root
+     */
+    public function setRoot( $root )
+    {
+        $this->root = $root;
     }
 
     /**
@@ -63,18 +76,22 @@ class UrlMap implements HttpKernelInterface
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
         $pathInfo = rawurldecode($request->getPathInfo());
+        if (0 !== strpos($pathInfo, $this->root ) ) return null;
+
         foreach ($this->map as $path => $app) {
-            if (0 === strpos($pathInfo, $path)) {
-                $server = $request->server->all();
-                $server['SCRIPT_FILENAME'] = $server['SCRIPT_NAME'] = $server['PHP_SELF'] = $request->getBaseUrl().$path;
 
-                $attributes = $request->attributes->all();
-                $attributes[static::ATTR_PREFIX] = $request->getBaseUrl().$path;
+            $path = $this->root . $path;
+            if (0 !== strpos($pathInfo, $path)) continue;
 
-                $newRequest = $request->duplicate(null, null, $attributes, null, null, $server);
+            $server = $request->server->all();
+            $server['SCRIPT_FILENAME'] = $server['SCRIPT_NAME'] = $server['PHP_SELF'] = $request->getBaseUrl().$path;
 
-                return $app->handle($newRequest, $type, $catch);
-            }
+            $attributes = $request->attributes->all();
+            $attributes[static::ATTR_PREFIX] = $request->getBaseUrl().$path;
+
+            $newRequest = $request->duplicate(null, null, $attributes, null, null, $server);
+
+            return $app->handle($newRequest, $type, $catch);
         }
         return null;
     }
