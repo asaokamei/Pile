@@ -98,7 +98,6 @@ class App
     }
 
     /**
-     * @param $key
      * @return Responder
      */
     public function respond()
@@ -158,9 +157,14 @@ class App
      */
     protected function setupRequest( $request )
     {
+        // set up UrlGenerator.
         $this->url()->setRequest( $request );
+
+        // set up Responder.
         $responder = $this->respond();
         $responder->setRequest( $request );
+
+        // save $app itself to the $request.
         $request->attributes->set( App::KEY, $this );
     }
 

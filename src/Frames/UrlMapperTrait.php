@@ -61,12 +61,19 @@ trait UrlMapperTrait
         foreach ( $this->_url_map as $path => $app ) {
 
             if ( ( $pos = strpos( $pathInfo, $path ) ) !== 0 ) continue;
-            $server                      = $request->server->all();
-            $server[ 'SCRIPT_FILENAME' ] = $server[ 'SCRIPT_NAME' ] = $server[ 'PHP_SELF' ] = $request->getBaseUrl() . $path;
-            $attributes                  = $request->attributes->all();
-            $attributes[ 'url.mapped' ]  = $request->getBaseUrl() . $path;
-            $newReq                      = $request->duplicate( null, null, $attributes, null, null, $server );
-            return $this->invoke( $newReq, $type, $catch, $app );
+
+            /*
+             * try invoke app with new request (just in case failed to respond).
+             */
+            $newReq = $this->createNewRequest( $request, $path );
+
+            /*
+             * if responded, rewrite the existing request information.
+             */
+            if ( $response = $this->invoke( $newReq, $type, $catch, $app ) ) {
+                $this->updatePath( $request, $path );
+            }
+            return $response;
         }
         return null;
     }
@@ -79,4 +86,34 @@ trait UrlMapperTrait
      * @return Response|null
      */
     abstract protected function invoke( $request, $type, $catch, $app );
+
+    /**
+     * @param Request $request
+     * @param string  $path
+     * @return Request
+     */
+    public function createNewRequest( Request $request, $path )
+    {
+        $newPath    = $request->getBaseUrl() . $path;
+        $server     = $request->server->all();
+        $attributes = $request->attributes->all();
+        // update with new values
+        $server[ 'PHP_SELF' ]       = $server[ 'SCRIPT_NAME' ] = $server[ 'SCRIPT_FILENAME' ] = $newPath;
+        $attributes[ 'url.mapped' ] = $newPath;
+        return $request->duplicate( null, null, $attributes, null, null, $server );
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $path
+     */
+    public function updatePath( Request $request, $path )
+    {
+        $server  = $request->server;
+        $newPath = $request->getBaseUrl() . $path;
+        $server->set( 'SCRIPT_FILENAME', $newPath );
+        $server->set( 'SCRIPT_NAME', $newPath );
+        $server->set( 'PHP_SELF', $newPath );
+        $request->attributes->set( 'url.mapped', $newPath );
+    }
 }
