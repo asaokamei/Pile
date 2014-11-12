@@ -29,7 +29,7 @@ class App
     /**
      * @var Bag[]
      */
-    protected $bags = [];
+    protected $bags = [ ];
 
     /**
      * @var Stackable
@@ -39,14 +39,14 @@ class App
     /**
      * @var array
      */
-    protected $filter = [];
+    protected $filter = [ ];
 
     /**
      * various services.
      *
      * @var array
      */
-    protected $services = [];
+    protected $services = [ ];
 
     // +----------------------------------------------------------------------+
     //  static methods
@@ -65,14 +65,14 @@ class App
     {
         $app = new static();
         $app->register( 'respond', new Responder() );
-        $app->register( 'url', new UrlGenerator(null) );
+        $app->register( 'url', new UrlGenerator( null ) );
         return static::$app = $app;
     }
 
     /**
      * @param $app
      */
-    public static function setInstance($app)
+    public static function setInstance( $app )
     {
         static::$app = $app;
     }
@@ -93,7 +93,7 @@ class App
      */
     public function register( $name, $service )
     {
-        $this->services[$name] = $service;
+        $this->services[ $name ] = $service;
         return $this;
     }
 
@@ -103,18 +103,18 @@ class App
      */
     public function respond()
     {
-        return $this->services['respond'];
+        return $this->services[ 'respond' ];
     }
 
     /**
      * @param null $path
      * @return UrlGenerator
      */
-    public function url( $path=null )
+    public function url( $path = null )
     {
-        $url = $this->services['url'];
-        if( !is_null($path) ) {
-            return $url($path);
+        $url = $this->services[ 'url' ];
+        if ( !is_null( $path ) ) {
+            return $url( $path );
         }
         return $url;
     }
@@ -128,7 +128,7 @@ class App
      */
     public function push( $stack )
     {
-        if( $this->stack ) {
+        if ( $this->stack ) {
             return $this->stack->push( $stack );
         }
         $this->stack = stackable::makeStack( $stack );
@@ -141,10 +141,10 @@ class App
      * @param bool    $catch
      * @return Response
      */
-    public function handle( $request=null, $type=HttpKernelInterface::MASTER_REQUEST, $catch=false )
+    public function handle( $request = null, $type = HttpKernelInterface::MASTER_REQUEST, $catch = false )
     {
-        if( !$request ) $request = Request::createFromGlobals();
-        $this->setupRequest($request);
+        if ( !$request ) $request = Request::createFromGlobals();
+        $this->setupRequest( $request );
         return $this->stack->handle( $request, $type, $catch );
     }
 
@@ -160,7 +160,7 @@ class App
     {
         $this->url()->setRequest( $request );
         $responder = $this->respond();
-        $responder->setRequest($request);
+        $responder->setRequest( $request );
         $request->attributes->set( App::KEY, $this );
     }
 
@@ -171,21 +171,21 @@ class App
      * @param string $name
      * @return Bag
      */
-    public function bag($name)
+    public function bag( $name )
     {
-        if( !isset( $this->bags[$name] ) ) {
-            $this->bags[$name] = new Bag();
+        if ( !isset( $this->bags[ $name ] ) ) {
+            $this->bags[ $name ] = new Bag();
         }
-        return $this->bags[$name];
+        return $this->bags[ $name ];
     }
 
     /**
      * @param $name
      * @return Bag
      */
-    public static function getBag($name)
+    public static function getBag( $name )
     {
-        return static::$app->bag($name);
+        return static::$app->bag( $name );
     }
 
     /**
@@ -193,10 +193,10 @@ class App
      * @param array  $content
      * @param bool   $overwrite
      */
-    public function pub( $name, $content, $overwrite=false )
+    public function pub( $name, $content, $overwrite = false )
     {
-        if( !isset( $this->bags[$name] ) || $overwrite ) {
-            $this->bags[$name] = $content;
+        if ( !isset( $this->bags[ $name ] ) || $overwrite ) {
+            $this->bags[ $name ] = $content;
         }
     }
 
@@ -204,10 +204,10 @@ class App
      * @param string $name
      * @return null|mixed
      */
-    public function sub($name)
+    public function sub( $name )
     {
-        if( isset( $this->bags[$name] ) ) {
-            return $this->bags[$name];
+        if ( isset( $this->bags[ $name ] ) ) {
+            return $this->bags[ $name ];
         }
         return null;
     }
@@ -222,7 +222,7 @@ class App
      */
     public function setFilter( $name, $filter )
     {
-        $this->filter[$name] = $filter;
+        $this->filter[ $name ] = $filter;
         return $this;
     }
 
@@ -233,9 +233,9 @@ class App
      */
     public function filter( $name, $request )
     {
-        if( !isset( $this->filter[$name] ) ) return null;
-        if( $name instanceof HttpKernelInterface ) return $name->handle( $request );
-        if( $name instanceof \Closure ) return $name( $request );
+        if ( !isset( $this->filter[ $name ] ) ) return null;
+        if ( $name instanceof HttpKernelInterface ) return $name->handle( $request );
+        if ( $name instanceof \Closure ) return $name( $request );
         return null;
     }
 

@@ -38,6 +38,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
     {
         return new self( new PhpEngine( $dir ) );
     }
+
     /**
      * Handles a Request to convert it to a Response.
      *
@@ -63,17 +64,17 @@ class Template implements HttpKernelInterface, ReleaseInterface
      */
     public function release( $response )
     {
-        if( !$response ) {
+        if ( !$response ) {
             /** @var Responder $res */
-            $res = $this->request->attributes->get('responder');
+            $res      = $this->request->attributes->get( 'responder' );
             $response = $res->notFound();
         }
         if ( $response instanceof View ) {
             return $this->setContents( $response );
         }
-        if( is_string( $response ) ) {
+        if ( is_string( $response ) ) {
             /** @var Responder $res */
-            $res = App::reveal($this->request)->respond();
+            $res = App::reveal( $this->request )->respond();
             return $response = $res->text( $response );
         }
         return $response;

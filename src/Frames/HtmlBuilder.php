@@ -79,7 +79,7 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
         $app = App::reveal( $this->request );
 
         // generate CSRF token
-        $token = hash( 'sha512', uniqid('',true).time() );
+        $token = hash( 'sha512', uniqid( '', true ) . time() );
         $app->pub( 'token', $token );
         $this->builder->setToken( $token );
 
@@ -88,6 +88,6 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
         $this->builder->setInput( $input );
         $app->pub( 'FormBuilders', [
             'form' => $this->builder,
-        ]);
+        ] );
     }
 }

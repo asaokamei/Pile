@@ -24,17 +24,17 @@ trait UrlMapperTrait
      *
      * @param array $map
      */
-    public function setMap(array $map)
+    public function setMap( array $map )
     {
-        if( empty( $map ) ) return;
+        if ( empty( $map ) ) return;
 
         # Collect an array of all key lengths
-        $lengths = array_map('strlen', array_keys($map));
+        $lengths = array_map( 'strlen', array_keys( $map ) );
 
         # Sort paths by their length descending, so the most specific
         # paths go first. `array_multisort` sorts the lengths descending and
         # uses the order on the $map
-        array_multisort($lengths, SORT_DESC, $map);
+        array_multisort( $lengths, SORT_DESC, $map );
         $this->_url_map = $map;
     }
 
@@ -58,14 +58,14 @@ trait UrlMapperTrait
     public function handle( Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true )
     {
         $pathInfo = rawurldecode( $request->getPathInfo() );
-        foreach( $this->_url_map as $path => $app ) {
+        foreach ( $this->_url_map as $path => $app ) {
 
-            if( ($pos=strpos( $pathInfo, $path )) !== 0 ) continue;
-            $server = $request->server->all();
-            $server['SCRIPT_FILENAME'] = $server['SCRIPT_NAME'] = $server['PHP_SELF'] = $request->getBaseUrl().$path;
-            $attributes = $request->attributes->all();
-            $attributes[ 'url.mapped' ] = $request->getBaseUrl().$path;
-            $newReq = $request->duplicate( null, null, $attributes, null, null, $server );
+            if ( ( $pos = strpos( $pathInfo, $path ) ) !== 0 ) continue;
+            $server                      = $request->server->all();
+            $server[ 'SCRIPT_FILENAME' ] = $server[ 'SCRIPT_NAME' ] = $server[ 'PHP_SELF' ] = $request->getBaseUrl() . $path;
+            $attributes                  = $request->attributes->all();
+            $attributes[ 'url.mapped' ]  = $request->getBaseUrl() . $path;
+            $newReq                      = $request->duplicate( null, null, $attributes, null, null, $server );
             return $this->invoke( $newReq, $type, $catch, $app );
         }
         return null;

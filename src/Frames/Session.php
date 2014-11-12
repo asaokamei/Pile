@@ -30,7 +30,7 @@ class Session implements HttpKernelInterface, ReleaseInterface
     /**
      * @param null|MockArraySessionStorage $storage
      */
-    public function __construct( $storage=null )
+    public function __construct( $storage = null )
     {
         $this->storage = $storage;
     }
@@ -38,7 +38,7 @@ class Session implements HttpKernelInterface, ReleaseInterface
     /**
      * @return Session
      */
-    public static function forge( $storage=null )
+    public static function forge( $storage = null )
     {
         return new self( $storage );
     }
@@ -66,8 +66,8 @@ class Session implements HttpKernelInterface, ReleaseInterface
         $flash         = $this->session->getFlashBag();
 
         $this->app->pub( 'message', $flash->get( 'message' ) );
-        $this->app->pub( 'input',   $flash->get( 'input' ) );
-        $this->app->pub( 'errors',  $flash->get( 'errors' ) );
+        $this->app->pub( 'input', $flash->get( 'input' ) );
+        $this->app->pub( 'errors', $flash->get( 'errors' ) );
 
         return null;
     }
@@ -81,12 +81,12 @@ class Session implements HttpKernelInterface, ReleaseInterface
         if ( $response instanceof Redirect ) {
             $flash = $this->session->getFlashBag();
             $flash->set( 'message', $this->app->sub( 'message' ) );
-            $flash->set( 'errors',  $this->app->sub( 'errors' ) );
-            $flash->set( 'input',   $this->app->sub( 'input' ) );
+            $flash->set( 'errors', $this->app->sub( 'errors' ) );
+            $flash->set( 'input', $this->app->sub( 'input' ) );
         }
         $this->session->set( 'token', $this->app->sub( 'token' ) );
         $this->session->save();
-        
+
         return $response;
     }
 }
