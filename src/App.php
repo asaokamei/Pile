@@ -162,7 +162,6 @@ class App
         $responder = $this->respond();
         $responder->setRequest($request);
         $request->attributes->set( App::KEY, $this );
-        $request->attributes->set( 'responder', $responder );
     }
 
     // +----------------------------------------------------------------------+

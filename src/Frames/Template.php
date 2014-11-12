@@ -4,6 +4,7 @@ namespace WScore\Pile\Frames;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use WScore\Pile\App;
 use WScore\Pile\Http\Responder;
 use WScore\Pile\Http\View;
 use WScore\Pile\Piles\PhpEngine;
@@ -72,7 +73,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
         }
         if( is_string( $response ) ) {
             /** @var Responder $res */
-            $res = $this->request->attributes->get('responder');
+            $res = App::reveal($this->request)->respond();
             return $response = $res->text( $response );
         }
         return $response;
