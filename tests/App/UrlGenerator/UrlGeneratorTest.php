@@ -34,6 +34,7 @@ class UrlGeneratorTest extends \PHPUnit_Framework_TestCase
         ] );
         $url = $this->url;
         $url->setRequest( $request );
+        $this->assertEquals( '/path/to/test.php', (string) $url( 'test.php' ) );
         $this->assertEquals( '/path/to/test.php', (string) $url()->to( 'test.php' ) );
         $this->assertEquals( '/path/to/test.php', (string) $url()->base( 'test.php' ) );
 

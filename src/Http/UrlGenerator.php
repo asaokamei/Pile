@@ -34,12 +34,18 @@ class UrlGenerator
     }
 
     /**
+     * @param string $path
      * @return UrlGenerator
      */
-    public function __invoke()
+    public function __invoke( $path=null )
     {
         $url = clone($this);
         $url->url = ''; // just in case.
+        $url->secure = false;
+        $url->with = [];
+        if( $path ) {
+            $url->to( $path );
+        }
         return $url;
     }
 
