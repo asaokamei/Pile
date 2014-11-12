@@ -64,7 +64,7 @@ trait UrlMapperTrait
             $server = $request->server->all();
             $server['SCRIPT_FILENAME'] = $server['SCRIPT_NAME'] = $server['PHP_SELF'] = $request->getBaseUrl().$path;
             $attributes = $request->attributes->all();
-            $attributes[ 'tuum.map.'] = $request->getBaseUrl().$path;
+            $attributes[ 'url.mapped' ] = $request->getBaseUrl().$path;
             $newReq = $request->duplicate( null, null, $attributes, null, null, $server );
             return $this->invoke( $newReq, $type, $catch, $app );
         }
