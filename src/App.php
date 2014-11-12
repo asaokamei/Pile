@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\Responder;
+use WScore\Pile\Http\UrlGenerator;
 use WScore\Pile\Piles\Bag;
 use WScore\Pile\Stack\Stackable;
 
@@ -36,24 +37,25 @@ class App
     protected $stack;
 
     /**
-     * @var Responder
-     */
-    protected $responder;
-
-    /**
      * @var array
      */
     protected $filter = [];
+
+    /**
+     * various services.
+     *
+     * @var array
+     */
+    protected $services = [];
 
     // +----------------------------------------------------------------------+
     //  static methods
     // +----------------------------------------------------------------------+
     /**
-     * @param Responder    $responder
+     *
      */
-    public function __construct( $responder )
+    protected function __construct()
     {
-        $this->responder = $responder;
     }
 
     /**
@@ -61,9 +63,10 @@ class App
      */
     public static function start()
     {
-        $res  = new Responder();
-        static::$app = new static( $res );
-        return static::$app;
+        $app = new static();
+        $app->register( 'respond', new Responder() );
+        $app->register( 'url', new UrlGenerator(null) );
+        return static::$app = $app;
     }
 
     /**
@@ -84,12 +87,36 @@ class App
     }
 
     /**
+     * @param string $name
+     * @param mixed  $service
+     * @return $this
+     */
+    public function register( $name, $service )
+    {
+        $this->services[$name] = $service;
+        return $this;
+    }
+
+    /**
      * @param $key
      * @return Responder
      */
     public function respond()
     {
-        return $this->responder;
+        return $this->services['respond'];
+    }
+
+    /**
+     * @param null $path
+     * @return UrlGenerator
+     */
+    public function url( $path=null )
+    {
+        $url = $this->services['url'];
+        if( !is_null($path) ) {
+            return $url($path);
+        }
+        return $url;
     }
 
     // +----------------------------------------------------------------------+
@@ -131,9 +158,11 @@ class App
      */
     protected function setupRequest( $request )
     {
-        $this->responder->setRequest($request);
+        $this->url()->setRequest( $request );
+        $responder = $this->respond();
+        $responder->setRequest($request);
         $request->attributes->set( App::KEY, $this );
-        $request->attributes->set( 'responder', $this->responder );
+        $request->attributes->set( 'responder', $responder );
     }
 
     // +----------------------------------------------------------------------+

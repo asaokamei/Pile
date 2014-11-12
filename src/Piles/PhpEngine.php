@@ -16,6 +16,13 @@ class PhpEngine implements TemplateInterface
     public $extension = '.php';
 
     /**
+     * list of services...
+     *
+     * @var array
+     */
+    protected $services = [];
+
+    /**
      * @param string|LocatorInterface $dir
      */
     public function __construct( $dir )
@@ -43,6 +50,30 @@ class PhpEngine implements TemplateInterface
             throw new \RuntimeException( 'cannot locate a template file: ' . $file );
         }
         return $file;
+    }
+
+    /**
+     * @param string $name
+     * @param mixed  $service
+     */
+    public function register( $name, $service )
+    {
+        $this->services[$name] = $service;
+    }
+
+    /**
+     * @param string $name
+     * @param array  $args
+     * @return mixed|null
+     */
+    public function __call( $name, $args )
+    {
+        if( !isset( $this->services[$name] ) ) return null;
+        $service = $this->services[$name];
+        if( $args ) {
+            return call_user_func_array( $service, $args );
+        }
+        return $service;
     }
 
     /**

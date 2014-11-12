@@ -11,4 +11,12 @@ interface TemplateInterface
      * @return string
      */
     public function render( $file, $data );
+
+    /**
+     * register a service, function, etc.
+     *
+     * @param string $name
+     * @param mixed  $service
+     */
+    public function register( $name, $service );
 }

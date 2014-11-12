@@ -91,6 +91,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
                 'message' => $app->sub( 'message' ),
                 'errors'  => $app->sub( 'errors' ),
             ];
+        $this->engine->register( 'url', $app->url() );
         $response->setContent( $this->engine->render( $file, $data ) );
         return $response;
     }
