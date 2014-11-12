@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Form\Builder;
+use WScore\Pile\App;
 use WScore\Pile\Http\View;
 use WScore\Pile\Stack\ReleaseInterface;
 
@@ -75,7 +76,7 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
      */
     protected function setContents()
     {
-        $app = \WScore\Pile\App( $this->request );
+        $app = App::reveal( $this->request );
 
         // generate CSRF token
         $token = hash( 'sha512', uniqid('',true).time() );

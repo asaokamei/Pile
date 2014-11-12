@@ -3,6 +3,7 @@ namespace WScore\Pile\Frames;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use WScore\Pile\App;
 
 trait ApplyFilterTrait
 {
@@ -25,7 +26,7 @@ trait ApplyFilterTrait
      */
     protected function applyFilters( $request )
     {
-        $app = \WScore\Pile\App( $request );
+        $app = App::reveal( $request );
         $response = null;
         foreach( $this->_filters as $filter ) {
             if( is_string( $filter ) ) {

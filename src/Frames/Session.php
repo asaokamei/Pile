@@ -48,7 +48,7 @@ class Session implements HttpKernelInterface, ReleaseInterface
             $request->setSession( new SymfonySession() );
         }
         $this->session = $request->getSession();
-        $this->app     = \WScore\Pile\App( $request );
+        $this->app     = App::reveal( $request );
         $flash         = $this->session->getFlashBag();
 
         $this->app->pub( 'message', $flash->get( 'message' ) );
