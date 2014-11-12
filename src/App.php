@@ -9,20 +9,12 @@ use WScore\Pile\Piles\Bag;
 use WScore\Pile\Stack\Stackable;
 
 /**
- * @param Request $request
- * @return App
- */
-function App( $request )
-{
-    return $request->attributes->get( App::KEY );
-}
-
-
-/**
  * Class App
  * @package WScore\Pile
  *
  * its just another Pile without the initial handler.
+ *
+ * @property Responder $responder
  */
 class App
 {
@@ -80,6 +72,24 @@ class App
     public static function setInstance($app)
     {
         static::$app = $app;
+    }
+
+    /**
+     * @param Request $request
+     * @return App
+     */
+    public static function reveal( $request )
+    {
+        return $request->attributes->get( App::KEY );
+    }
+
+    /**
+     * @param $key
+     * @return Responder
+     */
+    public function respond()
+    {
+        return $this->responder;
     }
 
     // +----------------------------------------------------------------------+
