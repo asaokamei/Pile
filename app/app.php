@@ -1,48 +1,11 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
-use WScore\Pile\App;
-use WScore\Pile\Frames\HtmlBuilder;
-use WScore\Pile\Frames\Session;
-use WScore\Pile\Frames\Template;
-use WScore\Pile\Frames\UrlMap;
-use WScore\Pile\Locator;
 
 require_once( dirname( __DIR__ ) . '/vendor/autoload.php' );
+require_once( __DIR__ . '/boot.php' );
 
 $app      = boot_pile();
 $request  = Request::createFromGlobals();
 $response = $app->handle( $request )->send();
 
-
-/**
- * @param string $routes
- * @return App
- */
-function boot_pile( $routes = null )
-{
-    $routes = $routes ?: 'routes.php';
-    $config = Locator::dir(__DIR__ );
-    $views  = Locator::dir( __DIR__ .'/views' );
-    /*
-     * set up config based on environment
-     */
-    $environment = null;
-    $env_file    = __DIR__ . '/.env.php';
-    if ( file_exists( $env_file ) ) {
-        $environment = include $env_file;
-        $config->addRoot( $env_file );
-    }
-    /*
-     * build application
-     */
-    $app = App::start();
-    $app
-        ->push( Session::forge() )
-        ->push( Template::forge( $views ) )
-        ->push( HtmlBuilder::forge() )
-        ->push( UrlMap::forge( $config->locate( $routes ) ) )
-    ;
-    return $app;
-
-}

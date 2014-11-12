@@ -14,6 +14,7 @@
         <testsuite name="WScore/Pile Test Suite">
             <directory>Frames</directory>
             <directory>App</directory>
+            <directory>Functional</directory>
         </testsuite>
     </testsuites>
 </phpunit>
