@@ -15,7 +15,8 @@ use WScore\Pile\Stack\Stackable;
  *
  * its just another Pile without the initial handler.
  *
- * @property Responder $responder
+ * @method Responder respond()
+ * @method Request   request()
  */
 class App
 {
@@ -59,13 +60,15 @@ class App
     }
 
     /**
+     * @param Request $request
      * @return App
      */
-    public static function start()
+    public static function start( $request=null )
     {
         $app = new static();
-        $app->register( 'respond', new Responder() );
-        $app->register( 'url', new UrlGenerator( null ) );
+        $app->register( 'request', $request );
+        $app->register( 'respond', new Responder( $request ) );
+        $app->register( 'url', new UrlGenerator( $request ) );
         return static::$app = $app;
     }
 
@@ -98,24 +101,34 @@ class App
     }
 
     /**
-     * @return Responder
+     * @param $name
+     * @return null|mixed
      */
-    public function respond()
+    public function service( $name )
     {
-        return $this->services[ 'respond' ];
+        return array_key_exists( $name, $this->services ) ? $this->services[$name] : null;
     }
 
     /**
-     * @param null $path
      * @return UrlGenerator
      */
-    public function url( $path = null )
+    public function url()
     {
-        $url = $this->services[ 'url' ];
-        if ( !is_null( $path ) ) {
-            return $url( $path );
+        /** @var UrlGenerator $url */
+        if( $url = $this->service( 'url' ) ) {
+            return $url();
         }
         return $url;
+    }
+
+    /**
+     * @param string $name
+     * @param array  $args
+     * @return null|mixed
+     */
+    public function __call( $name, $args )
+    {
+        return $this->service( $name );
     }
 
     // +----------------------------------------------------------------------+
@@ -158,11 +171,11 @@ class App
     protected function setupRequest( $request )
     {
         // set up UrlGenerator.
-        $this->url()->setRequest( $request );
+        /** @noinspection PhpUndefinedMethodInspection */
+        $this->services['url']->setRequest( $request );
 
         // set up Responder.
-        $responder = $this->respond();
-        $responder->setRequest( $request );
+        $this->respond()->setRequest( $request );
 
         // save $app itself to the $request.
         $request->attributes->set( App::KEY, $this );
