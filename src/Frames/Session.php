@@ -4,6 +4,7 @@ namespace WScore\Pile\Frames;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\Redirect;
 use WScore\Pile\App;
@@ -22,11 +23,24 @@ class Session implements HttpKernelInterface, ReleaseInterface
     protected $app;
 
     /**
+     * @var null|MockArraySessionStorage
+     */
+    protected $storage = null;
+
+    /**
+     * @param null|MockArraySessionStorage $storage
+     */
+    public function __construct( $storage=null )
+    {
+        $this->storage = $storage;
+    }
+
+    /**
      * @return Session
      */
-    public static function forge()
+    public static function forge( $storage=null )
     {
-        return new self();
+        return new self( $storage );
     }
 
     /**
@@ -45,7 +59,7 @@ class Session implements HttpKernelInterface, ReleaseInterface
     public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true )
     {
         if ( !$request->hasSession() ) {
-            $request->setSession( new SymfonySession() );
+            $request->setSession( new SymfonySession( $this->storage ) );
         }
         $this->session = $request->getSession();
         $this->app     = App::reveal( $request );
