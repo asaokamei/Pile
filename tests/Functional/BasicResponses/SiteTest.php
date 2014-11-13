@@ -1,5 +1,5 @@
 <?php
-namespace tests\Functional;
+namespace tests\BasicResponses\Functional;
 
 use Symfony\Component\HttpFoundation\Request;
 use WScore\Pile\App;
