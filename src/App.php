@@ -73,6 +73,14 @@ class App
     }
 
     /**
+     * @return App
+     */
+    public static function getApp()
+    {
+        return static::$app;
+    }
+
+    /**
      * @param $app
      */
     public static function setInstance( $app )

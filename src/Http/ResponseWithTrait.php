@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Pile\Http;
 
-use Tuum\Web\App;
+use WScore\Pile\App;
 
 trait ResponseWithTrait
 {
@@ -13,7 +13,7 @@ trait ResponseWithTrait
      */
     public function withMessage( $message, $error = true )
     {
-        App::getBag( 'message' )->fill( [
+        App::getApp()->pub( 'message', [
             'error'   => $error,
             'message' => $message,
         ] );
@@ -26,7 +26,7 @@ trait ResponseWithTrait
      */
     public function withInput( $input )
     {
-        App::getBag( 'input' )->fill( $input );
+        App::getApp()->pub( 'input', $input );
         return $this;
     }
 
@@ -36,7 +36,7 @@ trait ResponseWithTrait
      */
     public function withErrors( $errors )
     {
-        App::getBag( 'errors' )->fill( $errors );
+        App::getApp()->pub( 'errors', $errors );
         return $this;
     }
 

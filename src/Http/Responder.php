@@ -39,6 +39,7 @@ class Responder
      */
     public function redirect( $url )
     {
+        $url = substr($url,0,1)==='/' ? $url : '/'.$url;
         $url      = $this->request->getUriForPath( $url );
         $response = new Redirect( $url );
         return $response;
