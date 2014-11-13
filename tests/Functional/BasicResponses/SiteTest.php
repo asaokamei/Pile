@@ -4,8 +4,7 @@ namespace tests\BasicResponses\Functional;
 use Symfony\Component\HttpFoundation\Request;
 use WScore\Pile\App;
 
-require_once( __DIR__ . '/../autoloader.php' );
-require_once( __DIR__ . '/app/boot.php' );
+require_once( __DIR__ . '/../../autoloader.php' );
 
 class SiteTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +15,9 @@ class SiteTest extends \PHPUnit_Framework_TestCase
 
     function setup()
     {
-        $this->app = boot_pile();
+        /** @var \Closure $boot_pile */
+        $boot_pile = include( __DIR__ . '/app/boot.php' );
+        $this->app = $boot_pile();
     }
 
     function test0()

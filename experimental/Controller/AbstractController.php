@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Pile\Controller;
+namespace WScore\Pile\experimental\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
