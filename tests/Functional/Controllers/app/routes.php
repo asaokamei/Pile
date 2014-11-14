@@ -8,6 +8,8 @@ return array(
 
     '/more' => 'tests\Functional\Controllers\MoreController',
 
+    '/view' => 'tests\Functional\Controllers\MoreController',
+
     '/redirect' => function($request) {
         return App::reveal( $request )
             ->respond()->redirect('redirect test')

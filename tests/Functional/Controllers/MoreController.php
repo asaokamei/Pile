@@ -9,4 +9,12 @@ class MoreController extends AbstractController
     {
         return 'received onGet method';
     }
+
+    public function onView()
+    {
+        return $this->respond->view( 'view' )
+            ->with( 'test', 'tested' )
+            ->fill( ['more' => 'tested' ])
+            ;
+    }
 }

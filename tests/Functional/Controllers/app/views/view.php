@@ -1,0 +1,3 @@
+view: <?= $test;?>
+
+more: <?= $more;?>

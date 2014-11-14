@@ -33,4 +33,14 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'received onGet method', $res->getContent() );
 
     }
+
+    /**
+     * @test
+     */
+    function response_view()
+    {
+        $res = $this->app->handle( Request::create('/view', 'view' ) );
+        $this->assertEquals( "view: tested\nmore: tested", $res->getContent() );
+
+    }
 }
