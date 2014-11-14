@@ -23,11 +23,6 @@ class App
     const KEY = 'app';
 
     /**
-     * @var App
-     */
-    static $app;
-
-    /**
      * @var Bag[]
      */
     protected $bags = [ ];
@@ -69,23 +64,7 @@ class App
         $app->register( 'request', $request );
         $app->register( 'respond', new Responder( $request ) );
         $app->register( 'url', new UrlGenerator( $request ) );
-        return static::$app = $app;
-    }
-
-    /**
-     * @return App
-     */
-    public static function getApp()
-    {
-        return static::$app;
-    }
-
-    /**
-     * @param $app
-     */
-    public static function setInstance( $app )
-    {
-        static::$app = $app;
+        return $app;
     }
 
     /**
@@ -202,15 +181,6 @@ class App
             $this->bags[ $name ] = new Bag();
         }
         return $this->bags[ $name ];
-    }
-
-    /**
-     * @param $name
-     * @return Bag
-     */
-    public static function getBag( $name )
-    {
-        return static::$app->bag( $name );
     }
 
     /**
