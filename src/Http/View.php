@@ -19,11 +19,6 @@ class View extends Response
     protected $data = [ ];
 
     /**
-     * @var string   specify parent layout if not from the global one
-     */
-    protected $parent = '';
-
-    /**
      * @param $file
      */
     public function setFile( $file )
@@ -70,22 +65,6 @@ class View extends Response
     {
         $this->data[ $key ] = $value;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param string $parent
-     */
-    public function setParent( $parent )
-    {
-        $this->parent = $parent;
     }
 
 }
