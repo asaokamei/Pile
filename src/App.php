@@ -55,15 +55,13 @@ class App
     }
 
     /**
-     * @param Request $request
      * @return App
      */
-    public static function start( $request=null )
+    public static function start()
     {
         $app = new static();
-        $app->register( 'request', $request );
-        $app->register( 'respond', new Responder( $request ) );
-        $app->register( 'url', new UrlGenerator( $request ) );
+        $app->register( 'respond', new Responder() );
+        $app->register( 'url', new UrlGenerator() );
         return $app;
     }
 

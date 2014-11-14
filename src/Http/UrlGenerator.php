@@ -26,11 +26,10 @@ class UrlGenerator
     protected $with = [];
 
     /**
-     * @param Request $request
+     *
      */
-    public function __construct( $request )
+    public function __construct()
     {
-        $this->setRequest( $request );
     }
 
     /**
