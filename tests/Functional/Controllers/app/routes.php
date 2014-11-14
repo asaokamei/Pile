@@ -8,8 +8,6 @@ return array(
 
     '/more' => 'tests\Functional\Controllers\MoreController',
 
-    '/view' => 'tests\Functional\Controllers\MoreController',
-
     '/error' => function($request) {
         return App::reveal( $request )->respond()->notFound()
             ->withErrorMsg( 'not found' )

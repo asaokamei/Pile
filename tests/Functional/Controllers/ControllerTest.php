@@ -39,7 +39,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
      */
     function response_view()
     {
-        $res = $this->app->handle( Request::create('/view', 'view' ) );
+        $res = $this->app->handle( Request::create('/more', 'view' ) );
         $this->assertEquals( "view: tested\nmore: tested", $res->getContent() );
 
     }
