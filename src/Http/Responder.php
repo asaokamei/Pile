@@ -30,7 +30,8 @@ class Responder
      */
     public function text( $content )
     {
-        return new Response( $content );
+        $response = new Response( $content );
+        return $response;
     }
 
     /**
@@ -42,6 +43,7 @@ class Responder
         $url = substr($url,0,1)==='/' ? $url : '/'.$url;
         $url      = $this->request->getUriForPath( $url );
         $response = new Redirect( $url );
+        $response->setRequest( $this->request );
         return $response;
     }
 
@@ -53,6 +55,7 @@ class Responder
     {
         $url      = $this->request->getSchemeAndHttpHost() . $this->request->getBaseUrl() . $url;
         $response = new Redirect( $url );
+        $response->setRequest( $this->request );
         return $response;
     }
 
@@ -63,6 +66,7 @@ class Responder
     public function view( $file )
     {
         $response = new View();
+        $response->setRequest( $this->request );
         $response->setFile( $file );
         return $response;
     }
@@ -77,6 +81,7 @@ class Responder
             $file = 'error';
         }
         $response = new View();
+        $response->setRequest( $this->request );
         $response->setFile( $file );
         return $response;
     }
@@ -87,6 +92,8 @@ class Responder
      */
     public function notFound( $file=null )
     {
-        return $this->error( Response::HTTP_NOT_FOUND, $file );
+        $response = $this->error( Response::HTTP_NOT_FOUND, $file );
+        $response->setRequest( $this->request );
+        return $response;
     }
 }

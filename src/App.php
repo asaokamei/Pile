@@ -215,7 +215,7 @@ class App
 
     /**
      * @param string $name
-     * @param array  $content
+     * @param string|array  $content
      * @param bool   $overwrite
      */
     public function pub( $name, $content, $overwrite = false )

@@ -9,7 +9,7 @@ return array(
     '/redirect' => function($request) {
         return App::reveal( $request )
             ->respond()->redirect('redirect-test.php')
-            ->withErrors( ['more' => 'errors'])
+            ->withValidationMsg( ['more' => 'errors'])
             ->withInput( [ 'test' => 'tested'])
             ->withMessage( 'redirected' )
             ;

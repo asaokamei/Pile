@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use WScore\Pile\App;
 use WScore\Pile\Frames\HtmlBuilder;
 use WScore\Pile\Frames\Session;
@@ -10,12 +11,13 @@ use WScore\Pile\Locator;
 
 
 /**
- * @param string $routes
+ * @internal param string $routes
+ * @param SessionStorageInterface $session
  * @return App
  */
-return function( $routes = null )
+return function( $session )
 {
-    $routes = $routes ?: 'routes.php';
+    $routes = 'routes.php';
     $config = Locator::dir(__DIR__ );
     $views  = Locator::dir( __DIR__ .'/views' );
     /*
@@ -32,7 +34,7 @@ return function( $routes = null )
      */
     $app = App::start();
     $app
-        ->push( Session::forge( new MockArraySessionStorage() ) )
+        ->push( Session::forge( $session ) )
         ->push( Template::forge( $views ) )
         ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $config->locate( $routes ) ) )

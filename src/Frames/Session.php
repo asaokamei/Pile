@@ -65,9 +65,18 @@ class Session implements HttpKernelInterface, ReleaseInterface
         $this->app     = App::reveal( $request );
         $flash         = $this->session->getFlashBag();
 
-        $this->app->pub( 'message', $flash->get( 'message' ) );
-        $this->app->pub( 'input', $flash->get( 'input' ) );
-        $this->app->pub( 'errors', $flash->get( 'errors' ) );
+        if( $message = $flash->get( 'message' ) ) {
+            $this->app->pub( 'message', $message );
+        }
+        if( $error = $flash->get( 'error' ) ) {
+            $this->app->pub( 'error', $error );
+        }
+        if( $input = $flash->get( 'input' ) ) {
+            $this->app->pub( 'input', $input );
+        }
+        if( $errors = $flash->get( 'errors' ) ) {
+            $this->app->pub( 'errors', $errors );
+        }
 
         return null;
     }
@@ -81,8 +90,9 @@ class Session implements HttpKernelInterface, ReleaseInterface
         if ( $response instanceof Redirect ) {
             $flash = $this->session->getFlashBag();
             $flash->set( 'message', $this->app->sub( 'message' ) );
-            $flash->set( 'errors', $this->app->sub( 'errors' ) );
-            $flash->set( 'input', $this->app->sub( 'input' ) );
+            $flash->set( 'error',   $this->app->sub( 'error' ) );
+            $flash->set( 'errors',  $this->app->sub( 'errors' ) );
+            $flash->set( 'input',   $this->app->sub( 'input' ) );
         }
         $this->session->set( 'token', $this->app->sub( 'token' ) );
         $this->session->save();
