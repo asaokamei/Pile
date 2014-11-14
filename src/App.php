@@ -215,6 +215,15 @@ class App
 
     /**
      * @param string $name
+     * @param array  $values
+     */
+    public function deco( $name, $values )
+    {
+        $this->bag($name)->fill($values);
+    }
+
+    /**
+     * @param string $name
      * @param string|array  $content
      * @param bool   $overwrite
      */
@@ -232,6 +241,10 @@ class App
     public function sub( $name )
     {
         if ( isset( $this->bags[ $name ] ) ) {
+            $bag = $this->bags[ $name ];
+            if( $bag instanceof Bag ) {
+                return $bag->all();
+            }
             return $this->bags[ $name ];
         }
         return null;

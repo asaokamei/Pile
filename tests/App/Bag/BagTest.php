@@ -55,7 +55,7 @@ class BagTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->app;
         $app->bag( 'test' )->fill( [ 'test' => 'tested' ] );
-        $bag = $app->sub('test');
+        $bag = $app->bag('test');
         $bag->set( 'more', 'more test' );
         // test all()
         $this->assertEquals( [ 'test' => 'tested', 'more' => 'more test' ], $bag->all() );
@@ -66,6 +66,6 @@ class BagTest extends \PHPUnit_Framework_TestCase
         // test exists()
         $this->assertEquals( true, $bag->exists( 'test' ) );
         $this->assertEquals( false, $bag->exists( 'none' ) );
-        $this->assertSame( $bag, $app->sub('test') );
+        $this->assertSame( $bag, $app->bag('test') );
     }
 }
