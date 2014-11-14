@@ -72,7 +72,8 @@ class Responder
     }
 
     /**
-     * @param null $file
+     * @param int    $status
+     * @param string $file
      * @return View
      */
     public function error( $status=Response::HTTP_INTERNAL_SERVER_ERROR, $file=null )
@@ -80,7 +81,7 @@ class Responder
         if( !$file ) {
             $file = 'error';
         }
-        $response = new View();
+        $response = new View( '', $status );
         $response->setRequest( $this->request );
         $response->setFile( $file );
         return $response;
