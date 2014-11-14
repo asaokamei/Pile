@@ -44,7 +44,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase
         $session = $this->session;
         /** @var FlashBagInterface $flash */
         $flash = $session->getBag( 'flashes' );
-        $this->assertEquals( ['redirected'], $flash->get( 'message' ) );
+        $this->assertEquals( ['message' => 'redirected'], $flash->get( 'messages' ) );
         $this->assertEquals( ['test' => 'tested'], $flash->get( 'input' ) );
         $this->assertEquals( ['more' => 'errors'], $flash->get( 'errors' ) );
     }

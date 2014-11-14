@@ -34,7 +34,7 @@ trait ResponseWithTrait
     public function withMessage( $message )
     {
         if( $request = $this->getRequest() ) {
-            App::reveal( $request )->pub( 'message', $message );
+            App::reveal( $request )->deco( 'messages', [ 'message' => $message ] );
         }
         return $this;
     }
@@ -46,7 +46,7 @@ trait ResponseWithTrait
     public function withErrorMsg( $error )
     {
         if( $request = $this->getRequest() ) {
-            App::reveal( $request )->pub( 'error', $error );
+            App::reveal( $request )->deco( 'messages', [ 'error' => $error ] );
         }
         return $this;
     }

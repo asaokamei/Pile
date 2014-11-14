@@ -65,11 +65,8 @@ class Session implements HttpKernelInterface, ReleaseInterface
         $this->app     = App::reveal( $request );
         $flash         = $this->session->getFlashBag();
 
-        if( $message = $flash->get( 'message' ) ) {
-            $this->app->pub( 'message', $message );
-        }
-        if( $error = $flash->get( 'error' ) ) {
-            $this->app->pub( 'error', $error );
+        if( $message = $flash->get( 'messages' ) ) {
+            $this->app->pub( 'messages', $message );
         }
         if( $input = $flash->get( 'input' ) ) {
             $this->app->pub( 'input', $input );
@@ -89,8 +86,7 @@ class Session implements HttpKernelInterface, ReleaseInterface
     {
         if ( $response instanceof Redirect ) {
             $flash = $this->session->getFlashBag();
-            $flash->set( 'message', $this->app->sub( 'message' ) );
-            $flash->set( 'error',   $this->app->sub( 'error' ) );
+            $flash->set( 'messages', $this->app->sub( 'messages' ) );
             $flash->set( 'errors',  $this->app->sub( 'errors' ) );
             $flash->set( 'input',   $this->app->sub( 'input' ) );
         }
