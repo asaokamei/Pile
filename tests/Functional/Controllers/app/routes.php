@@ -10,12 +10,9 @@ return array(
 
     '/view' => 'tests\Functional\Controllers\MoreController',
 
-    '/redirect' => function($request) {
-        return App::reveal( $request )
-            ->respond()->redirect('redirect test')
-            ->withErrors( ['more' => 'errors'])
-            ->withInput( [ 'test' => 'tested'])
-            ->withMessage( 'redirected' )
+    '/error' => function($request) {
+        return App::reveal( $request )->respond()->notFound()
+            ->withErrorMsg( 'not found' )
             ;
     },
 );

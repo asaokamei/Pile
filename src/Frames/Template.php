@@ -88,11 +88,10 @@ class Template implements HttpKernelInterface, ReleaseInterface
     {
         $app  = $this->request->attributes->get( 'app' );
         $file = $response->getFile();
-        $data = $response->getData() +
-            [
-                'message' => $app->sub( 'message' ),
-                'errors'  => $app->sub( 'errors' ),
-            ];
+        $messages = $app->sub( 'messages' ) ?: [];
+        $errors = $app->sub( 'errors' ) ?: [];
+        $input = $app->sub( 'input' ) ?: [];
+        $data = $response->getData() + $messages + $errors + $input;
         $this->engine->register( 'url', $app->url() );
         $response->setContent( $this->engine->render( $file, $data ) );
         return $response;

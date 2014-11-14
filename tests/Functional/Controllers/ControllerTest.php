@@ -43,4 +43,14 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( "view: tested\nmore: tested", $res->getContent() );
 
     }
+
+    /**
+     * @test
+     */
+    function not_found_error()
+    {
+        $res = $this->app->handle( Request::create('/error' ) );
+        $this->assertEquals( "<h1>Errors</h1>\n<p>not found</p>", trim( $res->getContent() ) );
+
+    }
 }

@@ -6,14 +6,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Responder
 {
+    /**
+     * @var Request
+     */
     protected $request;
 
     /**
-     * @param Request $request
+     * @var string
      */
-    public function __construct( $request = null )
+    protected $error_file;
+
+    /**
+     * @param string $error_file
+     */
+    public function __construct( $error_file )
     {
-        $this->request = $request;
+        $this->error_file = $error_file;
     }
 
     /**
@@ -79,7 +87,7 @@ class Responder
     public function error( $status=Response::HTTP_INTERNAL_SERVER_ERROR, $file=null )
     {
         if( !$file ) {
-            $file = 'error';
+            $file = $this->error_file;
         }
         $response = new View( '', $status );
         $response->setRequest( $this->request );

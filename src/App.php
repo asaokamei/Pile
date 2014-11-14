@@ -60,7 +60,7 @@ class App
     public static function start()
     {
         $app = new static();
-        $app->register( 'respond', new Responder() );
+        $app->register( 'respond', new Responder( 'errors' ) );
         $app->register( 'url', new UrlGenerator() );
         return $app;
     }
