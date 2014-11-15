@@ -50,21 +50,26 @@ class Stack implements HttpKernelInterface, StackableInterface
     }
 
     /**
-     * sets root to invoke the middleware 
-     * 
-     * @param $root
+     * sets root to invoke the middleware
+     *
+     * @param string $root
+     * @return $this
      */
     public function match( $root ) 
     {
-        $this->roots[] = $root;
+        $args = func_get_args();
+        $this->roots[] = array_merge( $this->roots, $args );
+        return $this;
     }
 
     /**
      * @param string|\Closure $filter
+     * @return $this
      */
     public function before( $filter )
     {
         $this->beforeFilters[] = $filter;
+        return $this;
     }
 
     /**
