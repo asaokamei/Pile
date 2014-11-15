@@ -12,6 +12,11 @@ use WScore\Pile\Stack\ReleaseInterface;
 class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
 {
     /**
+     * @var App
+     */
+    protected $app;
+    
+    /**
      * @var Request
      */
     protected $request;
@@ -22,19 +27,22 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
     protected $builder;
 
     /**
+     * @param App     $app
      * @param Builder $builder
      */
-    public function __construct( $builder )
+    public function __construct( $app, $builder )
     {
+        $this->app = $app;
         $this->builder = $builder;
     }
 
     /**
+     * @param App $app
      * @return HtmlBuilder
      */
-    public static function forge()
+    public static function forge( $app )
     {
-        return new self( Builder::forge() );
+        return new self( $app, Builder::forge() );
     }
 
     /**
@@ -76,17 +84,15 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
      */
     protected function setContents()
     {
-        $app = App::reveal( $this->request );
-
         // generate CSRF token
         $token = hash( 'sha512', uniqid( '', true ) . time() );
-        $app->pub( 'token', $token );
+        $this->app->pub( 'token', $token );
         $this->builder->setToken( $token );
 
         // get old input from bag.
-        $input = $app->sub( 'input' );
+        $input = $this->app->sub( 'input' );
         $this->builder->setInput( $input );
-        $app->pub( 'FormBuilders', [
+        $this->app->pub( 'FormBuilders', [
             'form' => $this->builder,
         ] );
     }
