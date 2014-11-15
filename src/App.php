@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\Responder;
 use WScore\Pile\Http\UrlGenerator;
 use WScore\Pile\Piles\Bag;
-use WScore\Pile\Stack\Stackable;
+use WScore\Pile\Stack\Stack;
 
 /**
  * Class App
@@ -28,7 +28,7 @@ class App
     protected $bags = [ ];
 
     /**
-     * @var Stackable
+     * @var Stack
      */
     protected $stack;
 
@@ -121,14 +121,14 @@ class App
     // +----------------------------------------------------------------------+
     /**
      * @param HttpKernelInterface $stack
-     * @return Stackable
+     * @return Stack
      */
     public function push( $stack )
     {
         if ( $this->stack ) {
             return $this->stack->push( $stack );
         }
-        $this->stack = stackable::makeStack( $stack );
+        $this->stack = Stack::makeStack( $stack );
         return $this->stack;
     }
 

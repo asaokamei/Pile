@@ -13,7 +13,7 @@ use WScore\Pile\App;
  * creates a pile of handlers for http request.
  * continues processing the request until one of the pile returns a response.
  */
-class Stackable implements HttpKernelInterface, StackableInterface
+class Stack implements HttpKernelInterface, StackableInterface
 {
     /**
      * the middleware. the Http Kernel that does the job. 
@@ -25,7 +25,7 @@ class Stackable implements HttpKernelInterface, StackableInterface
     /**
      * pile of Stackable Http Kernels. 
      * 
-     * @var Stackable
+     * @var Stack
      */
     protected $next;
 

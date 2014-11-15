@@ -16,7 +16,7 @@ use WScore\Pile\Tools\Tools;
  * NOT TESTED!
  *
  */
-class Branch extends Stackable
+class Branch extends Stack
 {
     /**
      * @var HttpKernelInterface[]
