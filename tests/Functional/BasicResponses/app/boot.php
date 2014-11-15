@@ -32,7 +32,7 @@ return function( $routes = null )
      */
     $app = App::start();
     $app
-        ->push( Session::forge( new MockArraySessionStorage() ) )
+        ->push( Session::forge( $app, new MockArraySessionStorage() ) )
         ->push( Template::forge( $app, $views ) )
         ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $config->locate( $routes ) ) )

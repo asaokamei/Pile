@@ -34,7 +34,7 @@ return function( $session )
      */
     $app = App::start();
     $app
-        ->push( Session::forge( $session ) )
+        ->push( Session::forge( $app, $session ) )
         ->push( Template::forge( $app, $views ) )
         ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $config->locate( $routes ) ) )

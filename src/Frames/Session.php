@@ -4,7 +4,7 @@ namespace WScore\Pile\Frames;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\Redirect;
 use WScore\Pile\App;
@@ -23,24 +23,28 @@ class Session implements HttpKernelInterface, ReleaseInterface
     protected $app;
 
     /**
-     * @var null|MockArraySessionStorage
+     * @var SessionStorageInterface
      */
     protected $storage = null;
 
     /**
-     * @param null|MockArraySessionStorage $storage
+     * @param App                          $app
+     * @param null|SessionStorageInterface $storage
      */
-    public function __construct( $storage = null )
+    public function __construct( $app, $storage = null )
     {
+        $this->app = $app;
         $this->storage = $storage;
     }
 
     /**
+     * @param App                     $app
+     * @param SessionStorageInterface $storage
      * @return Session
      */
-    public static function forge( $storage = null )
+    public static function forge( $app, $storage = null )
     {
-        return new self( $storage );
+        return new self( $app, $storage );
     }
 
     /**
@@ -62,7 +66,6 @@ class Session implements HttpKernelInterface, ReleaseInterface
             $request->setSession( new SymfonySession( $this->storage ) );
         }
         $this->session = $request->getSession();
-        $this->app     = App::reveal( $request );
         $flash         = $this->session->getFlashBag();
 
         if( $message = $flash->get( 'messages' ) ) {
