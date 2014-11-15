@@ -13,6 +13,11 @@ use WScore\Pile\Stack\ReleaseInterface;
 class Template implements HttpKernelInterface, ReleaseInterface
 {
     /**
+     * @var App
+     */
+    protected $app;
+    
+    /**
      * @var Request
      */
     protected $request;
@@ -23,20 +28,23 @@ class Template implements HttpKernelInterface, ReleaseInterface
     protected $engine;
 
     /**
+     * @param App               $app
      * @param TemplateInterface $engine
      */
-    public function __construct( $engine )
+    public function __construct( $app, $engine )
     {
+        $this->app = $app;
         $this->engine = $engine;
     }
 
     /**
+     * @param App    $app
      * @param string $dir
      * @return Template
      */
-    public static function forge( $dir )
+    public static function forge( $app, $dir )
     {
-        return new self( new PhpEngine( $dir ) );
+        return new self( $app, new PhpEngine( $dir ) );
     }
 
     /**
@@ -66,16 +74,14 @@ class Template implements HttpKernelInterface, ReleaseInterface
     {
         if ( !$response ) {
             /** @var Responder $res */
-            $res      = $this->request->attributes->get( 'responder' );
-            $response = $res->notFound();
+            $response = $this->app->respond()->notFound();
         }
         if ( $response instanceof View ) {
             return $this->setContents( $response );
         }
         if ( is_string( $response ) ) {
             /** @var Responder $res */
-            $res = App::reveal( $this->request )->respond();
-            return $response = $res->text( $response );
+            return $response = $this->app->respond()->text( $response );
         }
         return $response;
     }

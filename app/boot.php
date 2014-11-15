@@ -32,7 +32,7 @@ function boot_pile( $routes = null )
     $app = App::start();
     $app
         ->push( Session::forge() )
-        ->push( Template::forge( $views ) )
+        ->push( Template::forge( $app, $views ) )
         ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $config->locate( $routes ) ) )
     ;
