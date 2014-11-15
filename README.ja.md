@@ -27,61 +27,66 @@ Methods
 アプリケーションの開始。
 
 *   $app::start()
-*   $app->push($middleware)
-*   $app->handle($request, $type, $catch)
+*   $app->push(Stack $middleware)
+*   $app->handle(Request $request, $type, $catch)
 
 サービス
 
-*   $app->setService($name, $service)
-*   $app->service($name)
+*   $app->setService($service_name, $service)
+*   $app->service($service_name)
+*   $app->$service_name()
+*   $app->request()
 *   $app->respond()
 *   $app->url()
+*   $app->log()
 
 フィルター
 
-*   $app->setFilter($name, $filter)
-*   $app->filter($name)
+*   $app->setFilter($filter_name, $filter)
+*   $app->filter($filter_name)
 
 バッグ（共有データ）
 
-*   $app->bag($name)
-*   $app->deco($name, $data)
-*   $app->pub($name, $data)
-*   $app->sub($name)
+*   $app->bag($bag_name)
+*   $app->deco($bag_name, array $data)
+*   $app->pub($bag_name, array $data)
+*   $app->sub($bag_name)
+
+
+#### Respondサービス
+
+結果を返す。
+
+*   $app->respond()->test($text)
+*   $app->respond()->view($filename)
+*   $app->respond()->json(array $data)
+*   $app->respond()->subRequest(Request $request)
+
+別URLに飛ばす
+
+*   $app->respond()->redirect($url)
+*   $app->respond()->reload($url)
+*   $app->respond()->named($route_name)
+*   $app->respond()->$route_name()
+
+エラーの場合。
+
+*   $app->respond()->error($status, $file=null)
+*   $app->respond()->notFound($file=null)
+
+
 
 ### Middleware Stack
 
 *   $stack->match($route)
-*   $stack->before($filter)
-*   $stack->after($filter)
+*   $stack->before($filter_name)
+*   $stack->after($filter_name)
 
 
-### UrlMap
+URLMap
 
-*   $map->setMap($map)
+*   $map->setMap(array $map)
 *   $map->route( $route, $target )
-*   $map->name( $name )
-
-
-### Respond
-
-結果を返す。
-
-*   $respond->test($text)
-*   $respond->view($filename)
-*   $respond->json($data)
-*   $respond->subRequest($request)
-
-別URLに飛ばす
-
-*   $respond->redirect($url)
-*   $respond->reload($url)
-*   $respond->named($name)
-*   $respond->$name()
-
-エラーの場合。
-
-*   $respond->error($status,$file=null)
-*   $respond->notFound($file=null)
+*   $map->name( $route_name )
 
 
