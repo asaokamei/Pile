@@ -9,8 +9,6 @@ class UrlView implements HttpKernelInterface
 {
     use UrlMapperTrait;
 
-    use ApplyFilterTrait;
-
     /**
      */
     public function __construct()
@@ -26,12 +24,6 @@ class UrlView implements HttpKernelInterface
      */
     protected function invoke( $request, $type, $catch, $app )
     {
-        /*
-         * apply filters before invoking apps.
-         */
-        if( $response = $this->applyFilters( $request ) ) {
-            return $response;
-        }
         /*
          * invoke an app.
          */
