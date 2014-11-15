@@ -60,8 +60,8 @@ class App
     public static function start()
     {
         $app = new static();
-        $app->register( 'respond', new Responder( 'errors' ) );
-        $app->register( 'url', new UrlGenerator() );
+        $app->register( 'respond', new Responder( $app, 'errors' ) );
+        $app->register( 'url', new UrlGenerator( $app ) );
         return $app;
     }
 
@@ -141,29 +141,9 @@ class App
     public function handle( $request = null, $type = HttpKernelInterface::MASTER_REQUEST, $catch = false )
     {
         if ( !$request ) $request = Request::createFromGlobals();
-        $this->setupRequest( $request );
-        return $this->stack->handle( $request, $type, $catch );
-    }
-
-    /**
-     * a hidden/protected method that sets up request's attribute.
-     * default is to set
-     *  - app: the app itself, and
-     *  - responder: factory for response object.
-     *
-     * @param $request
-     */
-    protected function setupRequest( $request )
-    {
-        // set up UrlGenerator.
-        /** @noinspection PhpUndefinedMethodInspection */
-        $this->services['url']->setRequest( $request );
-
-        // set up Responder.
-        $this->respond()->setRequest( $request );
-
-        // save $app itself to the $request.
+        $this->register( 'request', $request );
         $request->attributes->set( App::KEY, $this );
+        return $this->stack->handle( $request, $type, $catch );
     }
 
     // +----------------------------------------------------------------------+

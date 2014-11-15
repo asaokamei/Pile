@@ -2,6 +2,7 @@
 namespace WScore\Pile\Http;
 
 use Symfony\Component\HttpFoundation\Request;
+use WScore\Pile\App;
 
 class UrlGenerator
 {
@@ -26,10 +27,34 @@ class UrlGenerator
     protected $with = [];
 
     /**
-     *
+     * @var App|Request
      */
-    public function __construct()
+    protected $app;
+
+    /**
+     * @param App $app
+     */
+    public function __construct( $app )
     {
+        $this->app = $app;
+    }
+
+    /**
+     * set request for testing purpose.
+     * 
+     * @param Request $request
+     */
+    public function setRequest( $request )
+    {
+        $this->request = $request;
+    }
+
+    /**
+     * @return Request
+     */
+    protected function getRequest()
+    {
+        return $this->app ? $this->app->request() : $this->request;
     }
 
     /**
@@ -46,16 +71,6 @@ class UrlGenerator
             $url->to( $path );
         }
         return $url;
-    }
-
-    /**
-     * @param Request $request
-     * @return $this
-     */
-    public function setRequest( $request )
-    {
-        $this->request = $request;
-        return $this;
     }
 
     /**
@@ -76,7 +91,7 @@ class UrlGenerator
      */
     public function to( $path )
     {
-        $this->url = $this->request->getBaseUrl();
+        $this->url = $this->getRequest()->getBaseUrl();
         $this->url .= $this->addSlashIfNot( $path );
         return $this;
     }
@@ -89,7 +104,7 @@ class UrlGenerator
      */
     public function base( $path )
     {
-        $this->url = $this->request->attributes->get('url.mapped') ?: $this->request->getBaseUrl();
+        $this->url = $this->getRequest()->attributes->get('url.mapped') ?: $this->getRequest()->getBaseUrl();
         $this->url .= $this->addSlashIfNot( $path );
         return $this;
     }
@@ -123,7 +138,7 @@ class UrlGenerator
      */
     protected function addHttps( $url )
     {
-        $host = $this->request->getHost();
+        $host = $this->getRequest()->getHost();
         return "https://{$host}{$url}";
     }
 

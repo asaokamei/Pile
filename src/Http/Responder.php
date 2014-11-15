@@ -3,6 +3,7 @@ namespace WScore\Pile\Http;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use WScore\Pile\App;
 
 class Responder
 {
@@ -17,10 +18,17 @@ class Responder
     protected $error_file;
 
     /**
+     * @var App
+     */
+    protected $app;
+
+    /**
+     * @param App    $app
      * @param string $error_file
      */
-    public function __construct( $error_file )
+    public function __construct( $app, $error_file )
     {
+        $this->app = $app;
         $this->error_file = $error_file;
     }
 
@@ -30,6 +38,14 @@ class Responder
     public function setRequest( $request )
     {
         $this->request = $request;
+    }
+
+    /**
+     * @return Request
+     */
+    protected function getRequest()
+    {
+        return $this->app ? $this->app->request() : $this->request;
     }
 
     /**
@@ -67,9 +83,9 @@ class Responder
     public function redirect( $url )
     {
         $url = substr($url,0,1)==='/' ? $url : '/'.$url;
-        $url      = $this->request->getUriForPath( $url );
+        $url      = $this->getRequest()->getUriForPath( $url );
         $response = new Redirect( $url );
-        $response->setRequest( $this->request );
+        $response->setRequest( $this->getRequest() );
         return $response;
     }
 
@@ -79,9 +95,9 @@ class Responder
      */
     public function reload( $url = null )
     {
-        $url      = $this->request->getSchemeAndHttpHost() . $this->request->getBaseUrl() . $url;
+        $url      = $this->getRequest()->getSchemeAndHttpHost() . $this->getRequest()->getBaseUrl() . $url;
         $response = new Redirect( $url );
-        $response->setRequest( $this->request );
+        $response->setRequest( $this->getRequest() );
         return $response;
     }
 
@@ -92,7 +108,7 @@ class Responder
     public function view( $file )
     {
         $response = new View();
-        $response->setRequest( $this->request );
+        $response->setRequest( $this->getRequest() );
         $response->setFile( $file );
         return $response;
     }
@@ -108,7 +124,7 @@ class Responder
             $file = $this->error_file;
         }
         $response = new View( '', $status );
-        $response->setRequest( $this->request );
+        $response->setRequest( $this->getRequest() );
         $response->setFile( $file );
         return $response;
     }
@@ -120,7 +136,7 @@ class Responder
     public function notFound( $file=null )
     {
         $response = $this->error( Response::HTTP_NOT_FOUND, $file );
-        $response->setRequest( $this->request );
+        $response->setRequest( $this->getRequest() );
         return $response;
     }
 }
