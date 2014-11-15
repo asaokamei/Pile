@@ -43,6 +43,24 @@ class Responder
     }
 
     /**
+     * return json string.
+     * 
+     * @param $data
+     */
+    public function json( $data ) {
+        // todo: implement this method.
+    }
+
+    /**
+     * issue a sub request to itself.
+     * 
+     * @param $request
+     */
+    public function subRequest( $request ) {
+        // todo: implement this method.
+    }
+
+    /**
      * @param string $url
      * @return Redirect
      */

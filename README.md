@@ -27,66 +27,10 @@ to-be-written.
 Basic Usage
 -----------
 
-### creating a handler
-
-create a handler, which implements Symfony's HttpKernelInterface.
-
-```php
-class MiddleWare implements HttpKernelInterface
-{
-    public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true ) {
-        if( $request->getPathInfo() === '/handled' ) {
-            return new Response( 200, [], 'handled by MyHandler' );
-        }
-        return null;
-    }
-}
-```
-
-a handler can implement PileInterface with handled method
- which can be used to process the $response.
-
-```php
-class MyLogger implements PileInterface
-{
-    public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true ) {
-        return null;
-    }
-    public function handled( $response ) {
-        Log::responded( $response );
-    }
-}
-```
-
-### building an app
-
-then, push it to the pile.
-
-```php
-$app = new App::build(new MyLogger)
-    ->push( new MiddleWare );
-$response = $app->handle( Request::createFromGlobals() );
-$response->send();
-```
-
-you can push as many piles as you want.
- they are just a simple one-way linked list.
-
-
 
 Handlers
 -----------
 
-There are several predefined handlers as examples.
-
-### Backstage and UrlMap
-
-they are taken from the StackPHP middleware with respect, 
-and removed the $app part. 
-
-### Router
-
-A simple router handler. 
 
 
 Piles

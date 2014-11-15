@@ -38,6 +38,14 @@ trait UrlMapperTrait
         $this->_url_map = $map;
     }
 
+    public function route( $route, $target ) {
+        // todo: implement this method.
+    }
+    public function name( $name ) {
+        // todo: implement this method.
+    }
+
+
     /**
      * Handles a Request to convert it to a Response.
      *

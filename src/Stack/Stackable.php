@@ -38,6 +38,10 @@ class Stackable implements HttpKernelInterface, StackableInterface
         $this->handler = $handler;
     }
 
+    public function match( $root ) {
+        // todo: implement this method.
+    }
+    
     /**
      * @param HttpKernelInterface $handler
      * @return HttpKernelInterface|static
