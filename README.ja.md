@@ -26,67 +26,68 @@ Methods
 
 アプリケーションの開始。
 
-*   $app::start()
-*   $app->push(Stack $middleware)
-*   $app->handle(Request $request, $type, $catch)
+*   App $app::start()
+*   Stack $app->push(HttpKernelInterface $middleware)
+*   Response $app->handle(Request $request, $type, $catch)
 
 サービス
 
-*   $app->register($service_name, $service)
-*   $app->service($service_name)
-*   $app->$service_name()
-*   $app->request()
-*   $app->respond()
-*   $app->url()
-*   $app->log()
+*   App $app->register($service_name, $service)
+*   mixed $app->service($service_name)
+*   mixed $app->$service_name()
+*   Request $app->request()
+*   Responder $app->respond()
+*   UrlGenerator $app->url()
+*   Log $app->log()
 
 フィルター
 
-*   $app->setFilter($filter_name, $filter)
-*   $app->filter($filter_name)
+*   App $app->setFilter($filter_name, $filter)
+*   HttpKernelInterface $app->filter($filter_name)
 
 バッグ（共有データ）
 
-*   $app->bag($bag_name)
-*   $app->deco($bag_name, array $data)
+*   Bag $app->bag($bag_name)
+*   App $app->deco($bag_name, array $data)
 *   $app->pub($bag_name, array $data)
-*   $app->sub($bag_name)
+*   string|array $app->sub($bag_name)
 
 
 #### Respondサービス
 
 結果を返す。
 
-*   $app->respond()->test($text)
-*   $app->respond()->view($filename)
-*   $app->respond()->json(array $data)
-*   $app->respond()->subRequest(Request $request)
+*   Response $app->respond()->test($text)
+*   Response $app->respond()->view($filename)
+*   Response $app->respond()->json(array $data)
+*   Response $app->respond()->subRequest(Request $request)
 
 別URLに飛ばす
 
-*   $app->respond()->redirect($url)
-*   $app->respond()->reload($url)
-*   $app->respond()->named($route_name)
-*   $app->respond()->$route_name()
+*   Redirect $app->respond()->redirect($url)
+*   Redirect $app->respond()->reload($url)
+*   Redirect $app->respond()->named($route_name)
+*   Redirect $app->respond()->$route_name()
 
 エラーの場合。
 
-*   $app->respond()->error($status, $file=null)
-*   $app->respond()->notFound($file=null)
+*   Response $app->respond()->error($status, $file=null)
+*   Response $app->respond()->notFound($file=null)
 
 
 
 ### Middleware Stack
 
-*   $stack->match($route)
-*   $stack->before($filter_name)
-*   $stack->after($filter_name)
+*   Stack $stack->push(HttpKernelInterface $middleware)
+*   Stack $stack->match($route)
+*   Stack $stack->before($filter_name)
+*   Stack $stack->after($filter_name) ? may not be implemented...
 
 
-URLMap
+URLMap Middleware
 
-*   $map->setMap(array $map)
-*   $map->route( $route, $target )
-*   $map->name( $route_name )
+*   UrlMap $map->setMap(array $map)
+*   UrlMap $map->route( $route, $target )
+*   UrlMap $map->name( $route_name )
 
 
