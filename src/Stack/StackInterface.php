@@ -1,4 +1,4 @@
 <?php
 namespace WScore\Pile\Stack;
 
-interface StackableInterface {}
+interface StackInterface {}

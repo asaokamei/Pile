@@ -13,7 +13,7 @@ use WScore\Pile\App;
  * creates a pile of handlers for http request.
  * continues processing the request until one of the pile returns a response.
  */
-class Stack implements HttpKernelInterface, StackableInterface
+class Stack implements HttpKernelInterface, StackInterface
 {
     /**
      * the middleware. the Http Kernel that does the job. 
@@ -113,7 +113,7 @@ class Stack implements HttpKernelInterface, StackableInterface
      */
     public static function makeStack( HttpKernelInterface $handler )
     {
-        if( !$handler instanceof StackableInterface ) {
+        if( !$handler instanceof StackInterface ) {
             $handler = new static( $handler );
         }
         return $handler;
