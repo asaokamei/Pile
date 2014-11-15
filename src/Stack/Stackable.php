@@ -19,7 +19,7 @@ class Stackable implements HttpKernelInterface, StackableInterface
      * 
      * @var HttpKernelInterface
      */
-    protected $handler;
+    protected $middleware;
 
     /**
      * pile of Stackable Http Kernels. 
@@ -29,17 +29,42 @@ class Stackable implements HttpKernelInterface, StackableInterface
     protected $next;
 
     /**
+     * @var array
+     */
+    protected $roots = [];
+
+    /**
      * wraps the Http Kernel that does the job with Stackable Http Kernel. 
      *
-     * @param HttpKernelInterface $handler
+     * @param HttpKernelInterface $middleware
      */
-    public function __construct( HttpKernelInterface $handler )
+    public function __construct( HttpKernelInterface $middleware )
     {
-        $this->handler = $handler;
+        $this->middleware = $middleware;
     }
 
-    public function match( $root ) {
-        // todo: implement this method.
+    /**
+     * sets root to invoke the middleware 
+     * 
+     * @param $root
+     */
+    public function match( $root ) 
+    {
+        $this->roots[] = $root;
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    protected function isMatch( $request )
+    {
+        if( empty( $this->roots ) ) return true;
+        $pathInfo = rawurldecode( $request->getPathInfo() );
+        foreach ( $this->roots as $root ) {
+            if ( ( $pos = strpos( $pathInfo, $root ) ) === 0 ) return true;
+        }
+        return false;
     }
     
     /**
@@ -71,16 +96,33 @@ class Stackable implements HttpKernelInterface, StackableInterface
      */
     public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true )
     {
+        if( $this->isMatch( $request ) ) {
+            return $this->_handle( $request, $type, $catch );
+        }
+        if( $this->next ) {
+            return $this->next->handle( $request, $type, $catch );
+        }
+        return null;
+    }
+
+    /**
+     * @param Request $request
+     * @param int     $type
+     * @param Bool    $catch
+     * @return Response
+     */
+    public function _handle( Request $request, $type, $catch )
+    {
         // get the response from the own handler.
-        $response = $this->handler->handle( $request, $type );
+        $response = $this->middleware->handle( $request, $type );
 
         // if no response, invoke the next pile of handler.
-        if( !$response && $this->next ) {
-            $response = $this->next->handle( $request );
+        if ( !$response && $this->next ) {
+            $response = $this->next->handle( $request, $type, $catch );
         }
         // process the response if PileInterface is implemented.
-        if( $this->handler instanceof ReleaseInterface ) {
-            $response = $this->handler->release( $response );
+        if ( $this->middleware instanceof ReleaseInterface ) {
+            $response = $this->middleware->release( $response );
         }
         return $response;
     }

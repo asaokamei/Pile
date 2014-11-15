@@ -32,7 +32,7 @@ Methods
 
 サービス
 
-*   $app->setService($service_name, $service)
+*   $app->register($service_name, $service)
 *   $app->service($service_name)
 *   $app->$service_name()
 *   $app->request()
