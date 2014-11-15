@@ -1,7 +1,7 @@
 <?php
-use WScore\Pile\Http\UrlGenerator;
+use WScore\Pile\Service\UrlGenerator;
 
-/** @var UrlGenerator $url */
+/** @var \WScore\Pile\Service\UrlGenerator $url */
 $url = $this->url();
 ?>
 <h1>Pile Micro Framework</h1>

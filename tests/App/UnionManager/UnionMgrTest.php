@@ -3,7 +3,7 @@ namespace tests\App\UnionManager;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use WScore\Pile\Piles\UnionManager;
+use WScore\Pile\Service\UnionManager;
 
 require_once( __DIR__ . '/../../autoloader.php' );
 
@@ -21,7 +21,7 @@ class UnionMgrTest extends \PHPUnit_Framework_TestCase
 
     function test0()
     {
-        $this->assertEquals( 'WScore\Pile\Piles\UnionManager', get_class( $this->mgr ) );
+        $this->assertEquals( 'WScore\Pile\Service\UnionManager', get_class( $this->mgr ) );
     }
 
     /**

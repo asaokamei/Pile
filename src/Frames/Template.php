@@ -7,7 +7,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\App;
 use WScore\Pile\Http\Responder;
 use WScore\Pile\Http\View;
-use WScore\Pile\Piles\PhpEngine;
+use WScore\Pile\Service\PhpEngine;
+use WScore\Pile\Service\TemplateInterface;
 use WScore\Pile\Stack\ReleaseInterface;
 
 class Template implements HttpKernelInterface, ReleaseInterface

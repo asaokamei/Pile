@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Pile\Piles;
+namespace WScore\Pile\Service;
 
 interface LocatorInterface
 {

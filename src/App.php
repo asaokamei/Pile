@@ -5,8 +5,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\Responder;
-use WScore\Pile\Http\UrlGenerator;
-use WScore\Pile\Piles\Bag;
+use WScore\Pile\Service\UrlGenerator;
+use WScore\Pile\Service\Bag;
 use WScore\Pile\Stack\Stack;
 
 /**
@@ -95,11 +95,11 @@ class App
     }
 
     /**
-     * @return UrlGenerator
+     * @return \WScore\Pile\Service\UrlGenerator
      */
     public function url()
     {
-        /** @var UrlGenerator $url */
+        /** @var \WScore\Pile\Service\UrlGenerator $url */
         if( $url = $this->service( 'url' ) ) {
             return $url();
         }

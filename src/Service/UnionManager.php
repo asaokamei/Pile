@@ -1,11 +1,10 @@
 <?php
-namespace WScore\Pile\Piles;
+namespace WScore\Pile\Service;
 
 use League\Flysystem\Adapter\Local as Adapter;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
-use SebastianBergmann\Exporter\Exception;
 
 class UnionManager implements LocatorInterface
 {

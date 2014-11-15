@@ -1,7 +1,5 @@
 <?php
-namespace WScore\Pile\Piles;
-
-use WScore\Pile\Frames\TemplateInterface;
+namespace WScore\Pile\Service;
 
 class PhpEngine implements TemplateInterface
 {

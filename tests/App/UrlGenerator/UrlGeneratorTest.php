@@ -2,14 +2,14 @@
 namespace tests\App\UrlGenerator;
 
 use Symfony\Component\HttpFoundation\Request;
-use WScore\Pile\Http\UrlGenerator;
+use WScore\Pile\Service\UrlGenerator;
 
 require_once( __DIR__ . '/../../autoloader.php' );
 
 class UrlGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var UrlGenerator
+     * @var \WScore\Pile\Service\UrlGenerator
      */
     protected $url;
 
@@ -20,7 +20,7 @@ class UrlGeneratorTest extends \PHPUnit_Framework_TestCase
 
     function test0()
     {
-        $this->assertEquals( 'WScore\Pile\Http\UrlGenerator', get_class($this->url ) );
+        $this->assertEquals( 'WScore\Pile\Service\UrlGenerator', get_class($this->url ) );
     }
 
     /**

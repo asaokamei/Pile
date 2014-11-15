@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Pile\Frames;
+namespace WScore\Pile\Service;
 
 interface TemplateInterface
 {
