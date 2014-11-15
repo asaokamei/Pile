@@ -4,6 +4,7 @@ namespace WScore\Pile\Stack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use WScore\Pile\App;
 
 /**
  * Class Pile
@@ -34,6 +35,11 @@ class Stackable implements HttpKernelInterface, StackableInterface
     protected $roots = [];
 
     /**
+     * @var array
+     */
+    protected $beforeFilters = [];
+
+    /**
      * wraps the Http Kernel that does the job with Stackable Http Kernel. 
      *
      * @param HttpKernelInterface $middleware
@@ -54,6 +60,14 @@ class Stackable implements HttpKernelInterface, StackableInterface
     }
 
     /**
+     * @param string|\Closure $filter
+     */
+    public function before( $filter )
+    {
+        $this->beforeFilters[] = $filter;
+    }
+
+    /**
      * @param Request $request
      * @return bool
      */
@@ -66,7 +80,28 @@ class Stackable implements HttpKernelInterface, StackableInterface
         }
         return false;
     }
-    
+
+    /**
+     * @param array   $filter_list
+     * @param Request $request
+     * @return Response|null
+     */
+    protected function applyFilters( $filter_list, $request )
+    {
+        $app = App::reveal( $request );
+        $response = null;
+        foreach( $filter_list as $filter ) {
+            if( is_string( $filter ) ) {
+                $response = $app->filter( $filter, $request );
+            }
+            elseif( $filter instanceof \Closure ) {
+                $response = $filter( $request );
+            }
+            if( $response ) return $response;
+        }
+        return null;
+    }
+
     /**
      * @param HttpKernelInterface $handler
      * @return HttpKernelInterface|static
@@ -96,13 +131,16 @@ class Stackable implements HttpKernelInterface, StackableInterface
      */
     public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true )
     {
-        if( $this->isMatch( $request ) ) {
-            return $this->_handle( $request, $type, $catch );
+        if( !$this->isMatch( $request ) ) {
+            if( $this->next ) {
+                return $this->next->handle( $request, $type, $catch );
+            }
+            return null;
         }
-        if( $this->next ) {
-            return $this->next->handle( $request, $type, $catch );
+        if( $response = $this->applyFilters( $this->beforeFilters, $request ) ) {
+            return $response;
         }
-        return null;
+        return $this->_handle( $request, $type, $catch );
     }
 
     /**
