@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\Responder;
+use WScore\Pile\Service\LocatorInterface;
 use WScore\Pile\Service\UrlGenerator;
 use WScore\Pile\Service\Bag;
 use WScore\Pile\Stack\Stack;
@@ -17,6 +18,7 @@ use WScore\Pile\Stack\Stack;
  *
  * @method Responder respond()
  * @method Request   request()
+ * @method LocatorInterface config()
  */
 class App
 {
@@ -55,13 +57,27 @@ class App
     }
 
     /**
+     * starts an app with services.
+     * 
+     * sets respond (Responder), url (UrlGenerator).
+     * sets config (Locator) if $dir a config directory is given. 
+     * 
+     * @param null|string $dir
      * @return App
      */
-    public static function start()
+    public static function start( $dir=null )
     {
         $app = new static();
         $app->register( 'respond', new Responder( $app, 'errors' ) );
         $app->register( 'url', new UrlGenerator( $app ) );
+        if( $dir ) {
+            $locator = Locator::dir($dir);
+            if ( file_exists( $env_file= $dir . '/.env.php' ) ) {
+                $environment = include $env_file;
+                $locator->addRoot( $dir.'/'.$environment );
+            }
+            $app->register( 'config', $locator );
+        }
         return $app;
     }
 

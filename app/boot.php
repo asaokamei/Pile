@@ -14,27 +14,18 @@ use WScore\Pile\Locator;
  */
 function boot_pile( $routes = null )
 {
-    $routes = $routes ?: 'routes.php';
-    $config = Locator::dir(__DIR__ );
-    $views  = Locator::dir( __DIR__ .'/views' );
-    /*
-     * set up config based on environment
-     */
-    $environment = null;
-    $env_file    = __DIR__ . '/.env.php';
-    if ( file_exists( $env_file ) ) {
-        $environment = include $env_file;
-        $config->addRoot( $env_file );
-    }
     /*
      * build application
      */
     $app = App::start();
+
+    $routes = $routes ?: 'routes.php';
+    $views  = Locator::dir( __DIR__ .'/views' );
     $app
         ->push( Session::forge( $app ) )
         ->push( Template::forge( $app, $views ) )
         ->push( HtmlBuilder::forge( $app ) )
-        ->push( UrlMap::forge( $config->locate( $routes ) ) )
+        ->push( UrlMap::forge( $app->config()->locate( $routes ) ) )
     ;
     return $app;
 
