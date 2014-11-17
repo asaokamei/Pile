@@ -22,7 +22,7 @@ return function( $routes = null )
 
     $app
         ->push( Session::forge() )
-        ->push( Template::forge( $app, $config->evaluate( 'template.php' ) ) )
+        ->push( Template::forge( $app, $config->evaluate( 'template' ) ) )
         ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $config->evaluate( $routes ) ) )
     ;

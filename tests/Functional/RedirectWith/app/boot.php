@@ -13,7 +13,7 @@ use WScore\Pile\Frames\UrlMap;
  * @param SessionStorageInterface $session
  * @return App
  */
-return function( $session )
+return function()
 {
     /*
      * build application
@@ -23,8 +23,8 @@ return function( $session )
     $routes = 'routes.php';
 
     $app
-        ->push( Session::forge( $session ) )
-        ->push( Template::forge( $app, $config->evaluate( 'template.php' ) ) )
+        ->push( Session::forge( $config->evaluate( 'session_storage' ) ) )
+        ->push( Template::forge( $app, $config->evaluate( 'template' ) ) )
         ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $config->locate( $routes ) ) )
     ;

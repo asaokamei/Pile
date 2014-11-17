@@ -26,8 +26,8 @@ class RedirectTest extends \PHPUnit_Framework_TestCase
     {
         /** @var \Closure $boot_pile */
         $boot_pile = include( __DIR__ . '/app/boot.php' );
-        $this->session = new MockArraySessionStorage();
-        $this->app = $boot_pile( $this->session );
+        $this->app = $boot_pile();
+        $this->session = $GLOBALS[ 'session.storage' ];
     }
 
     /**

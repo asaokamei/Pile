@@ -83,6 +83,7 @@ class UnionManager implements LocatorInterface
      */
     public function evaluate( $file, $data=[] )
     {
+        $file .= substr($file,-4)==='.php' ? '' : '.php';
         if( $location = $this->locate($file) ) {
             extract($data);
             /** @noinspection PhpIncludeInspection */

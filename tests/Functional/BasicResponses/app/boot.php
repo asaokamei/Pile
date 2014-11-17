@@ -22,8 +22,8 @@ return function ( $routes = null ) {
      * build stack
      */
     $app
-        ->push( Session::forge( $config->evaluate( 'session_storage.php' ) ) )
-        ->push( Template::forge( $app, $config->evaluate( 'template.php' ) ) )
+        ->push( Session::forge( $config->evaluate( 'session_storage' ) ) )
+        ->push( Template::forge( $app, $config->evaluate( 'template' ) ) )
         ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $config->locate( $routes ) ) );
     return $app;
