@@ -1,7 +1,5 @@
 <?php
-namespace WScore\Pile;
-
-use WScore\Pile\Service\UnionManager;
+namespace WScore\Pile\Service;
 
 class Locator
 {

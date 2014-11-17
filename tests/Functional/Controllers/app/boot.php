@@ -6,7 +6,7 @@ use WScore\Pile\Frames\HtmlBuilder;
 use WScore\Pile\Frames\Session;
 use WScore\Pile\Frames\Template;
 use WScore\Pile\Frames\UrlMap;
-use WScore\Pile\Locator;
+use WScore\Pile\Service\Locator;
 
 
 /**

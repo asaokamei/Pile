@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\Responder;
+use WScore\Pile\Service\Locator;
 use WScore\Pile\Service\LocatorInterface;
 use WScore\Pile\Service\UrlGenerator;
 use WScore\Pile\Service\Bag;
