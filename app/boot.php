@@ -11,8 +11,7 @@ use WScore\Pile\Frames\UrlMap;
  * @param string $routes
  * @return App
  */
-return function( $routes = null )
-{
+return function ( $routes = null ) {
     /*
      * build application
      */
@@ -21,11 +20,10 @@ return function( $routes = null )
     $routes = $routes ?: 'routes.php';
 
     $app
-        ->push( Session::forge() )
+        ->push( Session::forge( $config->evaluate( 'session_storage' ) ) )
         ->push( Template::forge( $app, $config->evaluate( 'template' ) ) )
         ->push( HtmlBuilder::forge() )
-        ->push( UrlMap::forge( $config->evaluate( $routes ) ) )
-    ;
+        ->push( UrlMap::forge( $config->evaluate( $routes ) ) );
     return $app;
 
 };
