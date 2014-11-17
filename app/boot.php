@@ -17,15 +17,15 @@ function boot_pile( $routes = null )
     /*
      * build application
      */
-    $app = App::start();
-
+    $app    = App::start();
+    $config = $app->config();
     $routes = $routes ?: 'routes.php';
-    $views  = Locator::dir( __DIR__ .'/views' );
+
     $app
         ->push( Session::forge() )
-        ->push( Template::forge( $app, $views ) )
+        ->push( Template::forge( $app, $config->evaluate( 'template.php' ) ) )
         ->push( HtmlBuilder::forge() )
-        ->push( UrlMap::forge( $app->config()->locate( $routes ) ) )
+        ->push( UrlMap::forge( $config->evaluate( $routes ) ) )
     ;
     return $app;
 

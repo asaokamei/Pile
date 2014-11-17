@@ -13,24 +13,21 @@ use WScore\Pile\Service\Locator;
  * @param string $routes
  * @return App
  */
-return function( $routes = null )
-{
+return function ( $routes = null ) {
     /*
      * start application
      */
-    $app = App::start( __DIR__ );
-
+    $app    = App::start( __DIR__ );
+    $config = $app->config();
     $routes = $routes ?: 'routes.php';
-    $views  = Locator::dir( __DIR__ .'/views' );
     /*
      * build stack
      */
     $app
         ->push( Session::forge( new MockArraySessionStorage() ) )
-        ->push( Template::forge( $app, $views ) )
+        ->push( Template::forge( $app, $config->evaluate( 'template.php' ) ) )
         ->push( HtmlBuilder::forge() )
-        ->push( UrlMap::forge( $app->config()->locate( $routes ) ) )
-    ;
+        ->push( UrlMap::forge( $config->locate( $routes ) ) );
     return $app;
 
 };

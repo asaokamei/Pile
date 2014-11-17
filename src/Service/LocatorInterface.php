@@ -10,4 +10,11 @@ interface LocatorInterface
      * @return bool|string
      */
     public function locate( $file );
+
+    /**
+     * @param string $file
+     * @param array  $data
+     * @return mixed|null
+     */
+    public function evaluate( $file, $data=[] );
 }

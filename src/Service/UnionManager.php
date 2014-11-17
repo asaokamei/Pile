@@ -78,6 +78,21 @@ class UnionManager implements LocatorInterface
 
     /**
      * @param string $file
+     * @param array  $data
+     * @return mixed|null
+     */
+    public function evaluate( $file, $data=[] )
+    {
+        if( $location = $this->locate($file) ) {
+            extract($data);
+            /** @noinspection PhpIncludeInspection */
+            return include( $location );
+        }
+        return null;
+    }
+
+    /**
+     * @param string $file
      * @throws \Exception
      * @return mixed
      */

@@ -39,13 +39,16 @@ class Template implements HttpKernelInterface, ReleaseInterface
     }
 
     /**
-     * @param App    $app
-     * @param string $dir
+     * @param App                      $app
+     * @param string|TemplateInterface $engine
      * @return Template
      */
-    public static function forge( $app, $dir )
+    public static function forge( $app, $engine )
     {
-        return new self( $app, new PhpEngine( $dir ) );
+        if ( !$engine instanceof TemplateInterface ) {
+            $engine = new PhpEngine( $engine );
+        }
+        return new self( $app, $engine );
     }
 
     /**
