@@ -33,7 +33,7 @@ trait ResponseWithTrait
      */
     public function withMessage( $message )
     {
-        if( $request = $this->getRequest() ) {
+        if ( $request = $this->getRequest() ) {
             $request->attributes->set( 'messages', [ 'message' => $message ] );
         }
         return $this;
@@ -45,7 +45,7 @@ trait ResponseWithTrait
      */
     public function withErrorMsg( $error )
     {
-        if( $request = $this->getRequest() ) {
+        if ( $request = $this->getRequest() ) {
             $request->attributes->set( 'messages', [ 'error' => $error ] );
         }
         return $this;
@@ -57,7 +57,7 @@ trait ResponseWithTrait
      */
     public function withInput( $input )
     {
-        if( $request = $this->getRequest() ) {
+        if ( $request = $this->getRequest() ) {
             $request->attributes->set( 'input', $input );
         }
         return $this;
@@ -69,7 +69,7 @@ trait ResponseWithTrait
      */
     public function withValidationMsg( $errors )
     {
-        if( $request = $this->getRequest() ) {
+        if ( $request = $this->getRequest() ) {
             $request->attributes->set( 'errors', $errors );
         }
         return $this;

@@ -24,7 +24,7 @@ class UrlGenerator
     /**
      * @var array
      */
-    protected $with = [];
+    protected $with = [ ];
 
     /**
      * @var App|Request
@@ -41,7 +41,7 @@ class UrlGenerator
 
     /**
      * set request for testing purpose.
-     * 
+     *
      * @param Request $request
      */
     public function setRequest( $request )
@@ -61,13 +61,13 @@ class UrlGenerator
      * @param string $path
      * @return UrlGenerator
      */
-    public function __invoke( $path=null )
+    public function __invoke( $path = null )
     {
-        $url = clone($this);
-        $url->url = ''; // just in case.
+        $url         = clone( $this );
+        $url->url    = ''; // just in case.
         $url->secure = false;
-        $url->with = [];
-        if( $path ) {
+        $url->with   = [ ];
+        if ( $path ) {
             $url->to( $path );
         }
         return $url;
@@ -79,8 +79,8 @@ class UrlGenerator
      */
     protected function addSlashIfNot( $path )
     {
-        if( !$path ) return '/';
-        return substr($path,0,1)==='/' ? $path: '/'. $path;
+        if ( !$path ) return '/';
+        return substr( $path, 0, 1 ) === '/' ? $path : '/' . $path;
     }
 
     /**
@@ -104,7 +104,7 @@ class UrlGenerator
      */
     public function base( $path )
     {
-        $this->url = $this->getRequest()->attributes->get('url.mapped') ?: $this->getRequest()->getBaseUrl();
+        $this->url = $this->getRequest()->attributes->get( 'url.mapped' ) ?: $this->getRequest()->getBaseUrl();
         $this->url .= $this->addSlashIfNot( $path );
         return $this;
     }
@@ -115,8 +115,8 @@ class UrlGenerator
      */
     public function with( $args )
     {
-        foreach( $args as $key => $arg ) {
-            $args[$key] = urlencode($arg);
+        foreach ( $args as $key => $arg ) {
+            $args[ $key ] = urlencode( $arg );
         }
         $this->with = array_merge( $this->with, $args );
         return $this;
@@ -148,10 +148,10 @@ class UrlGenerator
      */
     protected function addArgs( $url )
     {
-        if( empty( $this->with ) ) return $url;
-        $list = [];
-        foreach( $this->with as $key => $arg ) {
-            $list[] = "{$key}={$arg}";
+        if ( empty( $this->with ) ) return $url;
+        $list = [ ];
+        foreach ( $this->with as $key => $arg ) {
+            $list[ ] = "{$key}={$arg}";
         }
         return $url . '?' . implode( '&amp;', $list );
     }
@@ -162,7 +162,7 @@ class UrlGenerator
     public function __toString()
     {
         $url = $this->addArgs( $this->url );
-        if( $this->secure ) return $this->addHttps( $url );
+        if ( $this->secure ) return $this->addHttps( $url );
         return $url;
     }
 }

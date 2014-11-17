@@ -1,4 +1,6 @@
 <?php
 namespace WScore\Pile\Stack;
 
-interface StackInterface {}
+interface StackInterface
+{
+}

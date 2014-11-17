@@ -46,10 +46,10 @@ class Session implements HttpKernelInterface, ReleaseInterface
     /**
      * Handles a Request to convert it to a Response.
      *
-     * @param Request $request  A Request instance
-     * @param int     $type     The type of the request
+     * @param Request $request A Request instance
+     * @param int     $type The type of the request
      *                          (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool    $catch    Whether to catch exceptions or not
+     * @param bool    $catch Whether to catch exceptions or not
      * @return Response A Response instance
      *
      * @throws \Exception When an Exception occurs during processing
@@ -65,13 +65,13 @@ class Session implements HttpKernelInterface, ReleaseInterface
         $this->session = $request->getSession();
         $flash         = $this->session->getFlashBag();
 
-        if( $message = $flash->get( 'messages' ) ) {
+        if ( $message = $flash->get( 'messages' ) ) {
             $request->attributes->set( 'messages', $message );
         }
-        if( $input = $flash->get( 'input' ) ) {
+        if ( $input = $flash->get( 'input' ) ) {
             $request->attributes->set( 'input', $input );
         }
-        if( $errors = $flash->get( 'errors' ) ) {
+        if ( $errors = $flash->get( 'errors' ) ) {
             $request->attributes->set( 'errors', $errors );
         }
 
@@ -87,8 +87,8 @@ class Session implements HttpKernelInterface, ReleaseInterface
         if ( $response instanceof Redirect ) {
             $flash = $this->session->getFlashBag();
             $flash->set( 'messages', $this->request->attributes->get( 'messages' ) );
-            $flash->set( 'errors',  $this->request->attributes->get( 'errors' ) );
-            $flash->set( 'input',   $this->request->attributes->get( 'input' ) );
+            $flash->set( 'errors', $this->request->attributes->get( 'errors' ) );
+            $flash->set( 'input', $this->request->attributes->get( 'input' ) );
         }
         $this->session->set( 'token', $this->request->attributes->get( 'token' ) );
         $this->session->save();

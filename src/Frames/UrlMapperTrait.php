@@ -38,10 +38,13 @@ trait UrlMapperTrait
         $this->_url_map = $map;
     }
 
-    public function route( $route, $target ) {
+    public function route( $route, $target )
+    {
         // todo: implement this method.
     }
-    public function name( $name ) {
+
+    public function name( $name )
+    {
         // todo: implement this method.
     }
 

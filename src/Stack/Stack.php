@@ -16,15 +16,15 @@ use WScore\Pile\App;
 class Stack implements HttpKernelInterface, StackInterface
 {
     /**
-     * the middleware. the Http Kernel that does the job. 
-     * 
+     * the middleware. the Http Kernel that does the job.
+     *
      * @var HttpKernelInterface
      */
     protected $middleware;
 
     /**
-     * pile of Stackable Http Kernels. 
-     * 
+     * pile of Stackable Http Kernels.
+     *
      * @var Stack
      */
     protected $next;
@@ -32,15 +32,15 @@ class Stack implements HttpKernelInterface, StackInterface
     /**
      * @var array
      */
-    protected $roots = [];
+    protected $roots = [ ];
 
     /**
      * @var array
      */
-    protected $beforeFilters = [];
+    protected $beforeFilters = [ ];
 
     /**
-     * wraps the Http Kernel that does the job with Stackable Http Kernel. 
+     * wraps the Http Kernel that does the job with Stackable Http Kernel.
      *
      * @param HttpKernelInterface $middleware
      */
@@ -55,10 +55,10 @@ class Stack implements HttpKernelInterface, StackInterface
      * @param string $root
      * @return $this
      */
-    public function match( $root ) 
+    public function match( $root )
     {
-        $args = func_get_args();
-        $this->roots[] = array_merge( $this->roots, $args );
+        $args           = func_get_args();
+        $this->roots[ ] = array_merge( $this->roots, $args );
         return $this;
     }
 
@@ -68,7 +68,7 @@ class Stack implements HttpKernelInterface, StackInterface
      */
     public function before( $filter )
     {
-        $this->beforeFilters[] = $filter;
+        $this->beforeFilters[ ] = $filter;
         return $this;
     }
 
@@ -78,7 +78,7 @@ class Stack implements HttpKernelInterface, StackInterface
      */
     protected function isMatch( $request )
     {
-        if( empty( $this->roots ) ) return true;
+        if ( empty( $this->roots ) ) return true;
         $pathInfo = rawurldecode( $request->getPathInfo() );
         foreach ( $this->roots as $root ) {
             if ( ( $pos = strpos( $pathInfo, $root ) ) === 0 ) return true;
@@ -93,16 +93,15 @@ class Stack implements HttpKernelInterface, StackInterface
      */
     protected function applyFilters( $filter_list, $request )
     {
-        $app = App::reveal( $request );
+        $app      = App::reveal( $request );
         $response = null;
-        foreach( $filter_list as $filter ) {
-            if( is_string( $filter ) ) {
+        foreach ( $filter_list as $filter ) {
+            if ( is_string( $filter ) ) {
                 $response = $app->filter( $filter, $request );
-            }
-            elseif( $filter instanceof \Closure ) {
+            } elseif ( $filter instanceof \Closure ) {
                 $response = $filter( $request );
             }
-            if( $response ) return $response;
+            if ( $response ) return $response;
         }
         return null;
     }
@@ -113,7 +112,7 @@ class Stack implements HttpKernelInterface, StackInterface
      */
     public static function makeStack( HttpKernelInterface $handler )
     {
-        if( !$handler instanceof StackInterface ) {
+        if ( !$handler instanceof StackInterface ) {
             $handler = new static( $handler );
         }
         return $handler;
@@ -125,10 +124,10 @@ class Stack implements HttpKernelInterface, StackInterface
      * if own handler does not return a response, it handles down to the next pile.
      * if the handler is a PileInterface, the response will be process by handled method.
      *
-     * @param Request $request  A Request instance
-     * @param int     $type     The type of the request
+     * @param Request $request A Request instance
+     * @param int     $type The type of the request
      *                          (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool    $catch    Whether to catch exceptions or not
+     * @param bool    $catch Whether to catch exceptions or not
      *
      * @return Response         A Response instance
      *
@@ -136,13 +135,13 @@ class Stack implements HttpKernelInterface, StackInterface
      */
     public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true )
     {
-        if( !$this->isMatch( $request ) ) {
-            if( $this->next ) {
+        if ( !$this->isMatch( $request ) ) {
+            if ( $this->next ) {
                 return $this->next->handle( $request, $type, $catch );
             }
             return null;
         }
-        if( $response = $this->applyFilters( $this->beforeFilters, $request ) ) {
+        if ( $response = $this->applyFilters( $this->beforeFilters, $request ) ) {
             return $response;
         }
         return $this->_handle( $request, $type, $catch );
@@ -179,7 +178,7 @@ class Stack implements HttpKernelInterface, StackInterface
      */
     public function push( HttpKernelInterface $handler )
     {
-        if( $this->next ) {
+        if ( $this->next ) {
             return $this->next->push( $handler );
         }
         $this->next = static::makeStack( $handler );

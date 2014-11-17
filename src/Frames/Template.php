@@ -17,7 +17,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
      * @var App
      */
     protected $app;
-    
+
     /**
      * @var Request
      */
@@ -34,7 +34,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
      */
     public function __construct( $app, $engine )
     {
-        $this->app = $app;
+        $this->app    = $app;
         $this->engine = $engine;
     }
 
@@ -51,10 +51,10 @@ class Template implements HttpKernelInterface, ReleaseInterface
     /**
      * Handles a Request to convert it to a Response.
      *
-     * @param Request $request  A Request instance
-     * @param int     $type     The type of the request
+     * @param Request $request A Request instance
+     * @param int     $type The type of the request
      *                          (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool    $catch    Whether to catch exceptions or not
+     * @param bool    $catch Whether to catch exceptions or not
      *
      * @return SymfonyResponse A Response instance
      *
@@ -93,12 +93,14 @@ class Template implements HttpKernelInterface, ReleaseInterface
      */
     protected function setContents( $response )
     {
-        $file = $response->getFile();
-        $messages = $this->request->attributes->get( 'messages' ) ?: [];
-        $errors = $this->request->attributes->get( 'errors' ) ?: [];
-        $input = $this->request->attributes->get( 'input' ) ?: [];
-        $data = $response->getData() + $messages + $errors + $input;
+        $messages = $this->request->attributes->get( 'messages' ) ?: [ ];
+        $errors   = $this->request->attributes->get( 'errors' ) ?: [ ];
+        $input    = $this->request->attributes->get( 'input' ) ?: [ ];
+        $data     = $response->getData() + $messages + $errors + $input;
+
         $this->engine->register( 'url', $this->app->url() );
+
+        $file = $response->getFile();
         $response->setContent( $this->engine->render( $file, $data ) );
         return $response;
     }

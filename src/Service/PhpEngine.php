@@ -18,7 +18,7 @@ class PhpEngine implements TemplateInterface
      *
      * @var array
      */
-    protected $services = [];
+    protected $services = [ ];
 
     /**
      * @param string|LocatorInterface $dir
@@ -56,7 +56,7 @@ class PhpEngine implements TemplateInterface
      */
     public function register( $name, $service )
     {
-        $this->services[$name] = $service;
+        $this->services[ $name ] = $service;
     }
 
     /**
@@ -66,9 +66,9 @@ class PhpEngine implements TemplateInterface
      */
     public function __call( $name, $args )
     {
-        if( !isset( $this->services[$name] ) ) return null;
-        $service = $this->services[$name];
-        if( $args ) {
+        if ( !isset( $this->services[ $name ] ) ) return null;
+        $service = $this->services[ $name ];
+        if ( $args ) {
             return call_user_func_array( $service, $args );
         }
         return $service;

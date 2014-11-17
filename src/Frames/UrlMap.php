@@ -21,8 +21,8 @@ class UrlMap implements HttpKernelInterface
      */
     public static function forge( $map )
     {
-        if( is_string( $map ) ) {
-            $map = include($map);
+        if ( is_string( $map ) ) {
+            $map = include( $map );
         }
         $self = new self( $map );
         $self->setMap( $map );
@@ -41,16 +41,16 @@ class UrlMap implements HttpKernelInterface
         /*
          * invoke an app.
          */
-        if( is_string( $app ) && class_exists( $app ) ) {
-            if( method_exists( $app, 'call' ) ) {
+        if ( is_string( $app ) && class_exists( $app ) ) {
+            if ( method_exists( $app, 'call' ) ) {
                 return $app::call( $request, $type, $catch );
             }
             $app = new $app;
         }
-        if( $app instanceof \Closure ) {
+        if ( $app instanceof \Closure ) {
             return $app( $request, $type, $catch );
         }
-        if( $app instanceof HttpKernelInterface ) {
+        if ( $app instanceof HttpKernelInterface ) {
             return $app->handle( $request, $type, $catch );
         }
         return $app;

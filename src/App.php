@@ -59,23 +59,23 @@ class App
 
     /**
      * starts an app with services.
-     * 
+     *
      * sets respond (Responder), url (UrlGenerator).
-     * sets config (Locator) if $dir a config directory is given. 
-     * 
+     * sets config (Locator) if $dir a config directory is given.
+     *
      * @param null|string $dir
      * @return App
      */
-    public static function start( $dir=null )
+    public static function start( $dir = null )
     {
         $app = new static();
         $app->register( 'respond', new Responder( $app, 'errors' ) );
         $app->register( 'url', new UrlGenerator( $app ) );
-        if( $dir ) {
-            $locator = Locator::dir($dir);
-            if ( file_exists( $env_file= $dir . '/.env.php' ) ) {
+        if ( $dir ) {
+            $locator = Locator::dir( $dir );
+            if ( file_exists( $env_file = $dir . '/.env.php' ) ) {
                 $environment = include $env_file;
-                $locator->addRoot( $dir.'/'.$environment );
+                $locator->addRoot( $dir . '/' . $environment );
             }
             $app->register( 'config', $locator );
         }
@@ -108,7 +108,7 @@ class App
      */
     public function service( $name )
     {
-        return array_key_exists( $name, $this->services ) ? $this->services[$name] : null;
+        return array_key_exists( $name, $this->services ) ? $this->services[ $name ] : null;
     }
 
     /**
@@ -117,7 +117,7 @@ class App
     public function url()
     {
         /** @var \WScore\Pile\Service\UrlGenerator $url */
-        if( $url = $this->service( 'url' ) ) {
+        if ( $url = $this->service( 'url' ) ) {
             return $url();
         }
         return $url;

@@ -41,8 +41,8 @@ abstract class AbstractController implements ForgedControllerInterface
      */
     public static function call( Request $request, $type, $catch )
     {
-        $controller = static::forge();
-        $controller->app = App::reveal( $request );
+        $controller          = static::forge();
+        $controller->app     = App::reveal( $request );
         $controller->request = $request;
         $controller->respond = $controller->app->respond();
 
