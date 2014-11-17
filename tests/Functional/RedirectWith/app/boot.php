@@ -1,6 +1,5 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use WScore\Pile\App;
 use WScore\Pile\Frames\HtmlBuilder;
@@ -24,9 +23,9 @@ return function( $session )
     $routes = 'routes.php';
     $views  = Locator::dir( __DIR__ .'/views' );
     $app
-        ->push( Session::forge( $app, $session ) )
+        ->push( Session::forge( $session ) )
         ->push( Template::forge( $app, $views ) )
-        ->push( HtmlBuilder::forge( $app ) )
+        ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $app->config()->locate( $routes ) ) )
     ;
     return $app;

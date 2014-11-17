@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\Http\Redirect;
-use WScore\Pile\App;
 use WScore\Pile\Stack\ReleaseInterface;
 
 class Session implements HttpKernelInterface, ReleaseInterface
@@ -16,11 +15,6 @@ class Session implements HttpKernelInterface, ReleaseInterface
      * @var SymfonySession
      */
     protected $session;
-
-    /**
-     * @var App
-     */
-    protected $app;
 
     /**
      * @var SessionStorageInterface
@@ -33,23 +27,20 @@ class Session implements HttpKernelInterface, ReleaseInterface
     protected $request;
 
     /**
-     * @param App                          $app
      * @param null|SessionStorageInterface $storage
      */
-    public function __construct( $app, $storage = null )
+    public function __construct( $storage = null )
     {
-        $this->app = $app;
         $this->storage = $storage;
     }
 
     /**
-     * @param App                     $app
      * @param SessionStorageInterface $storage
      * @return Session
      */
-    public static function forge( $app, $storage = null )
+    public static function forge( $storage = null )
     {
-        return new self( $app, $storage );
+        return new self( $storage );
     }
 
     /**

@@ -5,17 +5,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Form\Builder;
-use WScore\Pile\App;
 use WScore\Pile\Http\View;
 use WScore\Pile\Stack\ReleaseInterface;
 
 class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
 {
-    /**
-     * @var App
-     */
-    protected $app;
-    
     /**
      * @var Request
      */
@@ -27,22 +21,19 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
     protected $builder;
 
     /**
-     * @param App     $app
      * @param Builder $builder
      */
-    public function __construct( $app, $builder )
+    public function __construct( $builder )
     {
-        $this->app = $app;
         $this->builder = $builder;
     }
 
     /**
-     * @param App $app
      * @return HtmlBuilder
      */
-    public static function forge( $app )
+    public static function forge()
     {
-        return new self( $app, Builder::forge() );
+        return new self( Builder::forge() );
     }
 
     /**

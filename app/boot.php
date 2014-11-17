@@ -22,9 +22,9 @@ function boot_pile( $routes = null )
     $routes = $routes ?: 'routes.php';
     $views  = Locator::dir( __DIR__ .'/views' );
     $app
-        ->push( Session::forge( $app ) )
+        ->push( Session::forge() )
         ->push( Template::forge( $app, $views ) )
-        ->push( HtmlBuilder::forge( $app ) )
+        ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $app->config()->locate( $routes ) ) )
     ;
     return $app;

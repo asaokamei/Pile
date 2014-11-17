@@ -26,9 +26,9 @@ return function( $routes = null )
      * build stack
      */
     $app
-        ->push( Session::forge( $app, new MockArraySessionStorage() ) )
+        ->push( Session::forge( new MockArraySessionStorage() ) )
         ->push( Template::forge( $app, $views ) )
-        ->push( HtmlBuilder::forge( $app ) )
+        ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $app->config()->locate( $routes ) ) )
     ;
     return $app;
