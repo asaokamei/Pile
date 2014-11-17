@@ -1,12 +1,10 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use WScore\Pile\App;
 use WScore\Pile\Frames\HtmlBuilder;
 use WScore\Pile\Frames\Session;
 use WScore\Pile\Frames\Template;
 use WScore\Pile\Frames\UrlMap;
-use WScore\Pile\Service\Locator;
 
 
 /**
@@ -24,7 +22,7 @@ return function ( $routes = null ) {
      * build stack
      */
     $app
-        ->push( Session::forge( new MockArraySessionStorage() ) )
+        ->push( Session::forge( $config->evaluate( 'session_storage.php' ) ) )
         ->push( Template::forge( $app, $config->evaluate( 'template.php' ) ) )
         ->push( HtmlBuilder::forge() )
         ->push( UrlMap::forge( $config->locate( $routes ) ) );
