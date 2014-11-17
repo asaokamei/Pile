@@ -86,13 +86,13 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
     {
         // generate CSRF token
         $token = hash( 'sha512', uniqid( '', true ) . time() );
-        $this->app->pub( 'token', $token );
+        $this->request->attributes->set( 'token', $token );
         $this->builder->setToken( $token );
 
         // get old input from bag.
-        $input = $this->app->sub( 'input' );
+        $input = $this->request->attributes->get( 'input' );
         $this->builder->setInput( $input );
-        $this->app->pub( 'FormBuilders', [
+        $this->request->attributes->set( 'FormBuilders', [
             'form' => $this->builder,
         ] );
     }

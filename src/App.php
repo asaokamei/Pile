@@ -164,58 +164,6 @@ class App
     }
 
     // +----------------------------------------------------------------------+
-    //  bags. publish and subscribe bags.
-    // +----------------------------------------------------------------------+
-    /**
-     * @param string $name
-     * @return Bag
-     */
-    public function bag( $name )
-    {
-        if ( !isset( $this->bags[ $name ] ) ) {
-            $this->bags[ $name ] = new Bag();
-        }
-        return $this->bags[ $name ];
-    }
-
-    /**
-     * @param string $name
-     * @param array  $values
-     */
-    public function deco( $name, $values )
-    {
-        $this->bag($name)->fill($values);
-    }
-
-    /**
-     * @param string $name
-     * @param string|array  $content
-     * @param bool   $overwrite
-     */
-    public function pub( $name, $content, $overwrite = false )
-    {
-        if ( !isset( $this->bags[ $name ] ) || $overwrite ) {
-            $this->bags[ $name ] = $content;
-        }
-    }
-
-    /**
-     * @param string $name
-     * @return null|mixed
-     */
-    public function sub( $name )
-    {
-        if ( isset( $this->bags[ $name ] ) ) {
-            $bag = $this->bags[ $name ];
-            if( $bag instanceof Bag ) {
-                return $bag->all();
-            }
-            return $this->bags[ $name ];
-        }
-        return null;
-    }
-
-    // +----------------------------------------------------------------------+
     //  filters
     // +----------------------------------------------------------------------+
     /**

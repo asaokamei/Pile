@@ -34,7 +34,7 @@ trait ResponseWithTrait
     public function withMessage( $message )
     {
         if( $request = $this->getRequest() ) {
-            App::reveal( $request )->deco( 'messages', [ 'message' => $message ] );
+            $request->attributes->set( 'messages', [ 'message' => $message ] );
         }
         return $this;
     }
@@ -46,7 +46,7 @@ trait ResponseWithTrait
     public function withErrorMsg( $error )
     {
         if( $request = $this->getRequest() ) {
-            App::reveal( $request )->deco( 'messages', [ 'error' => $error ] );
+            $request->attributes->set( 'messages', [ 'error' => $error ] );
         }
         return $this;
     }
@@ -58,7 +58,7 @@ trait ResponseWithTrait
     public function withInput( $input )
     {
         if( $request = $this->getRequest() ) {
-            App::reveal( $request )->pub( 'input', $input );
+            $request->attributes->set( 'input', $input );
         }
         return $this;
     }
@@ -70,7 +70,7 @@ trait ResponseWithTrait
     public function withValidationMsg( $errors )
     {
         if( $request = $this->getRequest() ) {
-            App::reveal( $request )->pub( 'errors', $errors );
+            $request->attributes->set( 'errors', $errors );
         }
         return $this;
     }

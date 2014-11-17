@@ -28,6 +28,11 @@ class Session implements HttpKernelInterface, ReleaseInterface
     protected $storage = null;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * @param App                          $app
      * @param null|SessionStorageInterface $storage
      */
@@ -62,6 +67,7 @@ class Session implements HttpKernelInterface, ReleaseInterface
      */
     public function handle( Request $request, $type = self::MASTER_REQUEST, $catch = true )
     {
+        $this->request = $request;
         if ( !$request->hasSession() ) {
             $request->setSession( new SymfonySession( $this->storage ) );
         }
@@ -69,13 +75,13 @@ class Session implements HttpKernelInterface, ReleaseInterface
         $flash         = $this->session->getFlashBag();
 
         if( $message = $flash->get( 'messages' ) ) {
-            $this->app->pub( 'messages', $message );
+            $request->attributes->set( 'messages', $message );
         }
         if( $input = $flash->get( 'input' ) ) {
-            $this->app->pub( 'input', $input );
+            $request->attributes->set( 'input', $input );
         }
         if( $errors = $flash->get( 'errors' ) ) {
-            $this->app->pub( 'errors', $errors );
+            $request->attributes->set( 'errors', $errors );
         }
 
         return null;
@@ -89,11 +95,11 @@ class Session implements HttpKernelInterface, ReleaseInterface
     {
         if ( $response instanceof Redirect ) {
             $flash = $this->session->getFlashBag();
-            $flash->set( 'messages', $this->app->sub( 'messages' ) );
-            $flash->set( 'errors',  $this->app->sub( 'errors' ) );
-            $flash->set( 'input',   $this->app->sub( 'input' ) );
+            $flash->set( 'messages', $this->request->attributes->get( 'messages' ) );
+            $flash->set( 'errors',  $this->request->attributes->get( 'errors' ) );
+            $flash->set( 'input',   $this->request->attributes->get( 'input' ) );
         }
-        $this->session->set( 'token', $this->app->sub( 'token' ) );
+        $this->session->set( 'token', $this->request->attributes->get( 'token' ) );
         $this->session->save();
 
         return $response;

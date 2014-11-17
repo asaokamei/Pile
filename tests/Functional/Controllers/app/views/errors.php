@@ -2,5 +2,5 @@
 
 ?>
 <h1>Errors</h1>
-<?= $error ? "<p>{$error}</p>" : ''; ?>
+<?= isset($error) ? "<p>{$error}</p>" : ''; ?>
 

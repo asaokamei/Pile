@@ -93,13 +93,12 @@ class Template implements HttpKernelInterface, ReleaseInterface
      */
     protected function setContents( $response )
     {
-        $app  = $this->request->attributes->get( 'app' );
         $file = $response->getFile();
-        $messages = $app->sub( 'messages' ) ?: [];
-        $errors = $app->sub( 'errors' ) ?: [];
-        $input = $app->sub( 'input' ) ?: [];
+        $messages = $this->request->attributes->get( 'messages' ) ?: [];
+        $errors = $this->request->attributes->get( 'errors' ) ?: [];
+        $input = $this->request->attributes->get( 'input' ) ?: [];
         $data = $response->getData() + $messages + $errors + $input;
-        $this->engine->register( 'url', $app->url() );
+        $this->engine->register( 'url', $this->app->url() );
         $response->setContent( $this->engine->render( $file, $data ) );
         return $response;
     }
