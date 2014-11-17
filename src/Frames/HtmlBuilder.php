@@ -21,19 +21,41 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
     protected $builder;
 
     /**
+     * @var callable
+     */
+    protected $setInput;
+
+    /**
+     * @var callable
+     */
+    protected $setToken;
+
+    /**
      * @param Builder $builder
      */
     public function __construct( $builder )
     {
         $this->builder = $builder;
+        $this->setInput  = [ $this->builder, 'setInput' ];
+        $this->setToken  = [ $this->builder, 'setToken' ];
     }
 
     /**
+     * @param array $build_info
      * @return HtmlBuilder
      */
-    public static function forge()
+    public static function forge( $build_info=[] )
     {
-        return new self( Builder::forge() );
+        $builder = isset( $build_info['builder'] ) ? $build_info['builder'] : Builder::forge();
+        $self = new self( $builder );
+
+        if( isset( $build_info[ 'set_input' ] ) ) {
+            $self->setInput = $build_info[ 'set_input' ];
+        }
+        if( isset( $build_info[ 'set_token' ] ) ) {
+            $self->setToken = $build_info[ 'set_token' ];
+        }
+        return $self;
     }
 
     /**
@@ -75,14 +97,18 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
      */
     protected function setContents()
     {
-        // generate CSRF token
-        $token = hash( 'sha512', uniqid( '', true ) . time() );
-        $this->request->attributes->set( 'token', $token );
-        $this->builder->setToken( $token );
+        if( is_callable( $this->setToken ) ) {
+            // generate CSRF token
+            $token = hash( 'sha512', uniqid( '', true ) . time() );
+            $this->request->attributes->set( 'token', $token );
+            call_user_func( $this->setToken, $token );
+        }
 
-        // get old input from bag.
-        $input = $this->request->attributes->get( 'input' );
-        $this->builder->setInput( $input );
+        if( is_callable( $this->setInput ) ) {
+            // get old input from bag.
+            $input = $this->request->attributes->get( 'input' );
+            call_user_func( $this->setInput, $input );
+        }
         $this->request->attributes->set( 'FormBuilders', [
             'form' => $this->builder,
         ] );

@@ -24,7 +24,7 @@ return function ( $routes = null ) {
     $app
         ->push( Session::forge( $config->evaluate( 'session_storage' ) ) )
         ->push( Template::forge( $app, $config->evaluate( 'template' ) ) )
-        ->push( HtmlBuilder::forge() )
+        ->push( HtmlBuilder::forge( $config->evaluate( 'html_builder' ) ) )
         ->push( UrlMap::forge( $config->locate( $routes ) ) );
     return $app;
 
