@@ -36,8 +36,8 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
     public function __construct( $builder )
     {
         $this->builder = $builder;
-        $this->setInput  = [ $this->builder, 'setInput' ];
-        $this->setToken  = [ $this->builder, 'setToken' ];
+        $this->setInput  = [ $this, 'setInput' ];
+        $this->setToken  = [ $this, 'setToken' ];
     }
 
     /**
@@ -93,6 +93,22 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
     }
 
     /**
+     * @param string $token
+     */
+    protected function setToken( $token )
+    {
+        $this->builder->setToken( $token );
+    }
+
+    /**
+     * @param array $input
+     */
+    protected function setInput( $input )
+    {
+        $this->builder->setInput( $input );
+    }
+
+    /**
      *
      */
     protected function setContents()
@@ -101,16 +117,16 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
             // generate CSRF token
             $token = hash( 'sha512', uniqid( '', true ) . time() );
             $this->request->attributes->set( 'token', $token );
-            call_user_func( $this->setToken, $token );
+            $setToken = $this->setToken;
+            $setToken( $token );
         }
 
         if( is_callable( $this->setInput ) ) {
             // get old input from bag.
             $input = $this->request->attributes->get( 'input' );
-            call_user_func( $this->setInput, $input );
+            $setInput = $this->setInput;
+            $setInput( $input );
         }
-        $this->request->attributes->set( 'FormBuilders', [
-            'form' => $this->builder,
-        ] );
+        $this->request->attributes->set( 'form_builder', $this->builder );
     }
 }
