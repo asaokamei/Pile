@@ -8,7 +8,6 @@ use WScore\Pile\Http\Responder;
 use WScore\Pile\Service\Locator;
 use WScore\Pile\Service\LocatorInterface;
 use WScore\Pile\Service\UrlGenerator;
-use WScore\Pile\Service\Bag;
 use WScore\Pile\Stack\Stack;
 
 /**
@@ -24,11 +23,6 @@ use WScore\Pile\Stack\Stack;
 class App
 {
     const KEY = 'app';
-
-    /**
-     * @var Bag[]
-     */
-    protected $bags = [ ];
 
     /**
      * @var Stack
