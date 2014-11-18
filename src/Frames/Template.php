@@ -5,7 +5,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use WScore\Pile\App;
-use WScore\Pile\Http\Responder;
 use WScore\Pile\Http\View;
 use WScore\Pile\Service\PhpEngine;
 use WScore\Pile\Service\TemplateInterface;

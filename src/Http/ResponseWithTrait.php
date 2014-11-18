@@ -2,7 +2,6 @@
 namespace WScore\Pile\Http;
 
 use Symfony\Component\HttpFoundation\Request;
-use WScore\Pile\App;
 
 trait ResponseWithTrait
 {
