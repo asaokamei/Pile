@@ -66,7 +66,7 @@ class App
         $app->register( 'respond', new Responder( $app, 'errors' ) );
         $app->register( 'url', new UrlGenerator( $app ) );
         if ( $dir ) {
-            $locator = Locator::dir( $dir );
+            $locator = Locator::dir( $dir, [ 'app'=>$app ] );
             if ( file_exists( $env_file = $dir . '/.env.php' ) ) {
                 $environment = include $env_file;
                 $locator->addRoot( $dir . '/' . $environment );
