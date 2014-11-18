@@ -120,7 +120,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
      * @param string  $file
      * @param array   $data
      * @param Request $request
-     * @return SymfonyResponse
+     * @return string
      */
     protected function renderer( $file, $data, $request )
     {
