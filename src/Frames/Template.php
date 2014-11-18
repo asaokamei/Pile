@@ -29,26 +29,38 @@ class Template implements HttpKernelInterface, ReleaseInterface
     protected $engine;
 
     /**
-     * @param App               $app
-     * @param TemplateInterface $engine
+     * @var callable
+     */
+    protected $renderer;
+
+    /**
+     * @param App                        $app
+     * @param TemplateInterface|callable $engine
      */
     public function __construct( $app, $engine )
     {
         $this->app    = $app;
-        $this->engine = $engine;
+        if( $engine instanceof TemplateInterface ) {
+            $this->engine = $engine;
+            $this->renderer = [ $this, 'renderer' ];
+        }
+        elseif( is_callable( $engine ) ) {
+            $this->renderer = $engine;
+        }
     }
 
     /**
      * @param App                      $app
-     * @param string|TemplateInterface $engine
+     * @param string|TemplateInterface|\Closure $engine
      * @return Template
      */
     public static function forge( $app, $engine )
     {
-        if ( !$engine instanceof TemplateInterface ) {
+        if ( is_string( $engine ) ) {
             $engine = new PhpEngine( $engine );
         }
-        return new self( $app, $engine );
+        $self = new self( $app, $engine );
+        return $self;
     }
 
     /**
@@ -96,15 +108,29 @@ class Template implements HttpKernelInterface, ReleaseInterface
      */
     protected function setContents( $response )
     {
-        $messages = $this->request->attributes->get( 'messages' ) ?: [ ];
-        $errors   = $this->request->attributes->get( 'errors' ) ?: [ ];
-        $input    = $this->request->attributes->get( 'input' ) ?: [ ];
-        $data     = $response->getData() + $messages + $errors + $input;
+        $renderer = $this->renderer;
+        $file     = $response->getFile();
+        $data     = $response->getData();
+
+        $content  = $renderer( $file, $data, $this->request, $this->app );
+        $response->setContent( $content );
+        return $response;
+    }
+
+    /**
+     * @param string  $file
+     * @param array   $data
+     * @param Request $request
+     * @return SymfonyResponse
+     */
+    protected function renderer( $file, $data, $request )
+    {
+        $messages = $request->attributes->get( 'messages', [] );
+        $errors   = $request->attributes->get( 'errors', [] );
+        $input    = $request->attributes->get( 'input', [] );
+        $data     = $data + $messages + $errors + $input;
 
         $this->engine->register( 'url', $this->app->url() );
-
-        $file = $response->getFile();
-        $response->setContent( $this->engine->render( $file, $data ) );
-        return $response;
+        return $this->engine->render( $file, $data );
     }
 }
