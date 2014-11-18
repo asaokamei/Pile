@@ -35,24 +35,24 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
      */
     public function __construct( $builder )
     {
-        $this->builder = $builder;
-        $this->setInput  = [ $this, 'setInput' ];
-        $this->setToken  = [ $this, 'setToken' ];
+        $this->builder  = $builder;
+        $this->setInput = [ $this, 'setInput' ];
+        $this->setToken = [ $this, 'setToken' ];
     }
 
     /**
      * @param array $build_info
      * @return HtmlBuilder
      */
-    public static function forge( $build_info=[] )
+    public static function forge( $build_info = [ ] )
     {
-        $builder = isset( $build_info['builder'] ) ? $build_info['builder'] : Builder::forge();
-        $self = new self( $builder );
+        $builder = isset( $build_info[ 'builder' ] ) ? $build_info[ 'builder' ] : Builder::forge();
+        $self    = new self( $builder );
 
-        if( isset( $build_info[ 'set_input' ] ) ) {
+        if ( isset( $build_info[ 'set_input' ] ) ) {
             $self->setInput = $build_info[ 'set_input' ];
         }
-        if( isset( $build_info[ 'set_token' ] ) ) {
+        if ( isset( $build_info[ 'set_token' ] ) ) {
             $self->setToken = $build_info[ 'set_token' ];
         }
         return $self;
@@ -113,7 +113,7 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
      */
     protected function setContents()
     {
-        if( is_callable( $this->setToken ) ) {
+        if ( is_callable( $this->setToken ) ) {
             // generate CSRF token
             $token = hash( 'sha512', uniqid( '', true ) . time() );
             $this->request->attributes->set( 'token', $token );
@@ -121,9 +121,9 @@ class HtmlBuilder implements HttpKernelInterface, ReleaseInterface
             $setToken( $token );
         }
 
-        if( is_callable( $this->setInput ) ) {
+        if ( is_callable( $this->setInput ) ) {
             // get old input from bag.
-            $input = $this->request->attributes->get( 'input' );
+            $input    = $this->request->attributes->get( 'input' );
             $setInput = $this->setInput;
             $setInput( $input );
         }

@@ -51,7 +51,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     function use_renderer_closure()
     {
         $app = $this->app;
-        $tmp = Template::forge( $this->app, function( $file, $data, $request ) {
+        $tmp = Template::forge( $this->app, function( $file ) {
             return "Closure: {$file}.";
         } );
         $app->push( $tmp )->push( new ResponseRaw() );

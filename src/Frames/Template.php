@@ -39,18 +39,19 @@ class Template implements HttpKernelInterface, ReleaseInterface
      */
     public function __construct( $app, $engine )
     {
-        $this->app    = $app;
-        if( $engine instanceof TemplateInterface ) {
-            $this->engine = $engine;
+        $this->app = $app;
+        if ( $engine instanceof TemplateInterface ) {
+
+            $this->engine   = $engine;
             $this->renderer = [ $this, 'renderer' ];
-        }
-        elseif( is_callable( $engine ) ) {
+
+        } elseif ( is_callable( $engine ) ) {
             $this->renderer = $engine;
         }
     }
 
     /**
-     * @param App                      $app
+     * @param App                               $app
      * @param string|TemplateInterface|\Closure $engine
      * @return Template
      */
@@ -89,14 +90,12 @@ class Template implements HttpKernelInterface, ReleaseInterface
     public function release( $response )
     {
         if ( !$response ) {
-            /** @var Responder $res */
             $response = $this->app->respond()->notFound();
         }
         if ( $response instanceof View ) {
             return $this->setContents( $response );
         }
         if ( is_string( $response ) ) {
-            /** @var Responder $res */
             return $response = $this->app->respond()->text( $response );
         }
         return $response;
@@ -112,7 +111,7 @@ class Template implements HttpKernelInterface, ReleaseInterface
         $file     = $response->getFile();
         $data     = $response->getData();
 
-        $content  = $renderer( $file, $data, $this->request, $this->app );
+        $content = $renderer( $file, $data, $this->request, $this->app );
         $response->setContent( $content );
         return $response;
     }
@@ -125,9 +124,9 @@ class Template implements HttpKernelInterface, ReleaseInterface
      */
     protected function renderer( $file, $data, $request )
     {
-        $messages = $request->attributes->get( 'messages', [] );
-        $errors   = $request->attributes->get( 'errors', [] );
-        $input    = $request->attributes->get( 'input', [] );
+        $messages = $request->attributes->get( 'messages', [ ] );
+        $errors   = $request->attributes->get( 'errors', [ ] );
+        $input    = $request->attributes->get( 'input', [ ] );
         $data     = $data + $messages + $errors + $input;
 
         $this->engine->register( 'url', $this->app->url() );
