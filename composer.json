@@ -18,7 +18,8 @@
         "league/flysystem": "0.5.*",
         "league/plates": "3.*",
         "aura/view":"2.*",
-        "wscore/form":"dev-master"
+        "wscore/form":"dev-master",
+        "nikic/fast-route":"dev-master"
     },
     "repositories": [
         {
