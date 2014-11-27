@@ -174,7 +174,7 @@ class App
     /**
      * @param string  $name
      * @param Request $request
-     * @return null|Request
+     * @return null|Response
      */
     public function filter( $name, $request )
     {
