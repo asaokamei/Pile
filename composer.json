@@ -19,6 +19,7 @@
         "league/plates": "3.*",
         "aura/view":"2.*",
         "wscore/form":"dev-master",
+        "tuum/byof":"dev-master",
         "nikic/fast-route":"dev-master"
     },
     "repositories": [
@@ -29,6 +30,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/asaokamei/WScore.Enum"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/TuumPHP/byof"
         }
     ],
     "autoload": {
