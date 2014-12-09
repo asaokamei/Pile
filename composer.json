@@ -20,6 +20,7 @@
         "aura/view":"2.*",
         "wscore/form":"dev-master",
         "tuum/byof":"dev-master",
+        "tuum/stack":"dev-master",
         "nikic/fast-route":"dev-master"
     },
     "repositories": [
@@ -34,6 +35,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/TuumPHP/byof"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/TuumPHP/Stack"
         }
     ],
     "autoload": {
