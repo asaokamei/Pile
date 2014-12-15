@@ -21,6 +21,7 @@
         "wscore/form":"dev-master",
         "tuum/byof":"dev-master",
         "tuum/stack":"dev-master",
+        "tuum/web":"dev-master",
         "nikic/fast-route":"dev-master"
     },
     "repositories": [
@@ -39,6 +40,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/TuumPHP/Stack"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/TuumPHP/Web"
         }
     ],
     "autoload": {
