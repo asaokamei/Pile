@@ -13,7 +13,6 @@
         "php": ">=5.3.3",
         "symfony/http-foundation": "~2.5",
         "symfony/http-kernel": "~2.4",
-        "symfony/routing": "~2.2",
         "stack/builder":"1.*",
         "league/flysystem": "0.5.*",
         "league/plates": "3.*",
@@ -21,8 +20,9 @@
         "wscore/form":"dev-master",
         "tuum/byof":"dev-master",
         "tuum/stack":"dev-master",
+        "tuum/locator":"dev-master",
         "tuum/web":"dev-master",
-        "nikic/fast-route":"dev-master"
+        "tuum/router":"dev-master"
     },
     "repositories": [
         {
@@ -44,6 +44,14 @@
         {
             "type": "vcs",
             "url": "https://github.com/TuumPHP/Web"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/TuumPHP/Locator"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/TuumPHP/Router"
         }
     ],
     "autoload": {
