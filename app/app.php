@@ -22,6 +22,8 @@ $app->set(App::DEBUG, true);
 $app->push($app->get('error-handler'));
 $app->push($app->get('session-handler'));
 $app->push($app->get('route-handler'));
+$app->push($app->get('url-mapper-handler'));
+$app->push($app->get('not-found-handler'));
 
 /*
  * set up releases
