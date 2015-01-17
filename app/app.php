@@ -13,7 +13,9 @@ $app = new App(new Container($loc));
 /*
  * set up directories
  */
-$app->set('view-dir', __DIR__.'/views');
+$app->set(App::CONFIG_DIR,   __DIR__.'/config');
+$app->set(App::TEMPLATE_DIR, __DIR__.'/views');
+$app->set(App::RESOURCE_DIR, __DIR__.'/views');
 $app->set(App::DEBUG, true);
 
 /*
