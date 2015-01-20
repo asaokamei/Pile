@@ -24,6 +24,7 @@
         "tuum/web":"dev-master",
         "tuum/router":"dev-master",
         "tuum/controller":"dev-master",
+        "tuum/view": "dev-master",
         "psr/http-message": "~0.5.1@dev"
     },
     "repositories": [
@@ -58,6 +59,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/TuumPHP/Controller"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/TuumPHP/View"
         }
     ],
     "autoload": {
