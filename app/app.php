@@ -19,6 +19,11 @@ $app->set(App::RESOURCE_DIR, __DIR__.'/views');
 $app->set(App::DEBUG, true);
 
 /*
+ * set up services
+ */
+$app->setRenderer( $app->get('renderer') );
+
+/*
  * set up handlers
  */
 $app->push($app->get('error-handler'));
