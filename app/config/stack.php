@@ -1,13 +1,13 @@
 <?php
 use Tuum\Locator\Locator;
 use Tuum\Stack\ErrorRelease;
-use Tuum\Stack\ErrorRenderer;
 use Tuum\Stack\NotFoundHandler;
 use Tuum\Stack\ErrorHandler;
 use Tuum\Stack\SessionHandler;
 use Tuum\Stack\SessionRelease;
 use Tuum\Stack\UrlMapper;
 use Tuum\Stack\ViewRelease;
+use Tuum\View\ErrorView;
 use Tuum\Web\App;
 use Tuum\Web\Http\Response;
 use Whoops\Handler\PrettyPageHandler;
@@ -81,7 +81,7 @@ $app->push(new SessionRelease());
  */
 
 // error renderer
-$view = new ErrorRenderer($app->renderer());
+$view = new ErrorView($app->renderer());
 
 // default error template file name.
 $view->default_error_file = 'errors/error';

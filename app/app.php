@@ -6,6 +6,9 @@ require_once( dirname( __DIR__ ) . '/vendor/autoload.php' );
 
 /** @var \Closure $boot */
 /** @var App $app */
+$config = [
+    'debug' => true,
+];
 $boot = include( __DIR__.'/boot.php' );
 $app  = $boot([]);
 

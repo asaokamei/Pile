@@ -21,6 +21,7 @@ return function( array $config ) {
      */
     $loc = new Locator($config['config']);
     $loc->addRoot( dirname(__DIR__).'/vendor/tuum/stack/scripts');
+    $loc->addRoot( dirname(__DIR__).'/vendor/tuum/view/scripts');
     $app = new App(new Container($loc));
 
     /*
