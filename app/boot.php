@@ -40,7 +40,6 @@ return function( array $config ) {
     /*
      * set up handlers
      */
-
     $app->push($app->get('error-handler'));
     $app->push($app->get('session-handler'));
     $app->push($app->get('route-handler'));
@@ -50,7 +49,6 @@ return function( array $config ) {
     /*
      * set up releases
      */
-
     $app->push($app->get('view-release'));
     $app->push($app->get('session-release'));
     $app->push($app->get('error-release'));
