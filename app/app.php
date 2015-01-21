@@ -8,6 +8,7 @@ require_once( dirname( __DIR__ ) . '/vendor/autoload.php' );
 /** @var App $app */
 $config = [
     'debug' => true,
+    'routes' => __DIR__.'/routes.php',
 ];
 $boot = include( __DIR__.'/boot.php' );
 $app  = $boot([]);
