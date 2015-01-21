@@ -30,11 +30,13 @@ return function( array $config ) {
     $app->set(App::CONFIG_DIR,   $config['config']);
     $app->set(App::TEMPLATE_DIR, $config['views']);
     $app->set(App::RESOURCE_DIR, $config['views']);
+    $app->set(App::VAR_DATA_DIR, $config['var']);
     $app->set(App::DEBUG,        $config['debug']);
 
     /*
      * set up services
      */
+    $app->set(App::LOGGER, $app->get('logger'));
     $app->setRenderer( $app->get('renderer') );
 
     /*

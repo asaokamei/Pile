@@ -25,7 +25,8 @@
         "tuum/router":"dev-master",
         "tuum/controller":"dev-master",
         "tuum/view": "dev-master",
-        "psr/http-message": "~0.5.1@dev"
+        "psr/http-message": "~0.5.1@dev",
+        "monolog/monolog": "~1.0"
     },
     "repositories": [
         {
