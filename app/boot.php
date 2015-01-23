@@ -54,7 +54,7 @@ return function( array $config ) {
      * set up handlers
      */
     $app->push($app->get('error-stack'));
-    $app->push($app->get('session-handler'));
+    $app->push($app->get('session-stack'));
     $app->push($app->get('route-handler'));
     $app->push($app->get('url-mapper-handler'));
     $app->push($app->get('not-found-handler'));
@@ -63,7 +63,6 @@ return function( array $config ) {
      * set up releases
      */
     $app->push($app->get('view-release'));
-    $app->push($app->get('session-release'));
 
     return $app;
 };
