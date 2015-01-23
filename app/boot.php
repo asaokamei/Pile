@@ -39,7 +39,7 @@ return function( array $config ) {
      */
     $app->set(App::LOGGER, $app->get('logger'));
     $app->set(App::ROUTER, $app->get('router'));
-    $app->setRenderer( $app->get('renderer') );
+    $app->set(App::RENDER_ENGINE, $app->get('renderer') );
 
     /*
      * read the routes.
@@ -53,16 +53,11 @@ return function( array $config ) {
     /*
      * set up handlers
      */
-    $app->push($app->get('error-stack'));
-    $app->push($app->get('session-stack'));
-    $app->push($app->get('route-handler'));
-    $app->push($app->get('url-mapper-handler'));
-    $app->push($app->get('not-found-handler'));
-
-    /*
-     * set up releases
-     */
-    $app->push($app->get('view-release'));
+    $stacks = $app->get('stacks');
+    foreach($stacks as $stack) {
+        $app->push($app->get($stack));
+        
+    }
 
     return $app;
 };
