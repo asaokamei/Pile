@@ -64,6 +64,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/TuumPHP/View"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/TuumPHP/Routing"
         }
     ],
     "autoload": {
