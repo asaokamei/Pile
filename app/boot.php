@@ -53,7 +53,7 @@ return function( array $config ) {
     /*
      * set up handlers
      */
-    $app->push($app->get('error-handler'));
+    $app->push($app->get('error-stack'));
     $app->push($app->get('session-handler'));
     $app->push($app->get('route-handler'));
     $app->push($app->get('url-mapper-handler'));
@@ -64,7 +64,6 @@ return function( array $config ) {
      */
     $app->push($app->get('view-release'));
     $app->push($app->get('session-release'));
-    $app->push($app->get('error-release'));
 
     return $app;
 };
