@@ -24,3 +24,8 @@ $routes->get( '/closure-view', function($request) {
     return $request->respond()->view('closure-view');
 });
 
+$routes->get( '/', function($request) {
+    /** @var Request $request */
+    return $request->respond()->view('index');
+});
+
