@@ -72,7 +72,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "WScore\\Pile\\": "src/"
+            "Demo\\": "src/"
         }
     }
 }

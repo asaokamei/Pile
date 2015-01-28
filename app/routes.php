@@ -1,5 +1,6 @@
 <?php
 
+use Demo\Site\SampleController;
 use Tuum\Router\PhRouter\Router;
 use Tuum\Web\App;
 use Tuum\Web\Http\Request;
@@ -29,3 +30,4 @@ $routes->get( '/', function($request) {
     return $request->respond()->view('index');
 });
 
+$routes->any( '/sample/*', SampleController::class);
