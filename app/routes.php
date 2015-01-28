@@ -30,4 +30,4 @@ $routes->get( '/', function($request) {
     return $request->respond()->view('index');
 });
 
-$routes->any( '/sample/*', SampleController::class);
+$routes->any( '/sample*', SampleController::class);

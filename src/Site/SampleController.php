@@ -23,8 +23,8 @@ class SampleController extends AbstractController
     protected function getRoutes()
     {
         return [
-            '/{name}' => 'hello',
-            '/'       => 'welcome',
+            '/sample/{name}' => 'hello',
+            '/sample'       => 'welcome',
         ];
     }
 
