@@ -1,7 +1,7 @@
 <?php
 
 use Demo\Site\SampleController;
-use Tuum\Router\PhRouter\Router;
+use Tuum\Router\Tuum\Router;
 use Tuum\Web\App;
 use Tuum\Web\Http\Request;
 

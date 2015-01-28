@@ -10,4 +10,6 @@
     <li><a href="tuum.txt" >text file</a></li>
     <li><a href="tuum.md" >markdown file (not found)</a></li>
     <li><a href="errors.php" >php exception thrown</a></li>
+    <li><a href="closure">from closure</a></li>
+    <li><a href="closure-view">from closure-view</a></li>
 </ul>
