@@ -10,6 +10,14 @@ class SampleController extends AbstractController
     use RouteDispatchTrait;
 
     /**
+     * @return SampleController
+     */
+    public static function forge()
+    {
+        return new self;
+    }
+
+    /**
      * @return array
      */
     protected function getRoutes()
