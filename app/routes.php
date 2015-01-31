@@ -4,8 +4,9 @@ use Demo\Site\SampleController;
 use Tuum\Router\Tuum\Router;
 use Tuum\Web\App;
 use Tuum\Web\Psr7\Request;
+use Tuum\Web\Web;
 
-/** @var App $app */
+/** @var Web $app */
 /** @var Router $router */
 
 $router = $app->get(APP::ROUTER);

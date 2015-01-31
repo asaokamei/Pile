@@ -4,7 +4,7 @@ return [
      * basic stack
      */
     'error-stack',
-//    'session-stack',
+    'session-stack',
     'view-stack',
 
     /*
