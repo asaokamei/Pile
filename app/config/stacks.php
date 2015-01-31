@@ -5,7 +5,7 @@ return [
      */
     'error-stack',
 //    'session-stack',
-    'view-release',
+    'view-stack',
 
     /*
      * handlers and releases
