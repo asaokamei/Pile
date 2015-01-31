@@ -35,8 +35,8 @@ class SampleController extends AbstractController
     protected function onHello($name)
     {
         return $this->respond
-            ->view('sample/hello')
             ->with('name', $name )
+            ->asView('sample/hello')
             ;
     }
 
@@ -46,7 +46,7 @@ class SampleController extends AbstractController
     protected function onWelcome()
     {
         return $this->respond
-            ->view('sample/welcome')
+            ->asView('sample/welcome')
             ;
     }
 }

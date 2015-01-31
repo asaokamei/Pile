@@ -4,7 +4,7 @@ return [
      * basic stack
      */
     'error-stack',
-    'session-stack',
+//    'session-stack',
     'view-release',
 
     /*
@@ -12,5 +12,4 @@ return [
      */
     'route-handler',
     'url-mapper-handler',
-    'not-found-handler',
 ];

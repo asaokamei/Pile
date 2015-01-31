@@ -1,6 +1,6 @@
 <?php
 use Tuum\Web\App;
-use Tuum\Web\Http\Request;
+use Tuum\Web\Psr7\RequestFactory;
 
 require_once( dirname( __DIR__ ) . '/vendor/autoload.php' );
 
@@ -14,7 +14,7 @@ $config = [
 $boot = include( __DIR__.'/boot.php' );
 $app  = $boot($config);
 
-$request  = Request::startGlobal();
+$request  = RequestFactory::fromGlobals();
 $response = $app->__invoke( $request );
 $response->send();
 

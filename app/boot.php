@@ -2,6 +2,7 @@
 use Tuum\Locator\Container;
 use Tuum\Locator\Locator;
 use Tuum\Web\App;
+use Tuum\Web\Web;
 
 return function( array $config ) {
 
@@ -23,7 +24,7 @@ return function( array $config ) {
     $loc = new Locator($config['config']);
     $loc->addRoot( dirname(__DIR__).'/vendor/tuum/stack/scripts');
     $loc->addRoot( dirname(__DIR__).'/vendor/tuum/view/scripts');
-    $app = new App(new Container($loc));
+    $app = new Web(new Container($loc));
 
     /*
      * set up directories

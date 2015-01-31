@@ -3,7 +3,7 @@
 use Demo\Site\SampleController;
 use Tuum\Router\Tuum\Router;
 use Tuum\Web\App;
-use Tuum\Web\Http\Request;
+use Tuum\Web\Psr7\Request;
 
 /** @var App $app */
 /** @var Router $router */
@@ -13,7 +13,7 @@ $routes = $router->getRouting();
 
 $routes->get( '/closure', function($request) {
     /** @var Request $request */
-    return $request->respond()->html('
+    return $request->respond()->asHtml('
     <html><body>
     <h1>This is from a closure!</h1>
     </body></html>
@@ -22,12 +22,12 @@ $routes->get( '/closure', function($request) {
 
 $routes->get( '/closure-view', function($request) {
     /** @var Request $request */
-    return $request->respond()->view('closure-view');
+    return $request->respond()->asView('closure-view');
 });
 
 $routes->get( '/', function($request) {
     /** @var Request $request */
-    return $request->respond()->view('index');
+    return $request->respond()->asView('index');
 });
 
 $routes->any( '/sample*', SampleController::class);
