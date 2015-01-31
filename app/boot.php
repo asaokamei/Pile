@@ -43,21 +43,22 @@ return function( array $config ) {
     $app->set(App::RENDER_ENGINE, $app->get('renderer') );
 
     /*
-     * read the routes.
-     * the routes must match with the $router class above.
-     */
-    if( file_exists($config['routes']) ) {
-        /** @noinspection PhpIncludeInspection */
-        include($config['routes']);
-    }
-
-    /*
      * set up handlers
      */
     $stacks = $app->get('stacks');
     foreach($stacks as $stack) {
         $app->push($app->get($stack));
         
+    }
+
+    /*
+     * read the routes.
+     * the routes must match with the $router class above.
+     */
+    $route_files = (array) $config['routes'];
+    foreach($route_files as $routes ) {
+        /** @noinspection PhpIncludeInspection */
+        $app->push(include($routes));
     }
 
     return $app;

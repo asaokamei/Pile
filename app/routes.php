@@ -9,7 +9,7 @@ use Tuum\Web\Web;
 /** @var Web $app */
 /** @var Router $router */
 
-$router = $app->get(APP::ROUTER);
+$router = Tuum\Router\Tuum\Router::forge();
 $routes = $router->getRouting();
 
 $routes->get( '/closure', function($request) {
@@ -32,3 +32,6 @@ $routes->get( '/', function($request) {
 });
 
 $routes->any( '/sample*', SampleController::class);
+
+$routeStack = \Tuum\Stack\Routes::forge($router);
+return $routeStack;

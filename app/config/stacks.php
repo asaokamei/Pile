@@ -10,6 +10,6 @@ return [
     /*
      * handlers and releases
      */
-    'route-handler',
+//    'route-handler',
     'url-mapper-handler',
 ];
