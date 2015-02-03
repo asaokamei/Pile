@@ -22,7 +22,7 @@ return function( array $config ) {
      * build $app.
      */
     $loc = new Locator($config['config']);
-    $loc->addRoot( dirname(__DIR__).'/vendor/tuum/stack/scripts');
+    $loc->addRoot( dirname(__DIR__).'/vendor/tuum/web/scripts');
     $loc->addRoot( dirname(__DIR__).'/vendor/tuum/view/scripts');
     $app = new Web(new Container($loc));
 

@@ -33,5 +33,5 @@ $routes->get( '/', function($request) {
 
 $routes->any( '/sample*', SampleController::class);
 
-$routeStack = \Tuum\Stack\Routes::forge($router);
+$routeStack = \Tuum\Web\Stack\Routes::forge($router);
 return $routeStack;
