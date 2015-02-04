@@ -2,8 +2,9 @@
 
 use Demo\Site\SampleController;
 use Tuum\Router\Tuum\Router;
-use Tuum\Web\App;
 use Tuum\Web\Psr7\Request;
+use Tuum\Web\Stack\Dispatcher;
+use Tuum\Web\Stack\RouterStack;
 use Tuum\Web\Web;
 
 /** @var Web $app */
@@ -33,5 +34,5 @@ $routes->get( '/', function($request) {
 
 $routes->any( '/sample*', SampleController::class);
 
-$routeStack = \Tuum\Web\Stack\Router::forge($router);
+$routeStack = new RouterStack($router, new Dispatcher($app));
 return $routeStack;
