@@ -3,7 +3,7 @@ namespace Demo\Site;
 
 use Tuum\Controller\AbstractController;
 use Tuum\Controller\RouteDispatchTrait;
-use Tuum\Web\Http\View;
+use Tuum\Web\Psr7\Response;
 
 class SampleController extends AbstractController
 {
@@ -23,14 +23,16 @@ class SampleController extends AbstractController
     protected function getRoutes()
     {
         return [
+            '/sample/'       => 'welcome',
+            '/sample/jump'   => 'jump',
+            '/sample/jumper' => 'jumper',
             '/sample/{name}' => 'hello',
-            '/sample'       => 'welcome',
         ];
     }
 
     /**
      * @param string $name
-     * @return View
+     * @return Response
      */
     protected function onHello($name)
     {
@@ -41,12 +43,34 @@ class SampleController extends AbstractController
     }
 
     /**
-     * @return View
+     * @return Response
      */
     protected function onWelcome()
     {
         return $this->respond
             ->asView('sample/welcome')
+            ;
+    }
+
+    /**
+     * @return Response
+     */
+    protected function onJump()
+    {
+        return $this->respond
+            ->asView('sample/jump')
+            ;
+    }
+
+    /**
+     * @param string $message
+     * @return Response
+     */
+    protected function onJumper($message='jumped')
+    {
+        return $this->respond
+            ->withMessage($message)
+            ->asRedirectUri('/sample/jump')
             ;
     }
 }
