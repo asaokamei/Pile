@@ -1,8 +1,8 @@
 <?php
 namespace Demo\Site;
 
-use Tuum\Controller\AbstractController;
-use Tuum\Controller\RouteDispatchTrait;
+use Tuum\Web\Controller\AbstractController;
+use Tuum\Web\Controller\RouteDispatchTrait;
 use Tuum\Web\Psr7\Response;
 
 class SampleController extends AbstractController
