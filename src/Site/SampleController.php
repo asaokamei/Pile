@@ -45,9 +45,10 @@ class SampleController extends AbstractController
     /**
      * @return Response
      */
-    protected function onWelcome()
+    protected function onWelcome($name='Tuum')
     {
         return $this->respond
+            ->with( 'name', $name )
             ->asView('sample/welcome')
             ;
     }

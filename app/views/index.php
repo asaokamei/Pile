@@ -20,7 +20,7 @@
 
 <h3>Routed Controller</h3>
 <ul>
-    <li><a href="sample/" >sample welcome</a></li>
+    <li><a href="sample?name=TuumPHP" >sample welcome</a></li>
     <li><a href="sample/tuum" >sample hello world</a></li>
     <li><a href="sample/jump" >redirect with message</a></li>
 </ul>
