@@ -1,7 +1,6 @@
 <?php
 namespace Demo\Tasks;
 
-use Tuum\Web\App;
 use Tuum\Web\Controller\AbstractController;
 use Tuum\Web\Controller\RouteDispatchTrait;
 use Tuum\Web\Psr7\Response;
@@ -53,6 +52,20 @@ class TaskController extends AbstractController
      */
     public function onIndex()
     {
-        return $this->respond->asView('tasks/index');
+        $tasks = $this->dao->getTasks();
+        return $this->respond
+            ->with('tasks', $tasks)
+            ->asView('tasks/index');
+    }
+
+    /**
+     * @return Response
+     */
+    public function onInit()
+    {
+        $this->dao->initialize();
+        return $this->respond
+            ->withMessage('initialized tasks.')
+            ->asPath('demoTasks');
     }
 }

@@ -11,7 +11,7 @@ use Tuum\Web\Psr7\Request;
 use Tuum\Web\Psr7\Response;
 use Tuum\Web\Stack\Dispatcher;
 
-class TaskApp implements MiddlewareInterface
+class TaskStack implements MiddlewareInterface
 {
     use MiddlewareTrait;
     

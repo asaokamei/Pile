@@ -1,9 +1,9 @@
 <?php
 
-use Demo\Tasks\TaskApp;
+use Demo\Tasks\TaskStack;
 use Tuum\Web\Stack\Dispatcher;
 
-$taskStack = new TaskApp(new Dispatcher($app), 'Demo\Tasks\TaskController');
+$taskStack = new TaskStack(new Dispatcher($app), 'Demo\Tasks\TaskController');
 if(isset($root)) {
     $taskStack->setRoot($root);
 }
