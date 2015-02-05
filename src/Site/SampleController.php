@@ -23,10 +23,10 @@ class SampleController extends AbstractController
     protected function getRoutes()
     {
         return [
-            '/sample'        => 'welcome',
-            '/sample/jump'   => 'jump',
-            '/sample/jumper' => 'jumper',
-            '/sample/{name}' => 'hello',
+            '/'        => 'welcome',
+            '/jump'   => 'jump',
+            '/jumper' => 'jumper',
+            '/{name}' => 'hello',
         ];
     }
 
@@ -69,9 +69,10 @@ class SampleController extends AbstractController
      */
     protected function onJumper($message='jumped')
     {
+        $basePath = $this->request->getBasePath();
         return $this->respond
             ->withMessage($message)
-            ->asRedirectUri('/sample/jump')
+            ->asRedirectUri($basePath.'/jump')
             ;
     }
 }

@@ -39,11 +39,11 @@ class TaskController extends AbstractController
     protected function getRoutes()
     {
         return [
-            'get:/demoTasks'             => 'index',
-            'post:/demoTasks/initialize'  => 'init',
-            'post:/demoTasks/{id}'        => 'update',
-            'post:/demoTasks/{id}/toggle' => 'toggle',
-            'post:/demoTasks/{id}/delete' => 'delete',
+            'get:/'             => 'index',
+            'post:/initialize'  => 'init',
+            'post:/{id}'        => 'update',
+            'post:/{id}/toggle' => 'toggle',
+            'post:/{id}/delete' => 'delete',
         ];
     }
 
@@ -64,8 +64,9 @@ class TaskController extends AbstractController
     public function onInit()
     {
         $this->dao->initialize();
+        $basePath = $this->request->getBasePath();
         return $this->respond
             ->withMessage('initialized tasks.')
-            ->asPath('demoTasks');
+            ->asPath($basePath);
     }
 }

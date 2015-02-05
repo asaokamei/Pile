@@ -40,7 +40,7 @@ class TaskStack implements MiddlewareInterface
      */
     public function __invoke($request)
     {
-        if(!$this->isMatch($request)) {
+        if(!$request = $this->isMatch($request)) {
             return null;
         }
         $this->dispatcher->setRoute(new Route(['handle' => $this->controller]));
