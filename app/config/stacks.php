@@ -3,13 +3,12 @@ return [
     /*
      * basic stack
      */
-    'error-stack',
-    'session-stack',
-    'view-stack',
+    'stack/error-stack',
+    'stack/session-stack',
+    'stack/view-stack',
 
     /*
      * handlers and releases
      */
-//    'route-handler',
-    'url-mapper-handler',
+    'stack/url-mapper-handler',
 ];

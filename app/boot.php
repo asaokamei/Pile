@@ -44,7 +44,6 @@ return function( array $config ) {
     
     $loc = new Locator($config['config']);
     $loc->addRoot( dirname(__DIR__).'/vendor/tuum/web/scripts');
-    $loc->addRoot( dirname(__DIR__).'/vendor/tuum/view/scripts');
     $app = new Web(new Container($loc));
 
     // ------------------
@@ -61,8 +60,8 @@ return function( array $config ) {
     // set up services
     // ---------------
     
-    $app->set(App::LOGGER, $app->get('logger'));
-    $app->set(App::RENDER_ENGINE, $app->get('renderer') );
+    $app->set(App::LOGGER, $app->get('service/logger'));
+    $app->set(App::RENDER_ENGINE, $app->get('service/renderer') );
 
     // -------------
     // set up stacks
