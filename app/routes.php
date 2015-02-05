@@ -8,10 +8,17 @@ use Tuum\Web\Stack\RouterStack;
 use Tuum\Web\Web;
 
 /** @var Web $app */
-/** @var Router $router */
 
-$router = Tuum\Router\Tuum\Router::forge();
+// --------------------
+// create basic routers
+// --------------------
+
+$router = Router::forge();
 $routes = $router->getRouting();
+
+// ----------
+// add routes
+// ----------
 
 $routes->get( '/closure', function($request) {
     /** @var Request $request */
@@ -32,7 +39,14 @@ $routes->get( '/', function($request) {
     return $request->respond()->asView('index');
 });
 
+/*
+ * add sample controller
+ */
 $routes->any( '/sample*', SampleController::class);
+
+/* -------------------
+ * create router stack 
+ */
 
 $routeStack = new RouterStack($router, new Dispatcher($app));
 return $routeStack;
