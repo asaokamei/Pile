@@ -53,12 +53,11 @@ return function( array $config ) {
 
     /*
      * read the routes.
-     * the routes must match with the $router class above.
+     * the route files are out of the config directory. 
      */
     $route_files = (array) $config['routes'];
     foreach($route_files as $routes ) {
-        /** @noinspection PhpIncludeInspection */
-        $app->push(include($routes));
+        $app->push($app->execute($routes));
     }
 
     return $app;
