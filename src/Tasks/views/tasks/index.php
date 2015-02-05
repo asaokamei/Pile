@@ -1,3 +1,10 @@
+<?php
+use Demo\Tasks\TaskDao;
+use Tuum\Web\Psr7\Request;
+
+/** @var $_request Request */
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +19,17 @@
 </ul>
 <h2>task list</h2>
 
+<style>
+    span.done {
+        color: gray;
+        font-weight: normal;
+    }
+    span.active {
+        color: blue;
+        font-weight: bold;
+    }
+</style>
+
 <?php if(isset($tasks)) : ?>
 
 <table>
@@ -25,11 +43,16 @@
     <tbody>
     <?php 
     foreach($tasks as $task) :
+        $class = ($task[1] === TaskDao::ACTIVE) ? 'active' : 'done';
     ?>
     <tr>
         <td><?= $task[0] ?></td>
-        <td><?= $task[2] ?></td>
-        <td></td>
+        <td><span class="<?= $class; ?>" ><?= $task[2] ?></span></td>
+        <td>
+            <form name="toggle" method="post" action="<?= $basePath.'/'.$task[0].'/toggle' ?>" >
+                <input type="submit" value="toggle" />
+            </form>
+        </td>
     </tr>
     <?php endforeach; ?>
     </tbody>

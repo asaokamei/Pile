@@ -74,4 +74,25 @@ class TaskDao
         $this->load();
         return $this->tasks;
     }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function toggle($id)
+    {
+        $this->load();
+        foreach($this->tasks as $idx => $task) {
+            if($task[0] === (string) $id) {
+                if($task[1] === self::ACTIVE) {
+                    $this->tasks[$idx][1] = self::DONE;
+                } else {
+                    $this->tasks[$idx][1] = self::ACTIVE;
+                }
+                $this->save();
+                return true;
+            }
+        }
+        return false;
+    }
 }

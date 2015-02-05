@@ -69,4 +69,17 @@ class TaskController extends AbstractController
             ->withMessage('initialized tasks.')
             ->asPath($basePath);
     }
+    
+    public function onToggle($id)
+    {
+        $basePath = $this->request->getBasePath();
+        if($this->dao->toggle($id)) {
+            return $this->respond
+                ->withMessage('toggled task #'.$id)
+                ->asPath($basePath);
+        }
+        return $this->respond
+            ->withErrorMessage('cannot find task #'.$id)
+            ->asPath($basePath);
+    }
 }
