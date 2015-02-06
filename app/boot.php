@@ -28,7 +28,7 @@ return function( array $config ) {
         'views'  => __DIR__.'/views',
         
         // default document/resource directory.
-        'docs'   => __DIR__.'/views',
+        'docs'   => __DIR__.'/docs',
         
         // default var (cache, logs, etc.) directory.
         'var'    => dirname(__DIR__).'/var',
