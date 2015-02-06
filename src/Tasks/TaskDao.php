@@ -33,6 +33,9 @@ class TaskDao
         $this->task_file = $taskFile;
     }
 
+    /**
+     * loads tasks from csv file.
+     */
     public function initialize()
     {
         $this->tasks = array(
@@ -44,7 +47,10 @@ class TaskDao
         );
         $this->save();
     }
-    
+
+    /**
+     * saves tasks to csv file.
+     */
     protected function save()
     {
         $fp = fopen($this->task_file, 'wb+');
@@ -94,5 +100,42 @@ class TaskDao
             }
         }
         return false;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function delete($id)
+    {
+        $this->load();
+        foreach($this->tasks as $idx => $task) {
+            if($task[0] === (string) $id) {
+                if($task[1] === self::DONE) {
+                    unset($this->tasks[$idx]);
+                }
+                $this->save();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param string $task
+     * @return int
+     */
+    public function insert($task)
+    {
+        $this->load();
+        $this->max_task_id++;
+        $task = [
+            $this->max_task_id,
+            self::ACTIVE,
+            $task,
+        ];
+        $this->tasks[] = $task;
+        $this->save();
+        return $this->max_task_id;
     }
 }

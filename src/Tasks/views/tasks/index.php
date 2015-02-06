@@ -28,6 +28,9 @@ use Tuum\Web\Psr7\Request;
         color: blue;
         font-weight: bold;
     }
+    form {
+        display: inline;
+    }
 </style>
 
 <?php if(isset($tasks)) : ?>
@@ -47,7 +50,18 @@ use Tuum\Web\Psr7\Request;
     ?>
     <tr>
         <td><?= $task[0] ?></td>
-        <td><span class="<?= $class; ?>" ><?= $task[2] ?></span></td>
+        <td>
+            <span class="<?= $class; ?>" ><?= $task[2] ?></span>
+            <?php
+            if($task[1]===TaskDao::DONE) {
+                echo "
+                <form name=\"delete\" method=\"post\" action=\"{$basePath}/{$task[0]}/delete\" >
+                    <input type='submit' value='del' />
+                </form>
+                ";
+            }
+            ?>
+        </td>
         <td>
             <form name="toggle" method="post" action="<?= $basePath.'/'.$task[0].'/toggle' ?>" >
                 <input type="submit" value="toggle" />
@@ -57,6 +71,22 @@ use Tuum\Web\Psr7\Request;
     <?php endforeach; ?>
     </tbody>
 </table>
+
+    <form name="add" method="post" action="<?= $basePath; ?>/">
+        <table>
+            <tbody>
+            <tr>
+                <td>add:</td>
+                <td>
+                    <input type="text" name="task" placeholder="add a new task..." style="width: 40em;"/>
+                </td>
+                <td>
+                    <input type="submit" value="add task"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 
 <?php endif; ?>
 

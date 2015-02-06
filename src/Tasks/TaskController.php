@@ -40,6 +40,7 @@ class TaskController extends AbstractController
     {
         return [
             'get:/'             => 'index',
+            'post:/'            => 'insert',
             'post:/initialize'  => 'init',
             'post:/{id}'        => 'update',
             'post:/{id}/toggle' => 'toggle',
@@ -59,27 +60,74 @@ class TaskController extends AbstractController
     }
 
     /**
+     * create 5 initial tasks.
+     *
      * @return Response
      */
     public function onInit()
     {
         $this->dao->initialize();
-        $basePath = $this->request->getBasePath();
         return $this->respond
             ->withMessage('initialized tasks.')
-            ->asPath($basePath);
+            ->asPath($this->basePath);
     }
-    
+
+    /**
+     * toggle status between ACTIVE <-> DONE.
+     *
+     * @param $id
+     * @return Response
+     */
     public function onToggle($id)
     {
-        $basePath = $this->request->getBasePath();
         if($this->dao->toggle($id)) {
             return $this->respond
                 ->withMessage('toggled task #'.$id)
-                ->asPath($basePath);
+                ->asPath($this->basePath);
         }
         return $this->respond
             ->withErrorMessage('cannot find task #'.$id)
-            ->asPath($basePath);
+            ->asPath($this->basePath);
+    }
+
+    /**
+     * deletes task $id.
+     *
+     * @param $id
+     * @return Response
+     */
+    public function onDelete($id)
+    {
+        if($this->dao->delete($id)) {
+            return $this->respond
+            ->withMessage('deleted task #'.$id)
+                ->asPath($this->basePath);
+        }
+        return $this->respond
+            ->withErrorMessage('cannot find task #'.$id)
+            ->asPath($this->basePath);
+    }
+
+    /**
+     * insert a new task.
+     *
+     * @return Response
+     */
+    public function onInsert()
+    {
+        $input = $this->request->getBodyParams('task');
+        if(!isset($input['task']) || !$input['task']) {
+            return $this->respond
+                ->withErrorMessage('please write a task to accomplish!')
+                ->asPath($this->basePath);
+        }
+        if(!$id = $this->dao->insert($input['task'])) {
+            return $this->respond
+                ->withErrorMessage('cannot add a new task, yet!')
+                ->asPath($this->basePath);
+        }
+        return $this->respond
+            ->withMessage('added a new task #'.$id)
+            ->asPath($this->basePath);
     }
 }
