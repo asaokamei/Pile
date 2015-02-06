@@ -2,6 +2,14 @@
 
 use Demo\Tasks\TaskStack;
 use Tuum\Web\Stack\Dispatcher;
+use Tuum\Web\Web;
+
+/** @var Web $app */
+
+if(!isset($views) || !$views) {
+    $views = dirname(dirname(__DIR__)).'/views';
+}
+$app->setRenderRoot($views);
 
 $taskStack = new TaskStack(new Dispatcher($app), 'Demo\Tasks\TaskController');
 if(isset($root)) {

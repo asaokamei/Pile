@@ -7,7 +7,9 @@ use Tuum\Web\Web;
 $task_dir = dirname(__DIR__).'/src/Tasks';
 
 $app->setConfigRoot($task_dir.'/scripts');
-$app->setRenderRoot($task_dir.'/views');
 
-return $app->get('tasks/setup', ['root' => 'demoTasks*']);
+return $app->get('tasks/setup', [
+    'root' => 'demoTasks*', // tasks url root name.
+    'views' => null,        // set view dir name to use custom views.
+]);
     

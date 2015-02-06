@@ -1,6 +1,7 @@
 <?php
 namespace Demo\Tasks;
 
+use Tuum\Web\App;
 use Tuum\Web\Controller\AbstractController;
 use Tuum\Web\Controller\RouteDispatchTrait;
 use Tuum\Web\Psr7\Response;
@@ -29,8 +30,9 @@ class TaskController extends AbstractController
      */
     public static function forge($app)
     {
-        $dao  = $app->get('tasks/task-dao');
-        return new self($dao);
+        return new self(
+            new TaskDao($app->get(App::VAR_DATA_DIR).'/data/tasks.csv')
+        );
     }
     
     /**
