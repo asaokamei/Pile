@@ -10,6 +10,6 @@ $app->setConfigRoot($task_dir.'/scripts');
 
 return $app->get('tasks/setup', [
     'root' => 'demoTasks*', // tasks url root name.
-    'views' => null,        // set view dir name to use custom views.
+    'views' => $task_dir.'/views',  // set view dir for task, or set to null to use current views.
 ]);
     
