@@ -26,7 +26,8 @@
         "phly/http": "~0.10.0",
         "psr/http-message": "~0.8.0",
         "monolog/monolog": "~1.0",
-        "phly/conduit": "0.13.0"
+        "phly/conduit": "0.13.0",
+        "aura/session": " 2.0.0-beta2"
     },
     "repositories": [
         {
@@ -43,10 +44,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/TuumPHP/Stack"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/TuumPHP/Web"
         },
         {
@@ -56,10 +53,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/TuumPHP/Router"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/TuumPHP/Controller"
         },
         {
             "type": "vcs",
