@@ -94,6 +94,24 @@ use Tuum\Web\Psr7\Request;
         </table>
     </form>
 
+    <h3>No token</h3>
+    <p>This form does not have CsRf token. should return forbidden error.</p>
+    <form name="add" method="post" action="<?= $basePath; ?>/">
+        <table>
+            <tbody>
+            <tr>
+                <td> add?:</td>
+                <td>
+                    <input type="text" name="task" placeholder="add a new task..." style="width: 40em;"/>
+                </td>
+                <td>
+                    <input type="submit" value="add task"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+
 <?php endif; ?>
 
 <h3>debug info</h3>

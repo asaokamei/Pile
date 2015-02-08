@@ -57,11 +57,10 @@ return function( array $config ) {
     $app->set(App::DEBUG,        $config['debug']);
 
     // ---------------
-    // set up services
+    // set up services and filters
     // ---------------
     
-    $app->set(App::LOGGER, $app->get('service/logger'));
-    $app->set(App::RENDER_ENGINE, $app->get('service/renderer') );
+    $app->get('filters');
 
     // -------------
     // set up stacks
