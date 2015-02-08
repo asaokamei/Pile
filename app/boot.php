@@ -12,9 +12,9 @@ use Tuum\Web\Web;
  */
 return function( array $config ) {
 
-    // ---------------------
+    // -----------------------------------------------
     // default configuration
-    // ---------------------
+    // -----------------------------------------------
     
     $default_config = [
         
@@ -38,17 +38,19 @@ return function( array $config ) {
     ];
     $config += $default_config;
 
-    // ---------------------------
+    // -----------------------------------------------
     // build web application, $app
-    // ---------------------------
-    
-    $loc = new Locator($config['config']);
-    $loc->addRoot( dirname(__DIR__).'/vendor/tuum/web/scripts');
-    $app = new Web(new Container($loc));
+    // -----------------------------------------------
 
-    // ------------------
+    // to use Flysystem, use the next line. 
+    //$locator = new \Tuum\Locator\UnionManager($config['config']);
+    $locator = new Locator($config['config']);
+    $locator->addRoot( dirname(__DIR__).'/vendor/tuum/web/scripts');
+    $app = new Web(new Container($locator));
+
+    // -----------------------------------------------
     // set up directories
-    // ------------------
+    // -----------------------------------------------
     
     $app->set(App::CONFIG_DIR,   $config['config']);
     $app->set(App::TEMPLATE_DIR, $config['views']);
@@ -56,15 +58,15 @@ return function( array $config ) {
     $app->set(App::VAR_DATA_DIR, $config['var']);
     $app->set(App::DEBUG,        $config['debug']);
 
-    // ---------------
+    // -----------------------------------------------
     // set up services and filters
-    // ---------------
+    // -----------------------------------------------
     
     $app->get('filters');
 
-    // -------------
+    // -----------------------------------------------
     // set up stacks
-    // -------------
+    // -----------------------------------------------
     
     $stacks = $app->get('stacks');
     foreach($stacks as $stack) {
