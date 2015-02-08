@@ -15,7 +15,10 @@ use Tuum\Web\Psr7\Request;
 
 <h1>Task Demo</h1>
 <ul>
-    <li><form name="init" action="/demoTasks/initialize" method="post" ><input type="submit" value="initialize"/></form></li>
+    <li><form name="init" action="/demoTasks/initialize" method="post" >
+            <input type='hidden' name='_token' value='<?= $_token ?>' />
+            <input type="submit" value="initialize"/>
+        </form></li>
 </ul>
 <h2>task list</h2>
 
