@@ -1,6 +1,5 @@
-<?php
+<?= $this->render('layout/header'); ?>
 
-?>
 <h1>TuumPHP Framework</h1>
 <p>TuumPHP is yet-another micro framework for PHP.</p>
 
@@ -26,3 +25,5 @@
 </ul>
 
 <h3><a href="demoTasks" >Demo Task Application</a></h3>
+
+<?= $this->render('layout/footer'); ?>

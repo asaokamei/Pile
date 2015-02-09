@@ -5,12 +5,9 @@ use Tuum\View\Viewer\View;
 
 
 ?>
-<!Doctype html>
-<html>
-<head>
-    <title>Welcome to Tuum</title>
-</head>
-<body>
+<?= $this->render('layout/header', [
+    'title' => 'Let\'s Jump!',
+]); ?>
 <h1>Let's Jump!</h1>
 <p>This is from SampleController::onJump().</p>
 <p>and a sample/welcome view file.</p>
@@ -24,5 +21,5 @@ use Tuum\View\Viewer\View;
 <?php
 var_dump($view);
 ?>
-</body>
-</html>
+
+<?= $this->render('layout/footer'); ?>

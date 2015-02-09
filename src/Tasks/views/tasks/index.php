@@ -8,13 +8,9 @@ $basePath = $view['basePath'];
 $tasks    = $view->asList('tasks');
 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <title>Task Demo</title>
-</head>
-<body>
+<?= $this->render('layout/header', [
+    'title' => 'Demo Task Application',
+]); ?>
 
 <h1>Task Demo</h1>
 
@@ -45,7 +41,7 @@ $tasks    = $view->asList('tasks');
 
 <?php if(isset($tasks)) : ?>
 
-<table>
+<table class="table table-hover">
     <thead>
     <tr>
         <th>#</th>
@@ -84,12 +80,14 @@ $tasks    = $view->asList('tasks');
     </tbody>
 </table>
 
+    <h3>adding a new task</h3>
+
     <form name="add" method="post" action="<?= $basePath; ?>/">
         <?= $view->hiddenTag('_token'); ?>
-        <table>
+        <table class="table">
             <tbody>
             <tr>
-                <td>add:</td>
+                <td width="15%">add a new task:</td>
                 <td>
                     <input type="text" name="task" placeholder="add a new task..." style="width: 40em;"/>
                 </td>
@@ -101,13 +99,12 @@ $tasks    = $view->asList('tasks');
         </table>
     </form>
 
-    <h3>No token</h3>
     <p>This form does not have CsRf token. should return forbidden error.</p>
     <form name="add" method="post" action="<?= $basePath; ?>/">
-        <table>
+        <table class="table">
             <tbody>
             <tr>
-                <td> add?:</td>
+                <td width="15%"> cannot add:</td>
                 <td>
                     <input type="text" name="task" placeholder="add a new task..." style="width: 40em;"/>
                 </td>
@@ -121,10 +118,12 @@ $tasks    = $view->asList('tasks');
 
 <?php endif; ?>
 
-<h3>debug info</h3>
+
+<h3 id="debug-title" >debug info</h3>
+<div style="display: none" id="debug-info">
 <?php
 var_dump($view);
 ?>
+</div>
 
-</body>
-</html>
+<?= $this->render('layout/footer'); ?>

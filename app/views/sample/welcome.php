@@ -6,12 +6,9 @@ use Tuum\View\Viewer\View;
 $name = $view['name'];
 
 ?>
-<!Doctype html>
-<html>
-<head>
-    <title>Welcome to <?= $name; ?></title>
-</head>
-<body>
+<?= $this->render('layout/header', [
+    'title' => 'Welcome to ' . $name,
+]); ?>
 <h1>Welcome to <?= $name; ?></h1>
 <p>This is from SampleController::onWelcome(),</p>
 <p>and a sample/welcome view file.</p>
@@ -24,5 +21,4 @@ $name = $view['name'];
 var_dump($view);
 ?>
 
-</body>
-</html>
+<?= $this->render('layout/footer'); ?>
