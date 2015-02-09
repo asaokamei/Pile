@@ -88,7 +88,7 @@ class TaskController extends AbstractController
                 ->asPath($this->basePath);
         }
         return $this->respond
-            ->withErrorMessage('cannot find task #'.$id)
+            ->withError('cannot find task #'.$id)
             ->asPath($this->basePath);
     }
 
@@ -106,7 +106,7 @@ class TaskController extends AbstractController
                 ->asPath($this->basePath);
         }
         return $this->respond
-            ->withErrorMessage('cannot find task #'.$id)
+            ->withError('cannot find task #'.$id)
             ->asPath($this->basePath);
     }
 
@@ -120,12 +120,12 @@ class TaskController extends AbstractController
         $input = $this->request->getBodyParams('task');
         if(!isset($input['task']) || !$input['task']) {
             return $this->respond
-                ->withErrorMessage('please write a task to accomplish!')
+                ->withError('please write a task to accomplish!')
                 ->asPath($this->basePath);
         }
         if(!$id = $this->dao->insert($input['task'])) {
             return $this->respond
-                ->withErrorMessage('cannot add a new task, yet!')
+                ->withError('cannot add a new task, yet!')
                 ->asPath($this->basePath);
         }
         return $this->respond

@@ -1,8 +1,11 @@
 <?php
 use Demo\Tasks\TaskDao;
-use Tuum\Web\Psr7\Request;
+use Tuum\View\Viewer\View;
 
-/** @var $_request Request */
+/** @var View $view */
+
+$basePath = $view['basePath'];
+$tasks    = $view->asList('tasks');
 
 ?>
 <!DOCTYPE html>
@@ -14,12 +17,16 @@ use Tuum\Web\Psr7\Request;
 <body>
 
 <h1>Task Demo</h1>
+
+<?= $view->message; ?>
+
 <ul>
     <li><form name="init" action="/demoTasks/initialize" method="post" >
-            <input type='hidden' name='_token' value='<?= $_token ?>' />
+            <?= $view->hiddenTag('_token'); ?>
             <input type="submit" value="initialize"/>
         </form></li>
 </ul>
+
 <h2>task list</h2>
 
 <style>
@@ -59,7 +66,7 @@ use Tuum\Web\Psr7\Request;
             if($task[1]===TaskDao::DONE) {
                 echo "
                 <form name=\"delete\" method=\"post\" action=\"{$basePath}/{$task[0]}/delete\" >
-                    <input type='hidden' name='_token' value='{$_token}' />
+                    {$view->hiddenTag('_token')}
                     <input type='submit' value='del' />
                 </form>
                 ";
@@ -68,7 +75,7 @@ use Tuum\Web\Psr7\Request;
         </td>
         <td>
             <form name="toggle" method="post" action="<?= $basePath.'/'.$task[0].'/toggle' ?>" >
-                <input type='hidden' name='_token' value='<?= $_token ?>' />
+                <?= $view->hiddenTag('_token'); ?>
                 <input type="submit" value="toggle" />
             </form>
         </td>
@@ -78,7 +85,7 @@ use Tuum\Web\Psr7\Request;
 </table>
 
     <form name="add" method="post" action="<?= $basePath; ?>/">
-        <input type='hidden' name='_token' value='<?= $_token ?>' />
+        <?= $view->hiddenTag('_token'); ?>
         <table>
             <tbody>
             <tr>
@@ -116,8 +123,7 @@ use Tuum\Web\Psr7\Request;
 
 <h3>debug info</h3>
 <?php
-unset($__data['_request']);
-var_dump($__data);
+var_dump($view);
 ?>
 
 </body>
