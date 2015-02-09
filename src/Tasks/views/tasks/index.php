@@ -51,8 +51,9 @@ $tasks    = $view->asList('tasks');
     </tr>
     </thead>
     <tbody>
-    <?php 
-    foreach($tasks as $key => $task) :
+    <?php
+    $keys = $view->keysOf('tasks');
+    foreach($keys as $key) :
         $class = ($view->value("tasks[{$key}][1]") === TaskDao::ACTIVE) ? 'active' : 'done';
     ?>
     <tr>
@@ -60,9 +61,9 @@ $tasks    = $view->asList('tasks');
         <td>
             <span class="<?= $class; ?>" ><?= $view->html("tasks[{$key}][2]") ?></span>
             <?php
-            if($task[1]===TaskDao::DONE) {
+            if($view->value("tasks[{$key}][1]")===TaskDao::DONE) {
                 echo "
-                <form name=\"delete\" method=\"post\" action=\"{$basePath}/{$task[0]}/delete\" >
+                <form name=\"delete\" method=\"post\" action=\"{$basePath}/{$view->html("tasks[{$key}][0]")}/delete\" >
                     {$view->hiddenTag('_token')}
                     <input type='submit' value='del' />
                 </form>
@@ -74,7 +75,7 @@ $tasks    = $view->asList('tasks');
             <?= ($by = new DateTime($view->value("tasks[{$key}][3]"))) ? $by->format('Y/m/d') : '---'; ?>
         </td>
         <td>
-            <form name="toggle" method="post" action="<?= $basePath.'/'.$task[0].'/toggle' ?>" >
+            <form name="toggle" method="post" action="<?= $basePath.'/'.$view->html("tasks[{$key}][0]").'/toggle' ?>" >
                 <?= $view->hiddenTag('_token'); ?>
                 <input type="submit" value="toggle" />
             </form>
@@ -126,13 +127,5 @@ $tasks    = $view->asList('tasks');
     </form>
 
 <?php endif; ?>
-
-
-<h3 id="debug-title" >debug info</h3>
-<div style="display: no ne" id="debug-info">
-<?php
-var_dump($view);
-?>
-</div>
 
 <?= $this->render('layout/footer'); ?>
