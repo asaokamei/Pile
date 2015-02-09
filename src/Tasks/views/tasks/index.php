@@ -46,18 +46,19 @@ $tasks    = $view->asList('tasks');
     <tr>
         <th>#</th>
         <th>task</th>
-        <th>done</th>
+        <th>done by</th>
+        <th>toggle</th>
     </tr>
     </thead>
     <tbody>
     <?php 
-    foreach($tasks as $task) :
-        $class = ($task[1] === TaskDao::ACTIVE) ? 'active' : 'done';
+    foreach($tasks as $key => $task) :
+        $class = ($view->value("tasks[{$key}][1]") === TaskDao::ACTIVE) ? 'active' : 'done';
     ?>
     <tr>
-        <td><?= $task[0] ?></td>
+        <td><?= $view->value("tasks[{$key}][0]") ?></td>
         <td>
-            <span class="<?= $class; ?>" ><?= $task[2] ?></span>
+            <span class="<?= $class; ?>" ><?= $view->html("tasks[{$key}][2]") ?></span>
             <?php
             if($task[1]===TaskDao::DONE) {
                 echo "
@@ -68,6 +69,9 @@ $tasks    = $view->asList('tasks');
                 ";
             }
             ?>
+        </td>
+        <td>
+            <?= ($by = new DateTime($view->value("tasks[{$key}][3]"))) ? $by->format('Y/m/d') : '---'; ?>
         </td>
         <td>
             <form name="toggle" method="post" action="<?= $basePath.'/'.$task[0].'/toggle' ?>" >
@@ -89,7 +93,12 @@ $tasks    = $view->asList('tasks');
             <tr>
                 <td width="15%">add a new task:</td>
                 <td>
-                    <input type="text" name="task" placeholder="add a new task..." style="width: 40em;"/>
+                    <input type="text" name="task" value="<?= $view->value('task');?>" placeholder="add a new task..." style="width: 40em;"/>
+                    <?= $view->errors->text('task'); ?>
+                </td>
+                <td>
+                    <input type="date" name="done_by" value="<?= $view->value('done_by'); ?>" />
+                    <?= $view->errors->text('done_by'); ?>
                 </td>
                 <td>
                     <input type="submit" value="add task"/>
@@ -120,7 +129,7 @@ $tasks    = $view->asList('tasks');
 
 
 <h3 id="debug-title" >debug info</h3>
-<div style="display: none" id="debug-info">
+<div style="display: no ne" id="debug-info">
 <?php
 var_dump($view);
 ?>

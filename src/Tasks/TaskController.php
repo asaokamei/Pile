@@ -58,6 +58,7 @@ class TaskController extends AbstractController
         $tasks = $this->dao->getTasks();
         return $this->respond
             ->with('tasks', $tasks)
+            ->with('done_by', (new \DateTime('now'))->format('Y-m-d'))
             ->asView('tasks/index');
     }
 
@@ -117,13 +118,16 @@ class TaskController extends AbstractController
      */
     public function onInsert()
     {
-        $input = $this->request->getBodyParams('task');
-        if(!isset($input['task']) || !$input['task']) {
+        $input = $this->request->getBodyParams();
+        $errors = $this->validate($input);
+        if(!empty($errors)) {
             return $this->respond
-                ->withError('please write a task to accomplish!')
+                ->withError('please check the new task to enter!')
+                ->withInput($input)
+                ->withInputErrors($errors)
                 ->asPath($this->basePath);
         }
-        if(!$id = $this->dao->insert($input['task'])) {
+        if(!$id = $this->dao->insert($input['task'], $input['done_by'])) {
             return $this->respond
                 ->withError('cannot add a new task, yet!')
                 ->asPath($this->basePath);
@@ -131,5 +135,21 @@ class TaskController extends AbstractController
         return $this->respond
             ->withMessage('added a new task #'.$id)
             ->asPath($this->basePath);
+    }
+
+    /**
+     * @param array $input
+     * @return array
+     */
+    private function validate($input)
+    {
+        $errors = [];
+        if(!isset($input['task']) || !$input['task']) {
+            $errors['task'] = 'please write a task to accomplish!';
+        }
+        if(!isset($input['done_by']) || !$input['done_by']) {
+            $errors['done_by'] = 'please enter a date!';
+        }
+        return $errors;
     }
 }

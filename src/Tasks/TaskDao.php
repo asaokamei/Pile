@@ -38,12 +38,13 @@ class TaskDao
      */
     public function initialize()
     {
+        $today = new \DateTime('now');
         $this->tasks = array(
-            [1, self::ACTIVE, 'set done this task'],
-            [2, self::ACTIVE, 'modify this task'],
-            [3, self::ACTIVE, 'add a new task'],
-            [4, self::ACTIVE, 'try validation? set all blank and update/insert a task. '],
-            [5, self::ACTIVE, 'delete all finished tasks and setup the task list'],
+            [1, self::ACTIVE, 'set done this task', $today->format('Ymd')],
+            [2, self::ACTIVE, 'modify this task', $today->format('Ymd')],
+            [3, self::ACTIVE, 'add a new task', $today->format('Ymd')],
+            [4, self::ACTIVE, 'try validation? set all blank and update/insert a task. ', $today->format('Ymd')],
+            [5, self::ACTIVE, 'delete all finished tasks and setup the task list', $today->format('Ymd')],
         );
         $this->save();
     }
@@ -125,7 +126,7 @@ class TaskDao
      * @param string $task
      * @return int
      */
-    public function insert($task)
+    public function insert($task, $done_by)
     {
         $this->load();
         $this->max_task_id++;
@@ -133,6 +134,7 @@ class TaskDao
             $this->max_task_id,
             self::ACTIVE,
             $task,
+            $done_by
         ];
         $this->tasks[] = $task;
         $this->save();
